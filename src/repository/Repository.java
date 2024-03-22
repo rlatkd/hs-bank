@@ -15,7 +15,7 @@ public abstract class Repository<E> {
         this.path = "data\\";
     }
 
-    protected final ArrayList<E> load() throws DataLoadingException {
+    protected final void load() throws DataLoadingException {
         FileInputStream fileInputStream = null;
         BufferedInputStream bufferedInputStream = null;
         ObjectInputStream objectInputStream = null;
@@ -41,7 +41,6 @@ public abstract class Repository<E> {
                 throw new DataLoadingException();
             }
         }
-        return dataList;
     }
 
     protected final void save() throws DataSavingException {

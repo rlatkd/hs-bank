@@ -15,8 +15,4 @@ public class Account implements Serializable {
     private String registeredAt;
     private String status;
 
-    @Override
-    public String toString() {
-        return "";
-    }
 }
