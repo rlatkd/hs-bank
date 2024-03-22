@@ -15,4 +15,9 @@ public class Inquiry implements Serializable {
     private String content;
     private String createdAt;
     private String status;
+
+    @Override
+    public String toString() {
+        return "";
+    }
 }

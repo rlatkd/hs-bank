@@ -16,4 +16,8 @@ public class Transaction implements Serializable {
     private String depositAccountNumber;
     private String status;
 
+    @Override
+    public String toString() {
+        return "";
+    }
 }

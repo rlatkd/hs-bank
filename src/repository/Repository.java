@@ -23,6 +23,7 @@ public abstract class Repository<E> {
             fileInputStream = new FileInputStream(path);
             bufferedInputStream = new BufferedInputStream(fileInputStream);
             objectInputStream = new ObjectInputStream(bufferedInputStream);
+
             Object object = null;
             while ((object = objectInputStream.readObject()) != null)
                 dataList = (ArrayList<E>) object;

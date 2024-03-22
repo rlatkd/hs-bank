@@ -8,4 +8,8 @@ import lombok.experimental.SuperBuilder;
 public class Admin extends User{
     private String accessLevel;
 
+    @Override
+    public String toString() {
+        return "";
+    }
 }
