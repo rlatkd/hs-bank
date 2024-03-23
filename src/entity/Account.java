@@ -21,4 +21,8 @@ public class Account implements Serializable {
         this.id = id;
     }
 
+    public void setBalance(long balance){
+        this.balance = balance;
+    }
+
 }

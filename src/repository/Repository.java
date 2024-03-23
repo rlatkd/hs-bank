@@ -5,9 +5,10 @@ import exception.DataSavingException;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Repository<E> {
-    protected ArrayList<E> dataList;
+    protected List<E> dataList;
     protected String path;
 
     protected Repository() {

@@ -4,7 +4,9 @@ import entity.Account;
 import exception.DataLoadingException;
 import exception.DataSavingException;
 
+import javax.security.auth.login.AccountNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AccountRepository extends Repository<Account> {
     private static AccountRepository accountRepository;
@@ -38,10 +40,10 @@ public class AccountRepository extends Repository<Account> {
         save();
     }
 
-    public ArrayList<Account> getAccountList(int ownerId) throws DataLoadingException {
+    public List<Account> getAccountList(int ownerId) throws DataLoadingException {
         load();
 
-        ArrayList<Account> accountList = new ArrayList<>();
+        List<Account> accountList = new ArrayList<>();
         for(Account account : dataList)
             if(account.getOwnerId() == ownerId) accountList.add(account);
 
@@ -61,6 +63,10 @@ public class AccountRepository extends Repository<Account> {
         load();
         for(int i = 0; i < dataList.size(); i++)
             if(dataList.get(i).getId() == id) dataList.remove(i);
+        save();
+    }
+
+    public void update() throws DataSavingException {
         save();
     }
 }
