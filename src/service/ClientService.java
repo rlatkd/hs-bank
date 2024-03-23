@@ -1,8 +1,6 @@
 package service;
 
 import java.time.LocalDate;
-import java.util.List;
-
 import dto.client.LoginDto;
 import dto.client.SignupDto;
 import entity.Client;
