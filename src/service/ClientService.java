@@ -3,11 +3,13 @@ package service;
 import java.time.LocalDate;
 import java.util.List;
 
+import dto.client.LoginDto;
 import dto.client.SignupDto;
 import entity.Client;
 import exception.DataLoadingException;
 import exception.DataSavingException;
 import exception.ExistingUserException;
+import exception.IncorrectCredentialsException;
 import repository.ClientRepository;
 
 public class ClientService implements LoginService {
@@ -26,10 +28,10 @@ public class ClientService implements LoginService {
 
     }
     
+    //회원가입
     public void signup(SignupDto signupDto) throws ExistingUserException, DataLoadingException, DataSavingException {
-    	if (clientRepository.isExistClient(signupDto.getEmail())) {
+    	if (clientRepository.isExistClient(signupDto.getEmail())) 
     		throw new ExistingUserException();
-    	}
     	
     	Client client = Client.builder()
     					.email(signupDto.getEmail())
@@ -45,6 +47,15 @@ public class ClientService implements LoginService {
     	
     	clientRepository.addClient(client);
 	}
+    
+    //로그인
+    public int login(LoginDto loginDto) throws DataLoadingException, IncorrectCredentialsException {
+    	Client client = clientRepository.getClient(loginDto.getEmail(), loginDto.getPassword());
+    	if (client == null) 
+    		throw new IncorrectCredentialsException();
+    	
+    	return client.getId();
+    }
 }
 
 
