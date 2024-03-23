@@ -1,5 +1,13 @@
 package service;
 
+import java.time.LocalDate;
+import java.util.List;
+
+import dto.client.SignupDto;
+import entity.Client;
+import exception.DataLoadingException;
+import exception.DataSavingException;
+import exception.ExistingUserException;
 import repository.ClientRepository;
 
 public class ClientService implements LoginService {
@@ -17,4 +25,27 @@ public class ClientService implements LoginService {
     public void login() {
 
     }
+    
+    public void signup(SignupDto signupDto) throws ExistingUserException, DataLoadingException, DataSavingException {
+    	if (clientRepository.isExistClient(signupDto.getEmail())) {
+    		throw new ExistingUserException();
+    	}
+    	
+    	Client client = Client.builder()
+    					.email(signupDto.getEmail())
+    					.password(signupDto.getPassword())
+    					.name(signupDto.getName())
+    					.birthDate(signupDto.getBirthDate())
+    					.gender(signupDto.getGender())
+    					.phoneNumber(signupDto.getPhoneNumber())
+    					.address(signupDto.getAddress())
+    					.createdAt(LocalDate.now().toString())
+    					.status("activate")
+    					.build();
+    	
+    	clientRepository.addClient(client);
+	}
 }
+
+
+
