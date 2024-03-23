@@ -1,0 +1,12 @@
+# intellij
+.idea
+out
+*.iml
+
+# eclipse
+bin
+.classpath
+.project
+
+# file
+data
