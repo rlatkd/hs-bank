@@ -1,5 +1,7 @@
 package repository;
 
+import java.util.ArrayList;
+
 import entity.Client;
 import exception.DataLoadingException;
 import exception.DataSavingException;
@@ -52,6 +54,17 @@ public class ClientRepository extends Repository<Client> {
     			return client;
     	}
     	return null;
+    }
+    
+    //고객 관리 서비스 진입 시 모든 고객 id, email 조회
+    public ArrayList<Client> getClientList() throws DataLoadingException {
+    	load();
+    	return dataList;
+    }
+       
+    //선택한 고객 상태변경
+    public void updateClient(Client client) throws DataSavingException {
+    	save();
     }
 
     public Client getClient(int ownerId) throws DataLoadingException {
