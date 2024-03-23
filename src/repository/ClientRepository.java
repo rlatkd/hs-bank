@@ -45,12 +45,12 @@ public class ClientRepository extends Repository<Client> {
     }
     
     //로그인 이메일 비밀번호 맞는지 검사
-    public boolean isCorrect(String email, String password) throws DataLoadingException {
+    public Client getClient(String email, String password) throws DataLoadingException {
     	load();
     	for (Client client : dataList) {
     		if (client.getEmail().equals(email) && client.getPassword().equals(password))
-    			return true;
+    			return client;
     	}
-    	return false;
+    	return null;
     }
 }
