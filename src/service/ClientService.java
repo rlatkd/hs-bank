@@ -57,6 +57,3 @@ public class ClientService implements LoginService {
     	return client.getId();
     }
 }
-
-
-
