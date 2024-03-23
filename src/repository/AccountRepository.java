@@ -1,6 +1,10 @@
 package repository;
 
 import entity.Account;
+import exception.DataLoadingException;
+import exception.DataSavingException;
+
+import java.util.ArrayList;
 
 public class AccountRepository extends Repository<Account> {
     private static AccountRepository accountRepository;
@@ -16,4 +20,47 @@ public class AccountRepository extends Repository<Account> {
 
     }
 
+    public boolean isExist(String number) throws DataLoadingException {
+        load();
+        for(Account account : dataList)
+            if(account.getNumber().equals(number)) return true;
+        return false;
+    }
+
+    private int getLastId(){
+        return dataList.isEmpty() ? 0 : dataList.get(dataList.size() - 1).getId();
+    }
+
+    public void addAccount(Account account) throws DataLoadingException, DataSavingException {
+        load();
+        account.setId(getLastId() + 1);
+        dataList.add(account);
+        save();
+    }
+
+    public ArrayList<Account> getAccountList(int ownerId) throws DataLoadingException {
+        load();
+
+        ArrayList<Account> accountList = new ArrayList<>();
+        for(Account account : dataList)
+            if(account.getOwnerId() == ownerId) accountList.add(account);
+
+        return accountList;
+    }
+
+    public Account getAccount(int id) throws DataLoadingException {
+        load();
+
+        for(Account account : dataList)
+            if(account.getId() == id) return account;
+
+        return null;
+    }
+
+    public void remove(int id) throws DataLoadingException, DataSavingException {
+        load();
+        for(int i = 0; i < dataList.size(); i++)
+            if(dataList.get(i).getId() == id) dataList.remove(i);
+        save();
+    }
 }

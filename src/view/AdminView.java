@@ -1,7 +1,6 @@
-package View;
+package view;
 
-public class ClientView extends View implements LoginView {
-
+public class AdminView extends View implements LoginView {
 	@Override
 	protected void start() {
 
