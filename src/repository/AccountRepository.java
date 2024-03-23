@@ -20,7 +20,7 @@ public class AccountRepository extends Repository<Account> {
 
     }
 
-    public boolean isExistByNumber(String number) throws DataLoadingException {
+    public boolean isExist(String number) throws DataLoadingException {
         load();
         for(Account account : dataList)
             if(account.getNumber().equals(number)) return true;
@@ -28,7 +28,7 @@ public class AccountRepository extends Repository<Account> {
     }
 
     public int getLastId(){
-        return dataList.isEmpty() ? 1 : dataList.get(dataList.size() - 1).getId();
+        return dataList.isEmpty() ? 0 : dataList.get(dataList.size() - 1).getId();
     }
 
     public void addAccount(Account account) throws DataLoadingException, DataSavingException {
@@ -36,5 +36,15 @@ public class AccountRepository extends Repository<Account> {
         account.setId(getLastId() + 1);
         dataList.add(account);
         save();
+    }
+
+    public ArrayList<Account> getAccountList(int ownerId) throws DataLoadingException {
+        load();
+
+        ArrayList<Account> accountList = new ArrayList<>();
+        for(Account account : dataList)
+            if(account.getOwnerId() == ownerId) accountList.add(account);
+
+        return accountList;
     }
 }

@@ -31,7 +31,7 @@ public class ClientService implements LoginService {
     //회원가입
     public void signup(SignupDto signupDto) throws ExistingUserException, DataLoadingException, DataSavingException {
     	if (clientRepository.isExistClient(signupDto.getEmail())) 
-    		throw new ExistingUserException();
+			throw new ExistingUserException();
     	
     	Client client = Client.builder()
     					.email(signupDto.getEmail())

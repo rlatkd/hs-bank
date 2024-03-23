@@ -1,4 +1,4 @@
-package dto.account;
+package dto.account.request;
 
 import entity.Account;
 import entity.Client;
