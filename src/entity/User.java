@@ -18,4 +18,8 @@ public class User implements Serializable {
     protected String address;
     protected String createdAt;
     protected String status;
+    
+    public void setId(int id) {
+    	this.id = id;
+    }
 }
