@@ -8,6 +8,7 @@ import exception.*;
 import repository.AccountRepository;
 import repository.ClientRepository;
 
+import javax.security.auth.login.AccountNotFoundException;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
@@ -32,7 +33,7 @@ public class AccountService {
         accountRepository.addAccount(registerAccountDto.toEntity());
     }
 
-    public ArrayList<GetAccountDto> getAccountList(int ownerId) throws DataLoadingException, EmptyAccountListException, ClientNotFoundException {
+    public ArrayList<GetAccountDto> getAccountList(int ownerId) throws EmptyAccountListException, ClientNotFoundException, DataLoadingException {
         ArrayList<Account> accountList = accountRepository.getAccountList(ownerId);
         if(accountList.isEmpty()) throw new EmptyAccountListException();
 
@@ -42,5 +43,11 @@ public class AccountService {
         return accountList.stream()
                 .map(account -> GetAccountDto.toDto(account, owner.getName())) // ownerName을 설정해야 함
                 .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    public void removeAccount(int id) throws AccountNotFoundException, DataLoadingException, DataSavingException {
+        Account account = accountRepository.getAccount(id);
+        if(account == null) throw new AccountNotFoundException();
+        accountRepository.remove(id);
     }
 }

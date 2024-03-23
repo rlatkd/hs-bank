@@ -27,7 +27,7 @@ public class AccountRepository extends Repository<Account> {
         return false;
     }
 
-    public int getLastId(){
+    private int getLastId(){
         return dataList.isEmpty() ? 0 : dataList.get(dataList.size() - 1).getId();
     }
 
@@ -46,5 +46,21 @@ public class AccountRepository extends Repository<Account> {
             if(account.getOwnerId() == ownerId) accountList.add(account);
 
         return accountList;
+    }
+
+    public Account getAccount(int id) throws DataLoadingException {
+        load();
+
+        for(Account account : dataList)
+            if(account.getId() == id) return account;
+
+        return null;
+    }
+
+    public void remove(int id) throws DataLoadingException, DataSavingException {
+        load();
+        for(int i = 0; i < dataList.size(); i++)
+            if(dataList.get(i).getId() == id) dataList.remove(i);
+        save();
     }
 }

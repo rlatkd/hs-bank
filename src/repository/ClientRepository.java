@@ -28,8 +28,7 @@ public class ClientRepository extends Repository<Client> {
     }
     
     //회원가입 마지막 id 추출
-    public int getLastId() throws DataLoadingException {
-    	load();
+    private int getLastId() throws DataLoadingException {
     	if (dataList.isEmpty())
     		return 0;
     	
@@ -39,6 +38,7 @@ public class ClientRepository extends Repository<Client> {
     
     //마지막 id에 데이터 저장
     public void addClient(Client client) throws DataLoadingException, DataSavingException {
+        load();
         client.setId(getLastId() + 1);
     	dataList.add(client);
     	save();
