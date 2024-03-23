@@ -49,9 +49,12 @@ public class ClientService implements LoginService {
 	}
     
     //로그인
-    public void login(LoginDto loginDto) throws DataLoadingException, IncorrectCredentialsException {
-    	if (!clientRepository.isCorrect(loginDto.getEmail(), loginDto.getPassword())) 
+    public int login(LoginDto loginDto) throws DataLoadingException, IncorrectCredentialsException {
+    	Client client = clientRepository.getClient(loginDto.getEmail(), loginDto.getPassword());
+    	if (client == null) 
     		throw new IncorrectCredentialsException();
+    	
+    	return client.getId();
     }
 }
 
