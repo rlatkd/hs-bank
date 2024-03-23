@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-import dto.client.DeactivateDto;
 import dto.client.GetClientDto;
 import dto.client.LoginDto;
 import dto.client.SignupDto;

@@ -72,10 +72,8 @@ public class ClientRepository extends Repository<Client> {
     	return null;
     }
     
-    //선택한 고객 비활성화
+    //선택한 고객 상태변경
     public void updateClient(Client client) throws DataSavingException {
-    	client.setStatus("deactivate");
-    	dataList.add(client);
     	save();
     }
     
