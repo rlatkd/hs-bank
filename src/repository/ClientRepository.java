@@ -28,10 +28,9 @@ public class ClientRepository extends Repository<Client> {
     }
     
     //회원가입 마지막 id 추출
-    public int getLastId() throws DataLoadingException {
-    	load();
+    private int getLastId() throws DataLoadingException {
     	if (dataList.isEmpty())
-    		return 1;
+    		return 0;
     	
     	int lastId = dataList.get(dataList.size() - 1).getId();
     	return lastId;
@@ -39,7 +38,8 @@ public class ClientRepository extends Repository<Client> {
     
     //마지막 id에 데이터 저장
     public void addClient(Client client) throws DataLoadingException, DataSavingException {
-    	client.setId(getLastId() + 1);
+        load();
+        client.setId(getLastId() + 1);
     	dataList.add(client);
     	save();
     }
@@ -52,5 +52,12 @@ public class ClientRepository extends Repository<Client> {
     			return client;
     	}
     	return null;
+    }
+
+    public Client getClient(int ownerId) throws DataLoadingException {
+        load();
+        for(Client client : dataList)
+            if(client.getId() == ownerId) return client;
+        return null;
     }
 }

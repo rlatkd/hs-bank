@@ -33,7 +33,7 @@ public abstract class Repository<E> {
             throw new DataLoadingException();
         } finally {
             try {
-                objectInputStream.close();
+                if(objectInputStream != null) objectInputStream.close();
                 bufferedInputStream.close();
                 fileInputStream.close();
             } catch (Exception e) {

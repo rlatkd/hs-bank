@@ -1,4 +1,4 @@
-import View.InitialView;
+import view.InitialView;
 import entity.Admin;
 import entity.Client;
 
