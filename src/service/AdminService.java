@@ -1,5 +1,9 @@
 package service;
 
+import dto.admin.LoginDto;
+import entity.Admin;
+import exception.DataLoadingException;
+import exception.IncorrectCredentialsException;
 import repository.AdminRepository;
 
 public class AdminService implements LoginService {
@@ -16,5 +20,14 @@ public class AdminService implements LoginService {
     @Override
     public void login() {
 
+    }
+    
+    //로그인
+    public int login(LoginDto loginDto) throws DataLoadingException, IncorrectCredentialsException {
+    	Admin admin = adminRepository.getAdmin(loginDto.getEmail(), loginDto.getPassword());
+		if (admin == null)
+			throw new IncorrectCredentialsException();
+    	
+		return admin.getId();
     }
 }
