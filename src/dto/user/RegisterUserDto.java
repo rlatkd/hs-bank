@@ -1,11 +1,11 @@
-package dto.client;
+package dto.user;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class SignupDto {
+public class RegisterUserDto {
 	private String email;
 	private String password;
 	private String name;

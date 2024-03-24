@@ -2,6 +2,7 @@ package repository;
 
 import entity.Admin;
 import exception.DataLoadingException;
+import exception.DataSavingException;
 
 public class AdminRepository extends Repository<Admin>{
     private static AdminRepository adminRepository;
@@ -24,5 +25,29 @@ public class AdminRepository extends Repository<Admin>{
     			return admin;
     	}
 		return null;
+    }
+    
+    //관리자 등록 중복 검사
+    public boolean isExistAdmin(String email) throws DataLoadingException {
+    	load();
+    	for (Admin admin : dataList) {
+    		if (admin.getEmail().equals(email))
+    			return true;
+    	}
+    	return false;
+    }
+    
+    //관리자 명단 마지막 id 추출
+    private int getLastId() {
+    	int lastId = dataList.get(dataList.size() - 1).getId();
+    	return lastId;
+    }
+    
+    //마지막 id에 서브관리자 데이터 저장
+    public void addAdmin(Admin admin) throws DataLoadingException, DataSavingException {
+    	load();
+    	admin.setId(getLastId() + 1);
+    	dataList.add(admin);
+    	save();
     }
 }

@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import dto.client.GetClientDto;
 import dto.client.LoginDto;
-import dto.client.SignupDto;
+import dto.user.RegisterUserDto;
 import entity.Client;
 import exception.ClientNotFoundException;
 import exception.DataLoadingException;
@@ -32,18 +32,19 @@ public class ClientService implements LoginService {
     }
     
     //회원가입
-    public void signup(SignupDto signupDto) throws ExistingUserException, DataLoadingException, DataSavingException {
-    	if (clientRepository.isExistClient(signupDto.getEmail())) 
+    public void registerClient(RegisterUserDto registerUserDto) throws ExistingUserException, DataLoadingException, DataSavingException {
+    	if (clientRepository.isExistClient(registerUserDto.getEmail())) 
 			throw new ExistingUserException();
     	
-    	Client client = Client.builder()
-    					.email(signupDto.getEmail())
-    					.password(signupDto.getPassword())
-    					.name(signupDto.getName())
-    					.birthDate(signupDto.getBirthDate())
-    					.gender(signupDto.getGender())
-    					.phoneNumber(signupDto.getPhoneNumber())
-    					.address(signupDto.getAddress())
+    	Client client = Client
+    					.builder()
+    					.email(registerUserDto.getEmail())
+    					.password(registerUserDto.getPassword())
+    					.name(registerUserDto.getName())
+    					.birthDate(registerUserDto.getBirthDate())
+    					.gender(registerUserDto.getGender())
+    					.phoneNumber(registerUserDto.getPhoneNumber())
+    					.address(registerUserDto.getAddress())
     					.createdAt(LocalDate.now().toString())
     					.status("activate")
     					.build();
