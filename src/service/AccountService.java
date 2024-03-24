@@ -112,10 +112,10 @@ public class AccountService {
         Account withdrawAccount = accountRepository.getAccount(withdrawAccountId);
         Account depositAccount = accountRepository.getAccountWithoutLoad(depositAccountNumber);
 
-        if(withdrawAccount == null) throw new AccountNotFoundException();
+        if(withdrawAccount == null) throw new AccountNotFoundException("출금할 계좌가 존재하지 않습니다.");
         if(withdrawAccount.getBalance() < amount) throw new BalanceInsufficientException();
 
-        if(depositAccount == null) throw new AccountNotFoundException();
+        if(depositAccount == null) throw new AccountNotFoundException("입금할 계좌가 존재하지 않습니다.");
 
         Transaction transaction = Transaction.builder().
                 date(dateTimeNow).
@@ -132,5 +132,21 @@ public class AccountService {
         accountRepository.update();
 
         transactionRepository.addTransaction(transaction);
+    }
+
+    public void activateAccount(int id) throws DataLoadingException, AccountNotFoundException, DataSavingException {
+        Account account = accountRepository.getAccount(id);
+        if(account == null) throw new AccountNotFoundException();
+
+        account.setStatus("activate");
+        accountRepository.update();
+    }
+
+    public void deactivateAccount(int id) throws DataLoadingException, AccountNotFoundException, DataSavingException {
+        Account account = accountRepository.getAccount(id);
+        if(account == null) throw new AccountNotFoundException();
+
+        account.setStatus("deactivate");
+        accountRepository.update();
     }
 }
