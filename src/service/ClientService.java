@@ -4,8 +4,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-import dto.client.GetClientDto;
-import dto.client.LoginDto;
+import dto.user.client.UpdateClientDto;
+import dto.user.client.GetClientDto;
+import dto.user.client.GetCurrentClientDto;
+import dto.user.LoginDto;
 import dto.user.RegisterUserDto;
 import entity.Client;
 import exception.ClientNotFoundException;
@@ -26,10 +28,6 @@ public class ClientService implements LoginService {
             clientService = new ClientService();
         return clientService;
     }
-    @Override
-    public void login() {
-
-    }
     
     //회원가입
     public void registerClient(RegisterUserDto registerUserDto) throws ExistingUserException, DataLoadingException, DataSavingException {
@@ -38,9 +36,9 @@ public class ClientService implements LoginService {
     	
     	Client client = Client
     					.builder()
+    					.name(registerUserDto.getName())
     					.email(registerUserDto.getEmail())
     					.password(registerUserDto.getPassword())
-    					.name(registerUserDto.getName())
     					.birthDate(registerUserDto.getBirthDate())
     					.gender(registerUserDto.getGender())
     					.phoneNumber(registerUserDto.getPhoneNumber())
@@ -53,12 +51,46 @@ public class ClientService implements LoginService {
 	}
     
     //로그인
+    @Override
     public int login(LoginDto loginDto) throws DataLoadingException, IncorrectCredentialsException {
     	Client client = clientRepository.getClient(loginDto.getEmail(), loginDto.getPassword());
     	if (client == null) 
     		throw new IncorrectCredentialsException();
     	
     	return client.getId();
+    }
+    
+    //마이페이지; 조회-현재 로그인 된 사용자 view에 전달
+    public GetCurrentClientDto getCurrentClient(int id) throws DataLoadingException, ClientNotFoundException {
+    	Client client = clientRepository.getClient(id);
+    	if (client == null) 
+    		throw new ClientNotFoundException();
+    	return GetCurrentClientDto.toDto(client);
+    }
+    
+    //마이페이지; 수정-내 정보 수정
+    public void updateClient(UpdateClientDto updateClientDto) throws DataLoadingException, ClientNotFoundException, DataSavingException {
+    	Client client = clientRepository.getClient(updateClientDto.getId());
+    	if (client == null)
+    		throw new ClientNotFoundException();
+    	client.setName(updateClientDto.getName());
+    	client.setEmail(updateClientDto.getEmail());
+    	client.setPassword(updateClientDto.getEmail());
+    	client.setBirthDate(updateClientDto.getBirthDate());
+    	client.setGender(updateClientDto.getGender());
+    	client.setPhoneNumber(updateClientDto.getPhoneNumber());
+    	client.setAddress(updateClientDto.getAddress());
+    	
+    	clientRepository.updateClient();
+    }
+    
+    //마이페이지; 삭제-내 정보 삭제
+    public void deleteClient(int id) throws DataLoadingException, ClientNotFoundException, DataSavingException {
+    	Client client = clientRepository.getClient(id);
+    	if (client == null)
+    		throw new ClientNotFoundException();
+    	
+    	clientRepository.deletClient(id);
     }
     
     //모든 고객 계정 id, email 조회
@@ -74,7 +106,7 @@ public class ClientService implements LoginService {
     	if (client == null)
     		throw new ClientNotFoundException();
     	client.setStatus("deactivate");
-    	clientRepository.updateClient(client);
+    	clientRepository.updateClientStatus(client);
     }
     
     //활성화할 고객ID
@@ -83,6 +115,6 @@ public class ClientService implements LoginService {
     	if (client == null)
     		throw new ClientNotFoundException();
     	client.setStatus("activate");
-    	clientRepository.updateClient(client);
+    	clientRepository.updateClientStatus(client);
     }
 }

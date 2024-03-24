@@ -1,4 +1,4 @@
-package dto.admin;
+package dto.user;
 
 import lombok.Builder;
 import lombok.Getter;
