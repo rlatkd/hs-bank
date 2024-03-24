@@ -37,7 +37,7 @@ public class TransactionService {
     }
 
     public synchronized void cancelTransaction(int id)
-            throws DataLoadingException, DataSavingException, TransactionNotFoundException, AccountNotFoundException, TransactionTypeNotFoundException {
+            throws DataLoadingException, DataSavingException, TransactionNotFoundException, AccountNotFoundException, TransactionTypeNotFoundException, DeactivateAccountException {
 
         Transaction transaction = transactionRepository.getTransaction(id);
         if(transaction == null) throw new TransactionNotFoundException();
@@ -53,16 +53,23 @@ public class TransactionService {
 
         switch(type) {
             case "deposit":
-                if (depositAccount == null) throw new AccountNotFoundException();
+                if(depositAccount == null) throw new AccountNotFoundException();
+                if(!isActiveAccount(depositAccount)) throw new DeactivateAccountException();
                 depositAccount.setBalance(depositAccount.getBalance() - amount);
                 break;
             case "withdraw":
-                if (withdrawAccount == null) throw new AccountNotFoundException();
+                if(withdrawAccount == null) throw new AccountNotFoundException();
+                if(!isActiveAccount(withdrawAccount)) throw new DeactivateAccountException();
                 withdrawAccount.setBalance(withdrawAccount.getBalance() + amount);
                 break;
             case "transfer":
-                if (depositAccount == null) throw new AccountNotFoundException("입금한 계좌가 존재하지 않습니다.");
-                if (withdrawAccount == null) throw new AccountNotFoundException("출금한 계좌가 존재하지 않습니다.");
+                if(depositAccount == null) throw new AccountNotFoundException("입금한 계좌가 존재하지 않습니다.");
+                if(!isActiveAccount(depositAccount)) throw new DeactivateAccountException("입금한 계좌가 비활성화 상태입니다.");
+
+                if(withdrawAccount == null) throw new AccountNotFoundException("출금한 계좌가 존재하지 않습니다.");
+                if(!isActiveAccount(depositAccount)) throw new DeactivateAccountException("출금한 계좌가 비활성화 상태입니다.");
+                if(!isActiveAccount(depositAccount)) throw new DeactivateAccountException();
+                
                 depositAccount.setBalance(depositAccount.getBalance() - amount);
                 withdrawAccount.setBalance(withdrawAccount.getBalance() + amount);
                 break;
@@ -74,5 +81,9 @@ public class TransactionService {
 
         accountRepository.update();
         transactionRepository.update();
+    }
+
+    protected boolean isActiveAccount(Account account) {
+        return account.getStatus().equals("active") ? true : false;
     }
 }
