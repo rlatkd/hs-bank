@@ -5,6 +5,7 @@ import exception.DataLoadingException;
 import exception.DataSavingException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AccountRepository extends Repository<Account> {
     private static AccountRepository accountRepository;
@@ -38,10 +39,10 @@ public class AccountRepository extends Repository<Account> {
         save();
     }
 
-    public ArrayList<Account> getAccountList(int ownerId) throws DataLoadingException {
+    public List<Account> getAccountList(int ownerId) throws DataLoadingException {
         load();
 
-        ArrayList<Account> accountList = new ArrayList<>();
+        List<Account> accountList = new ArrayList<>();
         for(Account account : dataList)
             if(account.getOwnerId() == ownerId) accountList.add(account);
 
@@ -57,10 +58,29 @@ public class AccountRepository extends Repository<Account> {
         return null;
     }
 
+    public Account getAccountWithoutLoad(String number){
+        for(Account account : dataList)
+            if(account.getNumber().equals(number)) return account;
+        return null;
+    }
+
+    public Account getAccount(String number) throws DataLoadingException {
+        load();
+
+        for(Account account : dataList)
+            if(account.getNumber().equals(number)) return account;
+
+        return null;
+    }
+
     public void remove(int id) throws DataLoadingException, DataSavingException {
         load();
         for(int i = 0; i < dataList.size(); i++)
             if(dataList.get(i).getId() == id) dataList.remove(i);
+        save();
+    }
+
+    public void update() throws DataSavingException {
         save();
     }
 }

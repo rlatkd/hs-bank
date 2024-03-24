@@ -5,9 +5,10 @@ import exception.DataSavingException;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Repository<E> {
-    protected ArrayList<E> dataList;
+    protected List<E> dataList;
     protected String path;
 
     protected Repository() {
@@ -26,16 +27,16 @@ public abstract class Repository<E> {
 
             Object object = null;
             while ((object = objectInputStream.readObject()) != null)
-                dataList = (ArrayList<E>) object;
+                dataList = (List<E>) object;
         } catch (EOFException e) {
         } catch (Exception e) {
-            // 로깅 작업
+            // 로깅 작업'
             throw new DataLoadingException();
         } finally {
             try {
                 if(objectInputStream != null) objectInputStream.close();
-                bufferedInputStream.close();
-                fileInputStream.close();
+                if(bufferedInputStream != null) bufferedInputStream.close();
+                if(fileInputStream != null) fileInputStream.close();
             } catch (Exception e) {
                 // 로깅 작업
                 throw new DataLoadingException();

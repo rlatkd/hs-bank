@@ -9,6 +9,8 @@ import java.io.Serializable;
 @Builder
 public class Account implements Serializable {
 
+
+
     private int id;
     private String bankName;
     private String number;
@@ -19,6 +21,10 @@ public class Account implements Serializable {
 
     public void setId(int id){
         this.id = id;
+    }
+
+    public void setBalance(long balance){
+        this.balance = balance;
     }
 
 }

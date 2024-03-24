@@ -12,8 +12,8 @@ public class Transaction implements Serializable {
     private String date;
     private String type;
     private long amount;
-    private String withDrawAccountNumber;
-    private String depositAccountNumber;
+    private int withdrawAccountId;
+    private int depositAccountId;
     private String status;
 
 }

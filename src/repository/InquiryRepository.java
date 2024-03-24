@@ -1,6 +1,7 @@
 package repository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import entity.Inquiry;
 import exception.DataLoadingException;
@@ -37,7 +38,7 @@ public class InquiryRepository extends Repository<Inquiry> {
         return lastId;
     }
 
-    public ArrayList<Inquiry> getInquiryList() throws DataLoadingException { // 반환형이 ArrayList라서 + 관리자가 보는 남들의 전체 문의
+    public List<Inquiry> getInquiryList() throws DataLoadingException { // 반환형이 ArrayList라서 + 관리자가 보는 남들의 전체 문의
     	load();
     	return dataList;
     }

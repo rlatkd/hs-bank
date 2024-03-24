@@ -1,6 +1,7 @@
 package repository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import entity.Client;
 import exception.DataLoadingException;
@@ -57,7 +58,7 @@ public class ClientRepository extends Repository<Client> {
     }
     
     //고객 관리 서비스 진입 시 모든 고객 id, email 조회
-    public ArrayList<Client> getClientList() throws DataLoadingException {
+    public List<Client> getClientList() throws DataLoadingException {
     	load();
     	return dataList;
     }
@@ -67,10 +68,10 @@ public class ClientRepository extends Repository<Client> {
     	save();
     }
 
-    public Client getClient(int ownerId) throws DataLoadingException {
+    public Client getClient(int id) throws DataLoadingException {
         load();
         for(Client client : dataList)
-            if(client.getId() == ownerId) return client;
+            if(client.getId() == id) return client;
         return null;
     }
 }
