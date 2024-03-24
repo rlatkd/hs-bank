@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Getter
 @SuperBuilder
-public class User implements Serializable {
+public abstract class User implements Serializable {
     protected int id;
     protected String email;
     protected String password;
@@ -21,5 +21,9 @@ public class User implements Serializable {
     
     public void setId(int id) {
     	this.id = id;
+    }
+    
+    public void setStatus(String status) {
+    	this.status = status;
     }
 }
