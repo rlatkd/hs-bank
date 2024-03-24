@@ -67,9 +67,9 @@ public class TransactionService {
                 if(!isActiveAccount(depositAccount)) throw new DeactivateAccountException("입금한 계좌가 비활성화 상태입니다.");
 
                 if(withdrawAccount == null) throw new AccountNotFoundException("출금한 계좌가 존재하지 않습니다.");
-                if(!isActiveAccount(depositAccount)) throw new DeactivateAccountException("출금한 계좌가 비활성화 상태입니다.");
-                if(!isActiveAccount(depositAccount)) throw new DeactivateAccountException();
-                
+                if(!isActiveAccount(withdrawAccount)) throw new DeactivateAccountException("출금한 계좌가 비활성화 상태입니다.");
+                if(!isActiveAccount(withdrawAccount)) throw new DeactivateAccountException();
+
                 depositAccount.setBalance(depositAccount.getBalance() - amount);
                 withdrawAccount.setBalance(withdrawAccount.getBalance() + amount);
                 break;
