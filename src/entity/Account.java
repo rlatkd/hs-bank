@@ -27,4 +27,8 @@ public class Account implements Serializable {
         this.balance = balance;
     }
 
+    public void setStatus(String status){
+        this.status = status;
+    }
+
 }

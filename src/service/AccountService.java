@@ -133,4 +133,20 @@ public class AccountService {
 
         transactionRepository.addTransaction(transaction);
     }
+
+    public void activateAccount(int id) throws DataLoadingException, AccountNotFoundException, DataSavingException {
+        Account account = accountRepository.getAccount(id);
+        if(account == null) throw new AccountNotFoundException("존재하지 않는 계좌입니다.");
+
+        account.setStatus("activate");
+        accountRepository.update();
+    }
+
+    public void deactivateAccount(int id) throws DataLoadingException, AccountNotFoundException, DataSavingException {
+        Account account = accountRepository.getAccount(id);
+        if(account == null) throw new AccountNotFoundException("존재하지 않는 계좌입니다.");
+
+        account.setStatus("deactivate");
+        accountRepository.update();
+    }
 }
