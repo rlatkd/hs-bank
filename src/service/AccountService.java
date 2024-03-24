@@ -67,7 +67,7 @@ public class AccountService {
         accountRepository.remove(id);
     }
 
-    public void deposit(int id, long amount)
+    public synchronized void deposit(int id, long amount)
             throws AccountNotFoundException, DataLoadingException, DataSavingException {
 
         Account account = accountRepository.getAccount(id);
@@ -83,6 +83,26 @@ public class AccountService {
 
         transactionRepository.addTransaction(transaction);
         account.setBalance(account.getBalance() + amount);
+        accountRepository.update();
+    }
+
+    public synchronized void withdraw(int id, long amount)
+            throws AccountNotFoundException, BalanceInsufficientException, DataLoadingException, DataSavingException {
+
+        Account account = accountRepository.getAccount(id);
+        if(account == null) throw new AccountNotFoundException();
+        if(account.getBalance() < amount) throw new BalanceInsufficientException();
+
+        Transaction transaction = Transaction.builder().
+                date((LocalDateTime.now()).format(dateTimeFormatter)).
+                type("withdraw").
+                amount(amount).
+                withdrawAccountId(id).
+                status("complete").
+                build();
+
+        transactionRepository.addTransaction(transaction);
+        account.setBalance(account.getBalance() - amount);
         accountRepository.update();
     }
 }

@@ -30,13 +30,13 @@ public abstract class Repository<E> {
                 dataList = (ArrayList<E>) object;
         } catch (EOFException e) {
         } catch (Exception e) {
-            // 로깅 작업
+            // 로깅 작업'
             throw new DataLoadingException();
         } finally {
             try {
                 if(objectInputStream != null) objectInputStream.close();
-                bufferedInputStream.close();
-                fileInputStream.close();
+                if(bufferedInputStream != null) bufferedInputStream.close();
+                if(fileInputStream != null) fileInputStream.close();
             } catch (Exception e) {
                 // 로깅 작업
                 throw new DataLoadingException();

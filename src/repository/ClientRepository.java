@@ -54,10 +54,10 @@ public class ClientRepository extends Repository<Client> {
     	return null;
     }
 
-    public Client getClient(int ownerId) throws DataLoadingException {
+    public Client getClient(int id) throws DataLoadingException {
         load();
         for(Client client : dataList)
-            if(client.getId() == ownerId) return client;
+            if(client.getId() == id) return client;
         return null;
     }
 }
