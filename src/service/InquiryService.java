@@ -12,10 +12,9 @@ import exception.InquiryNotFoundException;
 import repository.ClientRepository;
 import repository.InquiryRepository;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-import static utils.utils.dateTimeFormatter;
+import static utils.DateUtils.dateTimeNow;
 
 public class InquiryService {
     private static InquiryService inquiryService;
@@ -79,7 +78,7 @@ public class InquiryService {
                 .status("대기 중")
                 .content(registerInquiryDto.getContent())
                 .title(registerInquiryDto.getTitle())
-                .createdAt((LocalDateTime.now()).format(dateTimeFormatter))
+                .createdAt(dateTimeNow)
                 .build();
 
         inquiryRepository.addInquiry(inq);

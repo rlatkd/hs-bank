@@ -4,7 +4,6 @@ import entity.Account;
 import exception.DataLoadingException;
 import exception.DataSavingException;
 
-import javax.security.auth.login.AccountNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,6 +54,21 @@ public class AccountRepository extends Repository<Account> {
 
         for(Account account : dataList)
             if(account.getId() == id) return account;
+
+        return null;
+    }
+
+    public Account getAccountWithoutLoad(String number){
+        for(Account account : dataList)
+            if(account.getNumber().equals(number)) return account;
+        return null;
+    }
+
+    public Account getAccount(String number) throws DataLoadingException {
+        load();
+
+        for(Account account : dataList)
+            if(account.getNumber().equals(number)) return account;
 
         return null;
     }

@@ -9,6 +9,8 @@ import java.io.Serializable;
 @Builder
 public class Account implements Serializable {
 
+
+
     private int id;
     private String bankName;
     private String number;

@@ -27,7 +27,7 @@ public abstract class Repository<E> {
 
             Object object = null;
             while ((object = objectInputStream.readObject()) != null)
-                dataList = (ArrayList<E>) object;
+                dataList = (List<E>) object;
         } catch (EOFException e) {
         } catch (Exception e) {
             // 로깅 작업'

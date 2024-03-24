@@ -24,4 +24,8 @@ public class TransactionRepository extends Repository<Transaction>{
         dataList.add(transaction);
         save();
     }
+
+    public void update() throws DataSavingException {
+        save();
+    }
 }

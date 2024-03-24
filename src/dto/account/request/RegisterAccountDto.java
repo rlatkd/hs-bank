@@ -1,13 +1,9 @@
 package dto.account.request;
 
 import entity.Account;
-import entity.Client;
 import lombok.Builder;
 import lombok.Getter;
-
-import java.time.LocalDateTime;
-
-import static utils.utils.dateTimeFormatter;
+import static utils.DateUtils.dateTimeNow;
 
 @Builder
 @Getter
@@ -22,7 +18,7 @@ public class RegisterAccountDto {
                 number(number).
                 ownerId(ownerId).
                 balance(0).
-                registeredAt((LocalDateTime.now()).format(dateTimeFormatter)).
+                registeredAt(dateTimeNow).
                 status("activate").
                 build();
     }

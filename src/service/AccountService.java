@@ -11,13 +11,11 @@ import repository.ClientRepository;
 import repository.TransactionRepository;
 
 import javax.security.auth.login.AccountNotFoundException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static utils.utils.dateTimeFormatter;
+import static utils.DateUtils.dateTimeNow;
 
 public class AccountService {
     private static AccountService accountService;
@@ -74,16 +72,17 @@ public class AccountService {
         if(account == null) throw new AccountNotFoundException();
 
         Transaction transaction = Transaction.builder().
-                date((LocalDateTime.now()).format(dateTimeFormatter)).
+                date(dateTimeNow).
                 type("deposit").
                 amount(amount).
                 depositAccountId(id).
                 status("complete").
                 build();
 
-        transactionRepository.addTransaction(transaction);
         account.setBalance(account.getBalance() + amount);
         accountRepository.update();
+
+        transactionRepository.addTransaction(transaction);
     }
 
     public synchronized void withdraw(int id, long amount)
@@ -94,15 +93,44 @@ public class AccountService {
         if(account.getBalance() < amount) throw new BalanceInsufficientException();
 
         Transaction transaction = Transaction.builder().
-                date((LocalDateTime.now()).format(dateTimeFormatter)).
+                date(dateTimeNow).
                 type("withdraw").
                 amount(amount).
                 withdrawAccountId(id).
                 status("complete").
                 build();
 
-        transactionRepository.addTransaction(transaction);
         account.setBalance(account.getBalance() - amount);
         accountRepository.update();
+
+        transactionRepository.addTransaction(transaction);
+    }
+
+    public synchronized void transfer(int withdrawAccountId, String depositAccountNumber, long amount)
+            throws DataLoadingException, AccountNotFoundException, BalanceInsufficientException, DataSavingException {
+
+        Account withdrawAccount = accountRepository.getAccount(withdrawAccountId);
+        Account depositAccount = accountRepository.getAccountWithoutLoad(depositAccountNumber);
+
+        if(withdrawAccount == null) throw new AccountNotFoundException();
+        if(withdrawAccount.getBalance() < amount) throw new BalanceInsufficientException();
+
+        if(depositAccount == null) throw new AccountNotFoundException();
+
+        Transaction transaction = Transaction.builder().
+                date(dateTimeNow).
+                type("transfer").
+                amount(amount).
+                withdrawAccountId(withdrawAccountId).
+                depositAccountId(depositAccount.getId()).
+                status("complete").
+                build();
+
+        withdrawAccount.setBalance(withdrawAccount.getBalance() - amount);
+
+        depositAccount.setBalance(depositAccount.getBalance() + amount);
+        accountRepository.update();
+
+        transactionRepository.addTransaction(transaction);
     }
 }
