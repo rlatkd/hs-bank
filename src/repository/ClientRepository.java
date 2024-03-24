@@ -64,14 +64,32 @@ public class ClientRepository extends Repository<Client> {
     }
        
     //선택한 고객 상태변경
-    public void updateClient(Client client) throws DataSavingException {
+    public void updateClientStatus(Client client) throws DataSavingException {
     	save();
     }
 
+    //고객 정보 조회
     public Client getClient(int id) throws DataLoadingException {
         load();
         for(Client client : dataList)
             if(client.getId() == id) return client;
         return null;
+    }
+    
+    //고객 정보 수정
+    public void updateClient() throws DataSavingException {
+    	save();
+    }
+    
+    //고객 정보 삭제
+    public void deletClient(int id) throws DataLoadingException, DataSavingException {
+    	load();
+    	for (int i = 0; i < dataList.size(); i++) {
+			if (dataList.get(i).getId() == id) {
+				dataList.remove(i);
+				break;
+			}
+		}
+    	save();
     }
 }

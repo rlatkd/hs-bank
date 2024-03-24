@@ -2,7 +2,7 @@ package service;
 
 import java.time.LocalDate;
 
-import dto.admin.LoginDto;
+import dto.user.LoginDto;
 import dto.user.RegisterUserDto;
 import entity.Admin;
 import exception.DataLoadingException;
@@ -22,12 +22,9 @@ public class AdminService implements LoginService {
             adminService = new AdminService();
         return adminService;
     }
-    @Override
-    public void login() {
-
-    }
     
     //로그인
+    @Override
     public int login(LoginDto loginDto) throws DataLoadingException, IncorrectCredentialsException {
     	Admin admin = adminRepository.getAdmin(loginDto.getEmail(), loginDto.getPassword());
 		if (admin == null)
@@ -43,14 +40,9 @@ public class AdminService implements LoginService {
     	
     	Admin admin = Admin
     					.builder()
+    					.name(registerUserDto.getName())
     					.email(registerUserDto.getEmail())
     					.password(registerUserDto.getPassword())
-    					.name(registerUserDto.getName())
-    					.birthDate(registerUserDto.getBirthDate())
-    					.gender(registerUserDto.getGender())
-    					.phoneNumber(registerUserDto.getPhoneNumber())
-    					.address(registerUserDto.getAddress())
-    					.createdAt(LocalDate.now().toString())
     					.status("sub")
     					.build();
     	
