@@ -48,6 +48,7 @@ public class InquiryService {
                 .build();
     }
 
+    //문의 삭제
     public void deleteInquiry(int id) throws DataLoadingException, InquiryNotFoundException, DataSavingException {
         Inquiry inquiry = inquiryRepository.getInquiry(id);
         if (inquiry == null) throw new InquiryNotFoundException();
@@ -84,6 +85,7 @@ public class InquiryService {
         inquiryRepository.addInquiry(inq);
     }
 
+    //문의 수정
     public void editInquiry(EditInquiryDto editInquiryDto) throws DataLoadingException, InquiryNotFoundException, DataSavingException {
         Inquiry inq = inquiryRepository.getInquiry(editInquiryDto.getId());
         if (inq == null) throw new InquiryNotFoundException();

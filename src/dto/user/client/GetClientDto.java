@@ -1,4 +1,4 @@
-package dto.client;
+package dto.user.client;
 
 import entity.Client;
 import lombok.Builder;
