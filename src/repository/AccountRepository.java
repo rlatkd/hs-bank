@@ -75,12 +75,21 @@ public class AccountRepository extends Repository<Account> {
 
     public void remove(int id) throws DataLoadingException, DataSavingException {
         load();
-        for(int i = 0; i < dataList.size(); i++)
+        for(int i = 0; i < dataList.size(); i++){
             if(dataList.get(i).getId() == id) dataList.remove(i);
+            break;
+        }
         save();
     }
 
     public void update() throws DataSavingException {
         save();
+    }
+
+    public Account getAccountWithoutLoad(int id) {
+        for(Account account : dataList)
+            if(account.getId() == id) return account;
+
+        return null;
     }
 }

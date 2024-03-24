@@ -1,20 +1,23 @@
 package service;
 
 import dto.transaction.request.GetTransactionDto;
+import entity.Account;
 import entity.Transaction;
-import exception.DataLoadingException;
-import exception.EmptyAccountListException;
-import exception.EmptyTransactionListException;
+import exception.*;
+import repository.AccountRepository;
 import repository.TransactionRepository;
 
+import javax.security.auth.login.AccountNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class TransactionService {
     private static TransactionService transactionService;
     private final TransactionRepository transactionRepository;
+    private final AccountRepository accountRepository;
     private TransactionService() {
         this.transactionRepository = TransactionRepository.getInstance();
+        this.accountRepository = AccountRepository.getInstance();
     }
     public static TransactionService getInstance(){
         if(transactionService == null)
@@ -33,4 +36,43 @@ public class TransactionService {
                 .collect(Collectors.toList());
     }
 
+    public synchronized void cancelTransaction(int id)
+            throws DataLoadingException, DataSavingException, TransactionNotFoundException, AccountNotFoundException, TransactionTypeNotFoundException {
+
+        Transaction transaction = transactionRepository.getTransaction(id);
+        if(transaction == null) throw new TransactionNotFoundException();
+
+        int withdrawAccountId = transaction.getWithdrawAccountId();
+        int depositAccountId = transaction.getDepositAccountId();
+
+        String type = transaction.getType();
+        long amount = transaction.getAmount();
+
+        Account depositAccount = accountRepository.getAccount(depositAccountId);
+        Account withdrawAccount = accountRepository.getAccountWithoutLoad(withdrawAccountId);
+
+        switch(type) {
+            case "deposit":
+                if (depositAccount == null) throw new AccountNotFoundException();
+                depositAccount.setBalance(depositAccount.getBalance() - amount);
+                break;
+            case "withdraw":
+                if (withdrawAccount == null) throw new AccountNotFoundException();
+                withdrawAccount.setBalance(withdrawAccount.getBalance() + amount);
+                break;
+            case "transfer":
+                if (depositAccount == null) throw new AccountNotFoundException("입금한 계좌가 존재하지 않습니다.");
+                if (withdrawAccount == null) throw new AccountNotFoundException("출금한 계좌가 존재하지 않습니다.");
+                depositAccount.setBalance(depositAccount.getBalance() - amount);
+                withdrawAccount.setBalance(withdrawAccount.getBalance() + amount);
+                break;
+            default:
+                throw new TransactionTypeNotFoundException();
+        }
+
+        transaction.setStatus("cancel");
+
+        accountRepository.update();
+        transactionRepository.update();
+    }
 }

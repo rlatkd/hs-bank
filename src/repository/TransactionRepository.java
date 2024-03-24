@@ -21,8 +21,17 @@ public class TransactionRepository extends Repository<Transaction>{
         return transactionRepository;
     }
 
+    private int getLastId() {
+        if(dataList.isEmpty())
+            return 0;
+
+        int lastId = dataList.get(dataList.size() - 1).getId();
+        return lastId;
+    }
+
     public void addTransaction(Transaction transaction) throws DataLoadingException, DataSavingException {
         load();
+        transaction.setId(getLastId() + 1);
         dataList.add(transaction);
         save();
     }
@@ -40,5 +49,12 @@ public class TransactionRepository extends Repository<Transaction>{
                 transactionList.add(transaction);
 
         return dataList;
+    }
+
+    public Transaction getTransaction(int id) throws DataLoadingException {
+        load();
+        for(Transaction transaction : dataList)
+            if(transaction.getId() == id) return transaction;
+        return null;
     }
 }
