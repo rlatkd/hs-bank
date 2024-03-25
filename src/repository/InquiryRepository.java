@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import entity.Inquiry;
+import exception.BaseException;
 import exception.DataAccessException;
 
 public class InquiryRepository extends Repository<Inquiry> {
@@ -19,7 +20,7 @@ public class InquiryRepository extends Repository<Inquiry> {
         return inquiryRepository;
     }
 
-    public List<Inquiry> getEntityList(int authorId) throws DataAccessException { // 사용자가 보는 본인의 문의
+    public List<Inquiry> getEntityList(int authorId) throws BaseException { // 사용자가 보는 본인의 문의
         load();
         List<Inquiry> inquiryList = new ArrayList<>(); // new 안 하면 null... 지금은 빈 거
         for (Inquiry inquiry : entityList) {

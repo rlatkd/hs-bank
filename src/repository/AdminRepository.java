@@ -1,6 +1,7 @@
 package repository;
 
 import entity.Admin;
+import exception.BaseException;
 import exception.DataAccessException;
 
 public class AdminRepository extends Repository<Admin>{
@@ -17,7 +18,7 @@ public class AdminRepository extends Repository<Admin>{
     }
 
     //로그인 이메일 비밀번호 맞는지 검사
-    public Admin get(String email, String password) throws DataAccessException {
+    public Admin get(String email, String password) throws BaseException {
     	load();
     	for (Admin admin : entityList) {
     		if (admin.getEmail().equals(email) && admin.getPassword().equals(password))
@@ -27,7 +28,7 @@ public class AdminRepository extends Repository<Admin>{
     }
     
     //관리자 등록 중복 검사
-    public boolean isExist(String email) throws DataAccessException {
+    public boolean isExist(String email) throws BaseException {
     	load();
     	for (Admin admin : entityList) {
     		if (admin.getEmail().equals(email))

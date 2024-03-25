@@ -1,6 +1,7 @@
 package repository;
 
 import entity.Transaction;
+import exception.BaseException;
 import exception.DataAccessException;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class TransactionRepository extends Repository<Transaction>{
         return transactionRepository;
     }
 
-    public List<Transaction> getEntityList(int accountId) throws DataAccessException {
+    public List<Transaction> getEntityList(int accountId) throws BaseException {
         load();
         List<Transaction> transactionList = new ArrayList<>();
         for(Transaction transaction : entityList)

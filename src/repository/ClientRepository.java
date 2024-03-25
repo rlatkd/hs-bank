@@ -1,6 +1,7 @@
 package repository;
 
 import entity.Client;
+import exception.BaseException;
 import exception.DataAccessException;
 
 public class ClientRepository extends Repository<Client> {
@@ -17,7 +18,7 @@ public class ClientRepository extends Repository<Client> {
     }
     
     //회원가입 이메일 중복 검사
-    public boolean isExist(String email) throws DataAccessException {
+    public boolean isExist(String email) throws BaseException {
     	load();
     	for (Client client : entityList) {
     		if (client.getEmail().equals(email))
@@ -27,7 +28,7 @@ public class ClientRepository extends Repository<Client> {
     }
 
     //로그인 이메일 비밀번호 맞는지 검사
-    public Client get(String email, String password) throws DataAccessException {
+    public Client get(String email, String password) throws BaseException {
     	load();
     	for (Client client : entityList) {
     		if (client.getEmail().equals(email) && client.getPassword().equals(password))

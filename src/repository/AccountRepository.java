@@ -1,6 +1,7 @@
 package repository;
 
 import entity.Account;
+import exception.BaseException;
 import exception.DataAccessException;
 
 import java.util.ArrayList;
@@ -20,14 +21,14 @@ public class AccountRepository extends Repository<Account> {
 
     }
 
-    public boolean isExist(String number) throws DataAccessException {
+    public boolean isExist(String number) throws BaseException {
         load();
         for(Account account : entityList)
             if(account.getNumber().equals(number)) return true;
         return false;
     }
 
-    public List<Account> getEntityList(int ownerId) throws DataAccessException {
+    public List<Account> getEntityList(int ownerId) throws BaseException {
         load();
         List<Account> accountList = new ArrayList<>();
         for(Account account : entityList)
