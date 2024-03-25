@@ -25,4 +25,16 @@ public class GetCurrentClientDto {
 				.phoneNumber(client.getPhoneNumber())
 				.build();
 	}
+
+	@Override
+	public String toString() {
+		return "GetCurrentClientDto{" +
+				"name='" + name + '\'' +
+				", email='" + email + '\'' +
+				", password='" + password + '\'' +
+				", birthDate='" + birthDate + '\'' +
+				", gender='" + gender + '\'' +
+				", phoneNumber='" + phoneNumber + '\'' +
+				'}' + '\n';
+	}
 }

@@ -17,4 +17,12 @@ public class GetClientDto {
 				.email(client.getEmail())
 				.build();
 	}
+
+	@Override
+	public String toString() {
+		return "GetClientDto{" +
+				"id=" + id +
+				", email='" + email + '\'' +
+				'}' + '\n';
+	}
 }

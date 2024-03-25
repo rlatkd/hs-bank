@@ -20,4 +20,16 @@ public class GetInquiryListDto {
                 status(inquiry.getStatus().getKorean()).
                 createdAt(inquiry.getCreatedAt()).build();
     }
+
+    @Override
+    public String toString() {
+        return "GetInquiryListDto{" +
+                "id=" + id +
+                ", authorName='" + authorName + '\'' +
+                ", category='" + category + '\'' +
+                ", title='" + title + '\'' +
+                ", createdAt='" + createdAt + '\'' +
+                ", status='" + status + '\'' +
+                '}' + "\n";
+    }
 }

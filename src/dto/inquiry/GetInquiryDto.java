@@ -24,4 +24,17 @@ public class GetInquiryDto {
                 .createdAt(inquiry.getCreatedAt())
                 .build();
     }
+
+    @Override
+    public String toString() {
+        return "GetInquiryDto{" +
+                "id=" + id +
+                ", authorId=" + authorId +
+                ", category='" + category + '\'' +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", createdAt='" + createdAt + '\'' +
+                ", status='" + status + '\'' +
+                '}' + '\n';
+    }
 }
