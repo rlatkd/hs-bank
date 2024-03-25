@@ -44,13 +44,13 @@ public class AccountService {
     }
 
     public List<GetAccountDto> getAccountList(int ownerId)
-            throws EmptyAccountListException, ClientNotFoundException, DataAccessException {
+            throws EmptyAccountListException, UserNotFoundException, DataAccessException {
 
         List<Account> accountList = accountRepository.getAccountList(ownerId);
         if(accountList.isEmpty()) throw new EmptyAccountListException();
 
         Client owner = clientRepository.getClient(ownerId);
-        if(owner == null) throw new ClientNotFoundException();
+        if(owner == null) throw new UserNotFoundException();
 
         return accountList.stream()
                 .map(account -> GetAccountDto.toDto(account, owner.getName())) // ownerName을 설정해야 함

@@ -10,10 +10,9 @@ import dto.user.client.GetCurrentClientDto;
 import dto.user.LoginDto;
 import dto.user.RegisterUserDto;
 import entity.Client;
-import exception.ClientNotFoundException;
 import exception.DataAccessException;
 import exception.ExistingUserException;
-import exception.IncorrectCredentialsException;
+import exception.UserNotFoundException;
 import repository.ClientRepository;
 
 public class ClientService implements LoginService {
@@ -51,27 +50,27 @@ public class ClientService implements LoginService {
     
     //로그인
     @Override
-    public int login(LoginDto loginDto) throws DataAccessException, IncorrectCredentialsException {
+    public int login(LoginDto loginDto) throws DataAccessException, UserNotFoundException {
     	Client client = clientRepository.getClient(loginDto.getEmail(), loginDto.getPassword());
     	if (client == null) 
-    		throw new IncorrectCredentialsException();
+    		throw new UserNotFoundException();
     	
     	return client.getId();
     }
     
     //마이페이지; 조회-현재 로그인 된 사용자 view에 전달
-    public GetCurrentClientDto getCurrentClient(int id) throws DataAccessException, ClientNotFoundException {
+    public GetCurrentClientDto getCurrentClient(int id) throws DataAccessException, UserNotFoundException {
     	Client client = clientRepository.getClient(id);
     	if (client == null) 
-    		throw new ClientNotFoundException();
+    		throw new UserNotFoundException();
     	return GetCurrentClientDto.toDto(client);
     }
     
     //마이페이지; 수정-내 정보 수정
-    public void updateClient(UpdateClientDto updateClientDto) throws DataAccessException, ClientNotFoundException {
+    public void updateClient(UpdateClientDto updateClientDto) throws DataAccessException, UserNotFoundException {
     	Client client = clientRepository.getClient(updateClientDto.getId());
     	if (client == null)
-    		throw new ClientNotFoundException();
+    		throw new UserNotFoundException();
     	client.setName(updateClientDto.getName());
     	client.setEmail(updateClientDto.getEmail());
     	client.setPassword(updateClientDto.getEmail());
@@ -84,10 +83,10 @@ public class ClientService implements LoginService {
     }
     
     //마이페이지; 삭제-내 정보 삭제
-    public void deleteClient(int id) throws DataAccessException, ClientNotFoundException {
+    public void deleteClient(int id) throws DataAccessException, UserNotFoundException {
     	Client client = clientRepository.getClient(id);
     	if (client == null)
-    		throw new ClientNotFoundException();
+    		throw new UserNotFoundException();
     	
     	clientRepository.deleteClient(id);
     }
@@ -100,19 +99,19 @@ public class ClientService implements LoginService {
     }
     
     //비활성화할 고객ID
-    public void deactivate(int id) throws DataAccessException, ClientNotFoundException {
+    public void deactivate(int id) throws DataAccessException, UserNotFoundException {
     	Client client = clientRepository.getClient(id);
     	if (client == null)
-    		throw new ClientNotFoundException();
+    		throw new UserNotFoundException();
     	client.setStatus("deactivate");
     	clientRepository.updateClientStatus(client);
     }
     
     //활성화할 고객ID
-    public void activate(int id) throws DataAccessException, ClientNotFoundException {
+    public void activate(int id) throws DataAccessException, UserNotFoundException {
     	Client client = clientRepository.getClient(id);
     	if (client == null)
-    		throw new ClientNotFoundException();
+    		throw new UserNotFoundException();
     	client.setStatus("activate");
     	clientRepository.updateClientStatus(client);
     }

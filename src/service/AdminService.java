@@ -5,7 +5,7 @@ import dto.user.RegisterUserDto;
 import entity.Admin;
 import exception.DataAccessException;
 import exception.ExistingUserException;
-import exception.IncorrectCredentialsException;
+import exception.UserNotFoundException;
 import repository.AdminRepository;
 
 public class AdminService implements LoginService {
@@ -22,10 +22,10 @@ public class AdminService implements LoginService {
     
     //로그인
     @Override
-    public int login(LoginDto loginDto) throws DataAccessException, IncorrectCredentialsException {
+    public int login(LoginDto loginDto) throws DataAccessException, UserNotFoundException {
     	Admin admin = adminRepository.getAdmin(loginDto.getEmail(), loginDto.getPassword());
 		if (admin == null)
-			throw new IncorrectCredentialsException();
+			throw new UserNotFoundException();
     	
 		return admin.getId();
     }

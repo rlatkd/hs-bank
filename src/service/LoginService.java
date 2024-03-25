@@ -2,8 +2,8 @@ package service;
 
 import dto.user.LoginDto;
 import exception.DataAccessException;
-import exception.IncorrectCredentialsException;
+import exception.UserNotFoundException;
 
 public interface LoginService {
-    int login(LoginDto loginDto) throws DataAccessException, IncorrectCredentialsException ;
+    int login(LoginDto loginDto) throws DataAccessException, UserNotFoundException;
 }
