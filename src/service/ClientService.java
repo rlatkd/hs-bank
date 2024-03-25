@@ -13,10 +13,7 @@ import entity.Client;
 import enumeration.ActivationStatus;
 import exception.BaseException;
 import exception.user.client.ClientNotFoundException;
-import exception.DataAccessException;
-import exception.user.ExistingUserException;
-import exception.user.UserNotFoundException;
-import exception.user.client.ExistingClientException;
+import exception.user.client.ClientExistException;
 import repository.ClientRepository;
 
 public class ClientService implements UserService {
@@ -35,7 +32,7 @@ public class ClientService implements UserService {
 	@Override
 	public void register(RegisterUserDto registerClientDto) throws BaseException {
     	if (clientRepository.isExist(registerClientDto.getEmail()))
-			throw new ExistingClientException();
+			throw new ClientExistException();
     	clientRepository.add((Client) registerClientDto.toEntity());
 	}
 

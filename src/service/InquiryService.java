@@ -8,8 +8,7 @@ import entity.Client;
 import entity.Inquiry;
 import enumeration.inquiry.InquiryStatus;
 import exception.BaseException;
-import exception.DataAccessException;
-import exception.inquiry.EmptyInquiryListException;
+import exception.inquiry.InquiryListEmptyException;
 import exception.inquiry.InquiryNotFoundException;
 import repository.ClientRepository;
 import repository.InquiryRepository;
@@ -50,7 +49,7 @@ public class InquiryService {
     //문의목록 조회
     public List<GetInquiryListDto> getInquiryList() throws BaseException {
         List<Inquiry> inquiryList = inquiryRepository.getEntityList();
-        if (inquiryList.isEmpty()) throw new EmptyInquiryListException();
+        if (inquiryList.isEmpty()) throw new InquiryListEmptyException();
 
         List<GetInquiryListDto> getInquiryListDtoList = new ArrayList<>();
         for (Inquiry inquiry : inquiryList){
@@ -95,7 +94,7 @@ public class InquiryService {
 
     public List<GetInquiryListDto> getInquiryList(int authorId) throws BaseException {
         List<Inquiry> inquiryList = inquiryRepository.getEntityList(1);
-        if (inquiryList.isEmpty()) throw new EmptyInquiryListException();
+        if (inquiryList.isEmpty()) throw new InquiryListEmptyException();
 
         List<GetInquiryListDto> getInquiryListDtoList = new ArrayList<>();
         for (Inquiry inquiry : inquiryList){

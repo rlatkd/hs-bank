@@ -4,11 +4,8 @@ import dto.user.LoginDto;
 import dto.user.RegisterUserDto;
 import entity.Admin;
 import exception.BaseException;
-import exception.DataAccessException;
-import exception.user.ExistingUserException;
-import exception.user.UserNotFoundException;
 import exception.user.admin.AdminNotFoundException;
-import exception.user.admin.ExistingAdminException;
+import exception.user.admin.AdminExistException;
 import repository.AdminRepository;
 
 public class AdminService implements UserService {
@@ -25,7 +22,7 @@ public class AdminService implements UserService {
     //서브관리자 생성
     @Override
     public void register(RegisterUserDto registerAdminDto) throws BaseException {
-        if (adminRepository.isExist(registerAdminDto.getEmail())) throw new ExistingAdminException();
+        if (adminRepository.isExist(registerAdminDto.getEmail())) throw new AdminExistException();
         adminRepository.add((Admin) registerAdminDto.toEntity());
     }
 
