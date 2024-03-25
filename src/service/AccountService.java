@@ -35,7 +35,7 @@ public class AccountService {
     }
 
     public void registerAccount(RegisterAccountDto registerAccountDto)
-            throws AccountAlreadyExistsException, DataLoadingException, DataSavingException {
+            throws AccountAlreadyExistsException, DataAccessException {
 
         if(accountRepository.isExist(registerAccountDto.getNumber()))
             throw new AccountAlreadyExistsException();
@@ -44,7 +44,7 @@ public class AccountService {
     }
 
     public List<GetAccountDto> getAccountList(int ownerId)
-            throws EmptyAccountListException, ClientNotFoundException, DataLoadingException {
+            throws EmptyAccountListException, ClientNotFoundException, DataAccessException {
 
         List<Account> accountList = accountRepository.getAccountList(ownerId);
         if(accountList.isEmpty()) throw new EmptyAccountListException();
@@ -58,7 +58,7 @@ public class AccountService {
     }
 
     public void removeAccount(int id)
-            throws AccountNotFoundException, DataLoadingException, DataSavingException {
+            throws AccountNotFoundException, DataAccessException {
 
         Account account = accountRepository.getAccount(id);
         if(account == null) throw new AccountNotFoundException();
@@ -66,7 +66,7 @@ public class AccountService {
     }
 
     public synchronized void deposit(int id, long amount)
-            throws DataLoadingException, DataSavingException, AccountNotFoundException, DeactivateAccountException {
+            throws DataAccessException, AccountNotFoundException, DeactivateAccountException {
 
         Account account = accountRepository.getAccount(id);
         if(account == null) throw new AccountNotFoundException();
@@ -87,7 +87,7 @@ public class AccountService {
     }
 
     public synchronized void withdraw(int id, long amount)
-            throws AccountNotFoundException, BalanceInsufficientException, DataLoadingException, DataSavingException, DeactivateAccountException {
+            throws AccountNotFoundException, BalanceInsufficientException, DataAccessException, DeactivateAccountException {
 
         Account account = accountRepository.getAccount(id);
         if(account == null) throw new AccountNotFoundException();
@@ -109,7 +109,7 @@ public class AccountService {
     }
 
     public synchronized void transfer(int withdrawAccountId, String depositAccountNumber, long amount)
-            throws DataLoadingException, AccountNotFoundException, BalanceInsufficientException, DataSavingException, DeactivateAccountException {
+            throws DataAccessException, AccountNotFoundException, BalanceInsufficientException, DeactivateAccountException {
 
         Account withdrawAccount = accountRepository.getAccount(withdrawAccountId);
         if(withdrawAccount == null) throw new AccountNotFoundException("출금할 계좌가 존재하지 않습니다.");
@@ -137,7 +137,7 @@ public class AccountService {
         transactionRepository.addTransaction(transaction);
     }
 
-    public void activateAccount(int id) throws DataLoadingException, AccountNotFoundException, DataSavingException {
+    public void activateAccount(int id) throws DataAccessException, AccountNotFoundException {
         Account account = accountRepository.getAccount(id);
         if(account == null) throw new AccountNotFoundException();
 
@@ -145,7 +145,7 @@ public class AccountService {
         accountRepository.update();
     }
 
-    public void deactivateAccount(int id) throws DataLoadingException, AccountNotFoundException, DataSavingException {
+    public void deactivateAccount(int id) throws DataAccessException, AccountNotFoundException {
         Account account = accountRepository.getAccount(id);
         if(account == null) throw new AccountNotFoundException();
 

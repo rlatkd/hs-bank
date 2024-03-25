@@ -1,10 +1,8 @@
 package repository;
 
 import entity.Transaction;
-import exception.DataLoadingException;
-import exception.DataSavingException;
+import exception.DataAccessException;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,18 +27,18 @@ public class TransactionRepository extends Repository<Transaction>{
         return lastId;
     }
 
-    public void addTransaction(Transaction transaction) throws DataLoadingException, DataSavingException {
+    public void addTransaction(Transaction transaction) throws DataAccessException {
         load();
         transaction.setId(getLastId() + 1);
         dataList.add(transaction);
         save();
     }
 
-    public void update() throws DataSavingException {
+    public void update() throws DataAccessException {
         save();
     }
 
-    public List<Transaction> getTransactionList(int accountId) throws DataLoadingException {
+    public List<Transaction> getTransactionList(int accountId) throws DataAccessException {
         load();
         List<Transaction> transactionList = new ArrayList<>();
         for(Transaction transaction : dataList)
@@ -51,7 +49,7 @@ public class TransactionRepository extends Repository<Transaction>{
         return dataList;
     }
 
-    public Transaction getTransaction(int id) throws DataLoadingException {
+    public Transaction getTransaction(int id) throws DataAccessException {
         load();
         for(Transaction transaction : dataList)
             if(transaction.getId() == id) return transaction;

@@ -1,8 +1,7 @@
 package repository;
 
 import entity.Account;
-import exception.DataLoadingException;
-import exception.DataSavingException;
+import exception.DataAccessException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +20,7 @@ public class AccountRepository extends Repository<Account> {
 
     }
 
-    public boolean isExist(String number) throws DataLoadingException {
+    public boolean isExist(String number) throws DataAccessException {
         load();
         for(Account account : dataList)
             if(account.getNumber().equals(number)) return true;
@@ -32,14 +31,14 @@ public class AccountRepository extends Repository<Account> {
         return dataList.isEmpty() ? 0 : dataList.get(dataList.size() - 1).getId();
     }
 
-    public void addAccount(Account account) throws DataLoadingException, DataSavingException {
+    public void addAccount(Account account) throws DataAccessException {
         load();
         account.setId(getLastId() + 1);
         dataList.add(account);
         save();
     }
 
-    public List<Account> getAccountList(int ownerId) throws DataLoadingException {
+    public List<Account> getAccountList(int ownerId) throws DataAccessException {
         load();
 
         List<Account> accountList = new ArrayList<>();
@@ -49,7 +48,7 @@ public class AccountRepository extends Repository<Account> {
         return accountList;
     }
 
-    public Account getAccount(int id) throws DataLoadingException {
+    public Account getAccount(int id) throws DataAccessException {
         load();
 
         for(Account account : dataList)
@@ -64,7 +63,7 @@ public class AccountRepository extends Repository<Account> {
         return null;
     }
 
-    public Account getAccount(String number) throws DataLoadingException {
+    public Account getAccount(String number) throws DataAccessException {
         load();
 
         for(Account account : dataList)
@@ -73,7 +72,7 @@ public class AccountRepository extends Repository<Account> {
         return null;
     }
 
-    public void remove(int id) throws DataLoadingException, DataSavingException {
+    public void remove(int id) throws DataAccessException {
         load();
         for(int i = 0; i < dataList.size(); i++){
             if(dataList.get(i).getId() == id) dataList.remove(i);
@@ -82,7 +81,7 @@ public class AccountRepository extends Repository<Account> {
         save();
     }
 
-    public void update() throws DataSavingException {
+    public void update() throws DataAccessException {
         save();
     }
 

@@ -5,8 +5,7 @@ import dto.inquiry.GetInquiryDto;
 import dto.inquiry.GetInquiryListDto;
 import dto.inquiry.RegisterInquiryDto;
 import entity.Inquiry;
-import exception.DataLoadingException;
-import exception.DataSavingException;
+import exception.DataAccessException;
 import exception.EmptyInquiryListException;
 import exception.InquiryNotFoundException;
 import repository.ClientRepository;
@@ -34,7 +33,7 @@ public class InquiryService {
     }
 
     // GetInquiryDto로 보내줌
-    public GetInquiryDto getInquiry(int id) throws DataLoadingException, InquiryNotFoundException {
+    public GetInquiryDto getInquiry(int id) throws DataAccessException, InquiryNotFoundException {
         Inquiry inquiry = inquiryRepository.getInquiry(id);
         if (inquiry == null) throw new InquiryNotFoundException();
 
@@ -49,14 +48,14 @@ public class InquiryService {
     }
 
     //문의 삭제
-    public void deleteInquiry(int id) throws DataLoadingException, InquiryNotFoundException, DataSavingException {
+    public void deleteInquiry(int id) throws DataAccessException, InquiryNotFoundException {
         Inquiry inquiry = inquiryRepository.getInquiry(id);
         if (inquiry == null) throw new InquiryNotFoundException();
         inquiryRepository.removeInquiry(id);
     }
 
     //문의목록 조회
-    public ArrayList<GetInquiryListDto> getInquiryList() throws DataLoadingException, EmptyInquiryListException {
+    public ArrayList<GetInquiryListDto> getInquiryList() throws DataAccessException, EmptyInquiryListException {
         ArrayList<GetInquiryListDto> InquiryList = new ArrayList<>();
         if (inquiryRepository.getInquiryList().isEmpty()) throw new EmptyInquiryListException();
         for (Inquiry inq : inquiryRepository.getInquiryList()) {
@@ -72,7 +71,7 @@ public class InquiryService {
     }
 
     // 문의 등록
-    public void registerInquiry(RegisterInquiryDto registerInquiryDto) throws DataLoadingException, DataSavingException {
+    public void registerInquiry(RegisterInquiryDto registerInquiryDto) throws DataAccessException {
         Inquiry inq = Inquiry.builder()
                 .authorId(registerInquiryDto.getAuthorId())
                 .category(registerInquiryDto.getCategory())
@@ -86,7 +85,7 @@ public class InquiryService {
     }
 
     //문의 수정
-    public void editInquiry(EditInquiryDto editInquiryDto) throws DataLoadingException, InquiryNotFoundException, DataSavingException {
+    public void editInquiry(EditInquiryDto editInquiryDto) throws DataAccessException, InquiryNotFoundException {
         Inquiry inq = inquiryRepository.getInquiry(editInquiryDto.getId());
         if (inq == null) throw new InquiryNotFoundException();
         inq.setCategory(editInquiryDto.getCategory());
@@ -97,7 +96,7 @@ public class InquiryService {
     }
 
     // 문의 상태 :: 반려
-    public void rejectInquiry(int id) throws DataLoadingException, InquiryNotFoundException, DataSavingException {
+    public void rejectInquiry(int id) throws DataAccessException, InquiryNotFoundException {
         Inquiry inquiry = inquiryRepository.getInquiry(id);
         if(inquiry == null) throw new InquiryNotFoundException();
         inquiry.setStatus("반려");
@@ -105,14 +104,14 @@ public class InquiryService {
     }
 
     // 문의 상태 :: 완료
-    public void completeInquiry(int id) throws DataLoadingException, InquiryNotFoundException, DataSavingException {
+    public void completeInquiry(int id) throws DataAccessException, InquiryNotFoundException {
         Inquiry inquiry = inquiryRepository.getInquiry(id);
         if(inquiry == null) throw new InquiryNotFoundException();
         inquiry.setStatus("처리");
         inquiryRepository.update();
     }
 
-    public ArrayList<GetInquiryListDto> getInquiryList(int authorId) throws DataLoadingException, EmptyInquiryListException {
+    public ArrayList<GetInquiryListDto> getInquiryList(int authorId) throws DataAccessException, EmptyInquiryListException {
         ArrayList<GetInquiryListDto> dtoList = new ArrayList<>();
         ArrayList<Inquiry> inquiryList = inquiryRepository.getInquiryList(authorId);
         if (inquiryList.isEmpty()) throw new EmptyInquiryListException();

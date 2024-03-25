@@ -1,7 +1,6 @@
 package repository;
 
-import exception.DataLoadingException;
-import exception.DataSavingException;
+import exception.DataAccessException;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ public abstract class Repository<E> {
         this.path = "data\\";
     }
 
-    protected final void load() throws DataLoadingException {
+    protected final void load() throws DataAccessException {
         FileInputStream fileInputStream = null;
         BufferedInputStream bufferedInputStream = null;
         ObjectInputStream objectInputStream = null;
@@ -31,7 +30,7 @@ public abstract class Repository<E> {
         } catch (EOFException e) {
         } catch (Exception e) {
             // 로깅 작업'
-            throw new DataLoadingException();
+            throw new DataAccessException();
         } finally {
             try {
                 if(objectInputStream != null) objectInputStream.close();
@@ -39,12 +38,12 @@ public abstract class Repository<E> {
                 if(fileInputStream != null) fileInputStream.close();
             } catch (Exception e) {
                 // 로깅 작업
-                throw new DataLoadingException();
+                throw new DataAccessException();
             }
         }
     }
 
-    protected final void save() throws DataSavingException {
+    protected final void save() throws DataAccessException {
         FileOutputStream fileOutputStream = null;
         BufferedOutputStream bufferedOutputStream = null;
         ObjectOutputStream objectOutputStream = null;
@@ -56,7 +55,7 @@ public abstract class Repository<E> {
             objectOutputStream.writeObject(dataList);
         } catch (Exception e) {
             // 로깅 작업
-            throw new DataSavingException();
+            throw new DataAccessException();
         } finally {
             try {
                 objectOutputStream.close();
@@ -64,7 +63,7 @@ public abstract class Repository<E> {
                 fileOutputStream.close();
             } catch (Exception e) {
                 // 로깅 작업
-                throw new DataSavingException();
+                throw new DataAccessException();
             }
         }
     }

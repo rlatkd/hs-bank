@@ -1,12 +1,9 @@
 package service;
 
-import java.time.LocalDate;
-
 import dto.user.LoginDto;
 import dto.user.RegisterUserDto;
 import entity.Admin;
-import exception.DataLoadingException;
-import exception.DataSavingException;
+import exception.DataAccessException;
 import exception.ExistingUserException;
 import exception.IncorrectCredentialsException;
 import repository.AdminRepository;
@@ -25,7 +22,7 @@ public class AdminService implements LoginService {
     
     //로그인
     @Override
-    public int login(LoginDto loginDto) throws DataLoadingException, IncorrectCredentialsException {
+    public int login(LoginDto loginDto) throws DataAccessException, IncorrectCredentialsException {
     	Admin admin = adminRepository.getAdmin(loginDto.getEmail(), loginDto.getPassword());
 		if (admin == null)
 			throw new IncorrectCredentialsException();
@@ -34,7 +31,7 @@ public class AdminService implements LoginService {
     }
     
     //서브관리자 생성
-    public void registerAdmin(RegisterUserDto registerUserDto) throws DataLoadingException, ExistingUserException, DataSavingException {
+    public void registerAdmin(RegisterUserDto registerUserDto) throws DataAccessException, ExistingUserException {
     	if (adminRepository.isExistAdmin(registerUserDto.getEmail()))
     		throw new ExistingUserException();
     	

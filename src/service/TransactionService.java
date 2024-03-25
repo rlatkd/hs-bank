@@ -26,7 +26,7 @@ public class TransactionService {
     }
 
     public List<GetTransactionDto> getTransactionList(int accountId)
-            throws DataLoadingException, EmptyTransactionListException {
+            throws DataAccessException, EmptyTransactionListException {
 
         List<Transaction> transactionList = transactionRepository.getTransactionList(accountId);
         if(transactionList.isEmpty()) throw new EmptyTransactionListException();
@@ -37,7 +37,7 @@ public class TransactionService {
     }
 
     public synchronized void cancelTransaction(int id)
-            throws DataLoadingException, DataSavingException, TransactionNotFoundException, AccountNotFoundException, TransactionTypeNotFoundException, DeactivateAccountException {
+            throws DataAccessException, TransactionNotFoundException, AccountNotFoundException, TransactionTypeNotFoundException, DeactivateAccountException {
 
         Transaction transaction = transactionRepository.getTransaction(id);
         if(transaction == null) throw new TransactionNotFoundException();

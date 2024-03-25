@@ -1,8 +1,7 @@
 package repository;
 
 import entity.Admin;
-import exception.DataLoadingException;
-import exception.DataSavingException;
+import exception.DataAccessException;
 
 public class AdminRepository extends Repository<Admin>{
     private static AdminRepository adminRepository;
@@ -18,7 +17,7 @@ public class AdminRepository extends Repository<Admin>{
     }
     
     //로그인 이메일 비밀번호 맞는지 검사
-    public Admin getAdmin(String email, String password) throws DataLoadingException {
+    public Admin getAdmin(String email, String password) throws DataAccessException {
     	load();
     	for (Admin admin : dataList) {
     		if (admin.getEmail().equals(email) && admin.getPassword().equals(password))
@@ -28,7 +27,7 @@ public class AdminRepository extends Repository<Admin>{
     }
     
     //관리자 등록 중복 검사
-    public boolean isExistAdmin(String email) throws DataLoadingException {
+    public boolean isExistAdmin(String email) throws DataAccessException {
     	load();
     	for (Admin admin : dataList) {
     		if (admin.getEmail().equals(email))
@@ -39,12 +38,14 @@ public class AdminRepository extends Repository<Admin>{
     
     //관리자 명단 마지막 id 추출
     private int getLastId() {
-    	int lastId = dataList.get(dataList.size() - 1).getId();
-    	return lastId;
+        if (dataList.isEmpty())
+            return 0;
+        int lastId = dataList.get(dataList.size() - 1).getId();
+        return lastId;
     }
     
     //마지막 id에 서브관리자 데이터 저장
-    public void addAdmin(Admin admin) throws DataLoadingException, DataSavingException {
+    public void addAdmin(Admin admin) throws DataAccessException {
     	load();
     	admin.setId(getLastId() + 1);
     	dataList.add(admin);
