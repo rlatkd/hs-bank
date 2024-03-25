@@ -1,12 +1,8 @@
 package exception;
 
-public class DataAccessException extends Exception{
+public class DataAccessException extends BaseException{
     public DataAccessException() {
-    	super("데이터를 불러오지 못했습니다.");
-    }
-
-    public DataAccessException(String message) {
-        super(message);
+    	super("시스템 오류로 데이터에 접근하지 못했습니다.");
     }
 
 }

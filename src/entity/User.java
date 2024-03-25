@@ -13,19 +13,19 @@ public abstract class User extends Entity {
     protected String password;
     protected String status;
     
-    public void setStatus(String status) {
+    public final void setStatus(String status) {
     	this.status = status;
     }
 
-	public void setName(String name) {
+	public final void setName(String name) {
 		this.name = name;
 	}
 
-	public void setEmail(String email) {
+	public final void setEmail(String email) {
 		this.email = email;
 	}
 
-	public void setPassword(String password) {
+	public final void setPassword(String password) {
 		this.password = password;
 	}
 }

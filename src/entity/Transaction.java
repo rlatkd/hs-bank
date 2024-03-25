@@ -2,11 +2,12 @@ package entity;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
 
 @Getter
-@Builder
+@SuperBuilder
 public class Transaction extends Entity {
     private String date;
     private String type;

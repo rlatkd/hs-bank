@@ -1,4 +1,4 @@
-package dto.account.request;
+package dto.account;
 
 import entity.Account;
 import lombok.Builder;

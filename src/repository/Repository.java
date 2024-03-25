@@ -1,6 +1,5 @@
 package repository;
 
-import entity.Account;
 import entity.Entity;
 import exception.DataAccessException;
 
@@ -44,7 +43,6 @@ public abstract class Repository<E extends Entity> {
             }
         }
     }
-
     protected final void save() throws DataAccessException {
         FileOutputStream fileOutputStream = null;
         BufferedOutputStream bufferedOutputStream = null;
@@ -69,14 +67,12 @@ public abstract class Repository<E extends Entity> {
             }
         }
     }
-
     public final void update() throws DataAccessException {
         save();
     }
     protected final E getLastEntity() {
         return entityList.isEmpty() ? null : entityList.get(entityList.size() - 1);
     }
-
     public final void add(E entity) throws DataAccessException {
         load();
         entity.setId(getLastEntity().getId() + 1);
@@ -89,12 +85,10 @@ public abstract class Repository<E extends Entity> {
             if(entity.getId() == id) return (E)entity;
         return null;
     }
-
     public final List<E> getEntityList() throws DataAccessException {
         load();
         return entityList;
     }
-
     public final void remove(int id) throws DataAccessException {
         load();
         for(int i = 0; i < entityList.size(); i++){

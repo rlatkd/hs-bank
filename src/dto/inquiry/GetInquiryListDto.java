@@ -1,4 +1,5 @@
 package dto.inquiry;
+import entity.Inquiry;
 import lombok.Builder;
 import lombok.Getter;
 @Builder
@@ -10,4 +11,13 @@ public class GetInquiryListDto {
     private String title;
     private String createdAt;
     private String status;
+
+    public static GetInquiryListDto toDto(Inquiry inquiry, String authorName){
+        return GetInquiryListDto.builder().
+                category(inquiry.getCategory()).
+                authorName(authorName).
+                title(inquiry.getTitle()).
+                status(inquiry.getStatus()).
+                createdAt(inquiry.getCreatedAt()).build();
+    }
 }
