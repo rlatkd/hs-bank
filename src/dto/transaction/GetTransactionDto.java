@@ -1,4 +1,4 @@
-package dto.transaction.request;
+package dto.transaction;
 
 import entity.Transaction;
 import lombok.Builder;

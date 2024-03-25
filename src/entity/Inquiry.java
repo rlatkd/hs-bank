@@ -2,13 +2,13 @@ package entity;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
 
 @Getter
-@Builder
-public class Inquiry implements Serializable {
-    private int id;
+@SuperBuilder
+public class Inquiry extends Entity {
     private int authorId;
     private String category;
     private String title;
@@ -16,9 +16,6 @@ public class Inquiry implements Serializable {
     private String createdAt;
     private String status;
 
-    public void setId(int id) {
-        this.id = id;
-    }
     public void setCategory(String category) {
         this.category = category;
     }

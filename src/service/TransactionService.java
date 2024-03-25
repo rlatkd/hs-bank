@@ -1,13 +1,23 @@
 package service;
 
-import dto.transaction.request.GetTransactionDto;
+import dto.transaction.GetTransactionDto;
 import entity.Account;
 import entity.Transaction;
-import exception.*;
+import exception.BaseException;
+import exception.account.AccountNotFoundException;
+import exception.account.BalanceInsufficientException;
+import exception.account.deposit.DeactiveDepositAccountException;
+import exception.account.deposit.DepositAccountNotFoundException;
+import exception.account.withdraw.DeactiveWithdrawAccountException;
+import exception.account.withdraw.WithdrawAccountNotFoundException;
+import exception.DataAccessException;
+import exception.account.DeactiveAccountException;
+import exception.transaction.EmptyTransactionListException;
+import exception.transaction.TransactionNotFoundException;
+import exception.transaction.TransactionTypeNotFoundException;
 import repository.AccountRepository;
 import repository.TransactionRepository;
 
-import javax.security.auth.login.AccountNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,10 +35,8 @@ public class TransactionService {
         return transactionService;
     }
 
-    public List<GetTransactionDto> getTransactionList(int accountId)
-            throws DataLoadingException, EmptyTransactionListException {
-
-        List<Transaction> transactionList = transactionRepository.getTransactionList(accountId);
+    public List<GetTransactionDto> getTransactionList(int accountId) throws BaseException {
+        List<Transaction> transactionList = transactionRepository.getEntityList(accountId);
         if(transactionList.isEmpty()) throw new EmptyTransactionListException();
 
         return transactionList.stream()
@@ -36,10 +44,8 @@ public class TransactionService {
                 .collect(Collectors.toList());
     }
 
-    public synchronized void cancelTransaction(int id)
-            throws DataLoadingException, DataSavingException, TransactionNotFoundException, AccountNotFoundException, TransactionTypeNotFoundException, DeactivateAccountException {
-
-        Transaction transaction = transactionRepository.getTransaction(id);
+    public synchronized void cancelTransaction(int id) throws BaseException {
+        Transaction transaction = transactionRepository.get(id);
         if(transaction == null) throw new TransactionNotFoundException();
 
         int withdrawAccountId = transaction.getWithdrawAccountId();
@@ -48,27 +54,27 @@ public class TransactionService {
         String type = transaction.getType();
         long amount = transaction.getAmount();
 
-        Account depositAccount = accountRepository.getAccount(depositAccountId);
-        Account withdrawAccount = accountRepository.getAccountWithoutLoad(withdrawAccountId);
+        Account depositAccount = accountRepository.get(depositAccountId);
+        Account withdrawAccount = accountRepository.getWithoutLoad(withdrawAccountId);
 
         switch(type) {
             case "deposit":
-                if(depositAccount == null) throw new AccountNotFoundException();
-                if(!isActiveAccount(depositAccount)) throw new DeactivateAccountException();
+                if(depositAccount == null) throw new DepositAccountNotFoundException();
+                if(!isActiveAccount(depositAccount)) throw new DeactiveDepositAccountException();
+                if(depositAccount.getBalance() < amount) throw new BalanceInsufficientException();
                 depositAccount.setBalance(depositAccount.getBalance() - amount);
                 break;
             case "withdraw":
-                if(withdrawAccount == null) throw new AccountNotFoundException();
-                if(!isActiveAccount(withdrawAccount)) throw new DeactivateAccountException();
+                if(withdrawAccount == null) throw new WithdrawAccountNotFoundException();
+                if(!isActiveAccount(withdrawAccount)) throw new DeactiveWithdrawAccountException();
                 withdrawAccount.setBalance(withdrawAccount.getBalance() + amount);
                 break;
             case "transfer":
-                if(depositAccount == null) throw new AccountNotFoundException("입금한 계좌가 존재하지 않습니다.");
-                if(!isActiveAccount(depositAccount)) throw new DeactivateAccountException("입금한 계좌가 비활성화 상태입니다.");
+                if(depositAccount == null) throw new DepositAccountNotFoundException();
+                if(!isActiveAccount(depositAccount)) throw new DeactiveDepositAccountException();
 
-                if(withdrawAccount == null) throw new AccountNotFoundException("출금한 계좌가 존재하지 않습니다.");
-                if(!isActiveAccount(withdrawAccount)) throw new DeactivateAccountException("출금한 계좌가 비활성화 상태입니다.");
-                if(!isActiveAccount(withdrawAccount)) throw new DeactivateAccountException();
+                if(withdrawAccount == null) throw new WithdrawAccountNotFoundException();
+                if(!isActiveAccount(withdrawAccount)) throw new DeactiveWithdrawAccountException();
 
                 depositAccount.setBalance(depositAccount.getBalance() - amount);
                 withdrawAccount.setBalance(withdrawAccount.getBalance() + amount);

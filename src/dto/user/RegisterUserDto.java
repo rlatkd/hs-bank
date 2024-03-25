@@ -1,16 +1,18 @@
 package dto.user;
 
+import entity.Client;
+import entity.User;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
+import utils.DateUtils;
 
 @Getter
-@Builder
-public class RegisterUserDto {
-	private String name;
-	private String email;
-	private String password;
-	private String birthDate;
-	private String gender;
-	private String phoneNumber;
-	private String address;
+@SuperBuilder
+public abstract class RegisterUserDto {
+	protected String name;
+	protected String email;
+	protected String password;
+
+	public abstract User toEntity();
 }

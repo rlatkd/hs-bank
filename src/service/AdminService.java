@@ -1,51 +1,41 @@
 package service;
 
-import java.time.LocalDate;
-
 import dto.user.LoginDto;
 import dto.user.RegisterUserDto;
 import entity.Admin;
-import exception.DataLoadingException;
-import exception.DataSavingException;
-import exception.ExistingUserException;
-import exception.IncorrectCredentialsException;
+import exception.BaseException;
+import exception.DataAccessException;
+import exception.user.ExistingUserException;
+import exception.user.UserNotFoundException;
+import exception.user.admin.AdminNotFoundException;
+import exception.user.admin.ExistingAdminException;
 import repository.AdminRepository;
 
-public class AdminService implements LoginService {
+public class AdminService implements UserService {
     private static AdminService adminService;
     private final AdminRepository adminRepository;
     private AdminService() {
         this.adminRepository = AdminRepository.getInstance();
     }
     public static AdminService getInstance(){
-        if(adminService == null)
-            adminService = new AdminService();
+        if(adminService == null) adminService = new AdminService();
         return adminService;
     }
-    
+
+    //서브관리자 생성
+    @Override
+    public void register(RegisterUserDto registerAdminDto) throws BaseException {
+        if (adminRepository.isExist(registerAdminDto.getEmail())) throw new ExistingAdminException();
+        adminRepository.add((Admin) registerAdminDto.toEntity());
+    }
+
     //로그인
     @Override
-    public int login(LoginDto loginDto) throws DataLoadingException, IncorrectCredentialsException {
-    	Admin admin = adminRepository.getAdmin(loginDto.getEmail(), loginDto.getPassword());
-		if (admin == null)
-			throw new IncorrectCredentialsException();
-    	
+    public int login(LoginDto loginDto) throws BaseException {
+    	Admin admin = adminRepository.get(loginDto.getEmail(), loginDto.getPassword());
+		if (admin == null) throw new AdminNotFoundException();
 		return admin.getId();
     }
     
-    //서브관리자 생성
-    public void registerAdmin(RegisterUserDto registerUserDto) throws DataLoadingException, ExistingUserException, DataSavingException {
-    	if (adminRepository.isExistAdmin(registerUserDto.getEmail()))
-    		throw new ExistingUserException();
-    	
-    	Admin admin = Admin
-    					.builder()
-    					.name(registerUserDto.getName())
-    					.email(registerUserDto.getEmail())
-    					.password(registerUserDto.getPassword())
-    					.status("sub")
-    					.build();
-    	
-    	adminRepository.addAdmin(admin);
-    }
+
 }
