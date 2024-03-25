@@ -29,7 +29,7 @@ public class ClientService implements LoginService {
     
     //회원가입
     public void registerClient(RegisterUserDto registerUserDto) throws ExistingUserException, DataAccessException {
-    	if (clientRepository.isExistClient(registerUserDto.getEmail())) 
+    	if (clientRepository.isExist(registerUserDto.getEmail()))
 			throw new ExistingUserException();
     	
     	Client client = Client
@@ -42,16 +42,16 @@ public class ClientService implements LoginService {
     					.phoneNumber(registerUserDto.getPhoneNumber())
     					.address(registerUserDto.getAddress())
     					.createdAt(LocalDate.now().toString())
-    					.status("activate")
+    					.status("active")
     					.build();
     	
-    	clientRepository.addClient(client);
+    	clientRepository.add(client);
 	}
     
     //로그인
     @Override
     public int login(LoginDto loginDto) throws DataAccessException, UserNotFoundException {
-    	Client client = clientRepository.getClient(loginDto.getEmail(), loginDto.getPassword());
+    	Client client = clientRepository.get(loginDto.getEmail(), loginDto.getPassword());
     	if (client == null) 
     		throw new UserNotFoundException();
     	
@@ -60,7 +60,7 @@ public class ClientService implements LoginService {
     
     //마이페이지; 조회-현재 로그인 된 사용자 view에 전달
     public GetCurrentClientDto getCurrentClient(int id) throws DataAccessException, UserNotFoundException {
-    	Client client = clientRepository.getClient(id);
+    	Client client = clientRepository.get(id);
     	if (client == null) 
     		throw new UserNotFoundException();
     	return GetCurrentClientDto.toDto(client);
@@ -68,7 +68,7 @@ public class ClientService implements LoginService {
     
     //마이페이지; 수정-내 정보 수정
     public void updateClient(UpdateClientDto updateClientDto) throws DataAccessException, UserNotFoundException {
-    	Client client = clientRepository.getClient(updateClientDto.getId());
+    	Client client = clientRepository.get(updateClientDto.getId());
     	if (client == null)
     		throw new UserNotFoundException();
     	client.setName(updateClientDto.getName());
@@ -79,40 +79,40 @@ public class ClientService implements LoginService {
     	client.setPhoneNumber(updateClientDto.getPhoneNumber());
     	client.setAddress(updateClientDto.getAddress());
     	
-    	clientRepository.updateClient();
+    	clientRepository.update();
     }
     
     //마이페이지; 삭제-내 정보 삭제
     public void deleteClient(int id) throws DataAccessException, UserNotFoundException {
-    	Client client = clientRepository.getClient(id);
+    	Client client = clientRepository.get(id);
     	if (client == null)
     		throw new UserNotFoundException();
     	
-    	clientRepository.deleteClient(id);
+    	clientRepository.remove(id);
     }
     
     //모든 고객 계정 id, email 조회
     public ArrayList<GetClientDto> clientList() throws DataAccessException {
-    	return clientRepository.getClientList().stream()
+    	return clientRepository.getEntityList().stream()
     			.map(client -> GetClientDto.toDto(client))
     			.collect(Collectors.toCollection(ArrayList::new));
     }
     
     //비활성화할 고객ID
     public void deactivate(int id) throws DataAccessException, UserNotFoundException {
-    	Client client = clientRepository.getClient(id);
+    	Client client = clientRepository.get(id);
     	if (client == null)
     		throw new UserNotFoundException();
-    	client.setStatus("deactivate");
-    	clientRepository.updateClientStatus(client);
+    	client.setStatus("deactive");
+    	clientRepository.update();
     }
     
     //활성화할 고객ID
     public void activate(int id) throws DataAccessException, UserNotFoundException {
-    	Client client = clientRepository.getClient(id);
+    	Client client = clientRepository.get(id);
     	if (client == null)
     		throw new UserNotFoundException();
-    	client.setStatus("activate");
-    	clientRepository.updateClientStatus(client);
+    	client.setStatus("active");
+    	clientRepository.update();
     }
 }

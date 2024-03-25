@@ -28,7 +28,7 @@ public class TransactionService {
     public List<GetTransactionDto> getTransactionList(int accountId)
             throws DataAccessException, EmptyTransactionListException {
 
-        List<Transaction> transactionList = transactionRepository.getTransactionList(accountId);
+        List<Transaction> transactionList = transactionRepository.getEntityList(accountId);
         if(transactionList.isEmpty()) throw new EmptyTransactionListException();
 
         return transactionList.stream()
@@ -39,7 +39,7 @@ public class TransactionService {
     public synchronized void cancelTransaction(int id)
             throws DataAccessException, TransactionNotFoundException, AccountNotFoundException, TransactionTypeNotFoundException, DeactivateAccountException {
 
-        Transaction transaction = transactionRepository.getTransaction(id);
+        Transaction transaction = transactionRepository.get(id);
         if(transaction == null) throw new TransactionNotFoundException();
 
         int withdrawAccountId = transaction.getWithdrawAccountId();
@@ -48,8 +48,8 @@ public class TransactionService {
         String type = transaction.getType();
         long amount = transaction.getAmount();
 
-        Account depositAccount = accountRepository.getAccount(depositAccountId);
-        Account withdrawAccount = accountRepository.getAccountWithoutLoad(withdrawAccountId);
+        Account depositAccount = accountRepository.get(depositAccountId);
+        Account withdrawAccount = accountRepository.getWithoutLoad(withdrawAccountId);
 
         switch(type) {
             case "deposit":

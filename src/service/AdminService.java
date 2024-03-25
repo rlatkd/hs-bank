@@ -23,7 +23,7 @@ public class AdminService implements LoginService {
     //로그인
     @Override
     public int login(LoginDto loginDto) throws DataAccessException, UserNotFoundException {
-    	Admin admin = adminRepository.getAdmin(loginDto.getEmail(), loginDto.getPassword());
+    	Admin admin = adminRepository.get(loginDto.getEmail(), loginDto.getPassword());
 		if (admin == null)
 			throw new UserNotFoundException();
     	
@@ -32,7 +32,7 @@ public class AdminService implements LoginService {
     
     //서브관리자 생성
     public void registerAdmin(RegisterUserDto registerUserDto) throws DataAccessException, ExistingUserException {
-    	if (adminRepository.isExistAdmin(registerUserDto.getEmail()))
+    	if (adminRepository.isExist(registerUserDto.getEmail()))
     		throw new ExistingUserException();
     	
     	Admin admin = Admin
@@ -43,6 +43,6 @@ public class AdminService implements LoginService {
     					.status("sub")
     					.build();
     	
-    	adminRepository.addAdmin(admin);
+    	adminRepository.add(admin);
     }
 }

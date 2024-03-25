@@ -12,6 +12,7 @@ import repository.ClientRepository;
 import repository.InquiryRepository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static utils.DateUtils.dateTimeNow;
 
@@ -34,7 +35,7 @@ public class InquiryService {
 
     // GetInquiryDto로 보내줌
     public GetInquiryDto getInquiry(int id) throws DataAccessException, InquiryNotFoundException {
-        Inquiry inquiry = inquiryRepository.getInquiry(id);
+        Inquiry inquiry = inquiryRepository.get(id);
         if (inquiry == null) throw new InquiryNotFoundException();
 
         return GetInquiryDto.builder()
@@ -49,19 +50,19 @@ public class InquiryService {
 
     //문의 삭제
     public void deleteInquiry(int id) throws DataAccessException, InquiryNotFoundException {
-        Inquiry inquiry = inquiryRepository.getInquiry(id);
+        Inquiry inquiry = inquiryRepository.get(id);
         if (inquiry == null) throw new InquiryNotFoundException();
-        inquiryRepository.removeInquiry(id);
+        inquiryRepository.remove(id);
     }
 
     //문의목록 조회
     public ArrayList<GetInquiryListDto> getInquiryList() throws DataAccessException, EmptyInquiryListException {
         ArrayList<GetInquiryListDto> InquiryList = new ArrayList<>();
-        if (inquiryRepository.getInquiryList().isEmpty()) throw new EmptyInquiryListException();
-        for (Inquiry inq : inquiryRepository.getInquiryList()) {
+        if (inquiryRepository.getEntityList().isEmpty()) throw new EmptyInquiryListException();
+        for (Inquiry inq : inquiryRepository.getEntityList()) {
             GetInquiryListDto getInquiryListDto = GetInquiryListDto.builder().
                     category(inq.getCategory()).
-                    authorName(clientRepository.getClient(inq.getId()).getName()).
+                    authorName(clientRepository.get(inq.getId()).getName()).
                     title(inq.getTitle()).
                     status(inq.getStatus()).
                     createdAt(inq.getCreatedAt()).build();
@@ -81,12 +82,12 @@ public class InquiryService {
                 .createdAt(dateTimeNow)
                 .build();
 
-        inquiryRepository.addInquiry(inq);
+        inquiryRepository.add(inq);
     }
 
     //문의 수정
     public void editInquiry(EditInquiryDto editInquiryDto) throws DataAccessException, InquiryNotFoundException {
-        Inquiry inq = inquiryRepository.getInquiry(editInquiryDto.getId());
+        Inquiry inq = inquiryRepository.get(editInquiryDto.getId());
         if (inq == null) throw new InquiryNotFoundException();
         inq.setCategory(editInquiryDto.getCategory());
         inq.setContent(editInquiryDto.getContent());
@@ -97,7 +98,7 @@ public class InquiryService {
 
     // 문의 상태 :: 반려
     public void rejectInquiry(int id) throws DataAccessException, InquiryNotFoundException {
-        Inquiry inquiry = inquiryRepository.getInquiry(id);
+        Inquiry inquiry = inquiryRepository.get(id);
         if(inquiry == null) throw new InquiryNotFoundException();
         inquiry.setStatus("반려");
         inquiryRepository.update();
@@ -105,20 +106,20 @@ public class InquiryService {
 
     // 문의 상태 :: 완료
     public void completeInquiry(int id) throws DataAccessException, InquiryNotFoundException {
-        Inquiry inquiry = inquiryRepository.getInquiry(id);
+        Inquiry inquiry = inquiryRepository.get(id);
         if(inquiry == null) throw new InquiryNotFoundException();
         inquiry.setStatus("처리");
         inquiryRepository.update();
     }
 
-    public ArrayList<GetInquiryListDto> getInquiryList(int authorId) throws DataAccessException, EmptyInquiryListException {
-        ArrayList<GetInquiryListDto> dtoList = new ArrayList<>();
-        ArrayList<Inquiry> inquiryList = inquiryRepository.getInquiryList(authorId);
+    public List<GetInquiryListDto> getInquiryList(int authorId) throws DataAccessException, EmptyInquiryListException {
+        List<GetInquiryListDto> dtoList = new ArrayList<>();
+        List<Inquiry> inquiryList = inquiryRepository.getEntityList(authorId);
         if (inquiryList.isEmpty()) throw new EmptyInquiryListException();
         for (Inquiry inq : inquiryList) {
             GetInquiryListDto getInquiryListDto = GetInquiryListDto.builder().
                     category(inq.getCategory()).
-                    authorName(clientRepository.getClient(inq.getId()).getName()).
+                    authorName(clientRepository.get(inq.getId()).getName()).
                     title(inq.getTitle()).
                     status(inq.getStatus()).
                     createdAt(inq.getCreatedAt()).build();
