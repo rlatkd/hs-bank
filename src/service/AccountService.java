@@ -4,19 +4,11 @@ import dto.account.GetAccountDto;
 import dto.account.RegisterAccountDto;
 import entity.Account;
 import entity.Client;
-import entity.Transaction;
 import enumeration.ActivationStatus;
 import exception.BaseException;
-import exception.account.ExistingAccountException;
+import exception.account.AccountExistException;
 import exception.account.AccountNotFoundException;
-import exception.account.BalanceInsufficientException;
-import exception.account.EmptyAccountListException;
-import exception.account.deposit.DeactiveDepositAccountException;
-import exception.account.deposit.DepositAccountNotFoundException;
-import exception.account.withdraw.DeactiveWithdrawAccountException;
-import exception.account.withdraw.WithdrawAccountNotFoundException;
-import exception.DataAccessException;
-import exception.account.DeactiveAccountException;
+import exception.account.AccountListEmptyException;
 import exception.user.client.ClientNotFoundException;
 import repository.AccountRepository;
 import repository.ClientRepository;
@@ -25,8 +17,6 @@ import repository.TransactionRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static utils.DateUtils.dateTimeNow;
 
 public class AccountService {
     private static AccountService accountService;
@@ -47,14 +37,14 @@ public class AccountService {
 
     public void registerAccount(RegisterAccountDto registerAccountDto) throws BaseException {
         if(accountRepository.isExist(registerAccountDto.getNumber()))
-            throw new ExistingAccountException();
+            throw new AccountExistException();
 
         accountRepository.add(registerAccountDto.toEntity());
     }
 
     public List<GetAccountDto> getAccountList(int ownerId) throws BaseException {
         List<Account> accountList = accountRepository.getEntityList(ownerId);
-        if(accountList.isEmpty()) throw new EmptyAccountListException();
+        if(accountList.isEmpty()) throw new AccountListEmptyException();
 
         Client owner = clientRepository.get(ownerId);
         if(owner == null) throw new ClientNotFoundException();

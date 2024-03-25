@@ -8,12 +8,12 @@ import enumeration.transaction.TransactionType;
 import exception.BaseException;
 import exception.account.AccountNotFoundException;
 import exception.account.BalanceInsufficientException;
-import exception.account.DeactiveAccountException;
-import exception.account.deposit.DeactiveDepositAccountException;
+import exception.account.AccountDeactivateException;
+import exception.account.deposit.DepositAccountDeactivateException;
 import exception.account.deposit.DepositAccountNotFoundException;
-import exception.account.withdraw.DeactiveWithdrawAccountException;
+import exception.account.withdraw.WithdrawAccountDeactivateException;
 import exception.account.withdraw.WithdrawAccountNotFoundException;
-import exception.transaction.EmptyTransactionListException;
+import exception.transaction.TransactionListEmptyException;
 import exception.transaction.TransactionNotFoundException;
 import exception.transaction.NotTransferException;
 import repository.AccountRepository;
@@ -40,7 +40,7 @@ public class TransactionService {
 
     public List<GetTransactionDto> getTransactionList(int accountId) throws BaseException {
         List<Transaction> transactionList = transactionRepository.getEntityList(accountId);
-        if(transactionList.isEmpty()) throw new EmptyTransactionListException();
+        if(transactionList.isEmpty()) throw new TransactionListEmptyException();
 
         return transactionList.stream()
                 .map(transaction -> GetTransactionDto.toDto(transaction))
@@ -51,7 +51,7 @@ public class TransactionService {
 
         Account account = accountRepository.get(id);
         if(account == null) throw new AccountNotFoundException();
-        if(!isActiveAccount(account)) throw new DeactiveAccountException();
+        if(!isActiveAccount(account)) throw new AccountDeactivateException();
 
         Transaction transaction = Transaction.builder().
                 date(dateTimeNow).
@@ -70,7 +70,7 @@ public class TransactionService {
     public synchronized void withdraw(int id, long amount) throws BaseException {
         Account account = accountRepository.get(id);
         if(account == null) throw new AccountNotFoundException();
-        if(!isActiveAccount(account)) throw new DeactiveAccountException();
+        if(!isActiveAccount(account)) throw new AccountDeactivateException();
         if(account.getBalance() < amount) throw new BalanceInsufficientException();
 
         Transaction transaction = Transaction.builder().
@@ -90,12 +90,12 @@ public class TransactionService {
     public synchronized void transfer(int withdrawAccountId, String depositAccountNumber, long amount) throws BaseException {
         Account withdrawAccount = accountRepository.get(withdrawAccountId);
         if(withdrawAccount == null) throw new WithdrawAccountNotFoundException();
-        if(!isActiveAccount(withdrawAccount)) throw new DeactiveWithdrawAccountException();
+        if(!isActiveAccount(withdrawAccount)) throw new WithdrawAccountDeactivateException();
         if(withdrawAccount.getBalance() < amount) throw new BalanceInsufficientException();
 
         Account depositAccount = accountRepository.getWithoutLoad(depositAccountNumber);
         if(depositAccount == null) throw new DepositAccountNotFoundException();
-        if(!isActiveAccount(withdrawAccount)) throw new DeactiveDepositAccountException();
+        if(!isActiveAccount(withdrawAccount)) throw new DepositAccountDeactivateException();
 
         Transaction transaction = Transaction.builder().
                 date(dateTimeNow).
@@ -125,12 +125,12 @@ public class TransactionService {
 
         Account withdrawAccount = accountRepository.get(withdrawAccountId);
         if(withdrawAccount == null) throw new WithdrawAccountNotFoundException();
-        if(!isActiveAccount(withdrawAccount)) throw new DeactiveWithdrawAccountException();
+        if(!isActiveAccount(withdrawAccount)) throw new WithdrawAccountDeactivateException();
         if(withdrawAccount.getBalance() < amount) throw new BalanceInsufficientException();
 
         Account depositAccount = accountRepository.getWithoutLoad(depositAccountId);
         if(depositAccount == null) throw new DepositAccountNotFoundException();
-        if(!isActiveAccount(depositAccount)) throw new DeactiveDepositAccountException();
+        if(!isActiveAccount(depositAccount)) throw new DepositAccountDeactivateException();
 
         withdrawAccount.setBalance(withdrawAccount.getBalance() - amount);
         depositAccount.setBalance(depositAccount.getBalance() + amount);
