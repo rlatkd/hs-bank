@@ -3,6 +3,7 @@ package service;
 import dto.transaction.GetTransactionDto;
 import entity.Account;
 import entity.Transaction;
+import enumeration.ActivationStatus;
 import enumeration.transaction.TransactionStatus;
 import enumeration.transaction.TransactionType;
 import exception.BaseException;
@@ -95,7 +96,7 @@ public class TransactionService {
 
         Account depositAccount = accountRepository.getWithoutLoad(depositAccountNumber);
         if(depositAccount == null) throw new DepositAccountNotFoundException();
-        if(!isActiveAccount(withdrawAccount)) throw new DepositAccountDeactivateException();
+        if(!isActiveAccount(depositAccount)) throw new DepositAccountDeactivateException();
 
         Transaction transaction = Transaction.builder().
                 date(dateTimeNow).
@@ -117,7 +118,7 @@ public class TransactionService {
     public synchronized void cancelTransaction(int id) throws BaseException {
         Transaction transaction = transactionRepository.get(id);
         if(transaction == null) throw new TransactionNotFoundException();
-        if(!transaction.getType().equals("transfer")) throw new NotTransferException();
+        if(!(transaction.getType() == TransactionType.TRANSFER)) throw new NotTransferException();
 
         long amount = transaction.getAmount();
         int withdrawAccountId = transaction.getDepositAccountId();
@@ -142,6 +143,6 @@ public class TransactionService {
     }
 
     protected boolean isActiveAccount(Account account) {
-        return account.getStatus().equals("active") ? true : false;
+        return account.getStatus() == ActivationStatus.ACTIVATE ? true : false;
     }
 }
