@@ -3,6 +3,7 @@ package repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import constants.FilePath;
 import entity.Inquiry;
 import exception.BaseException;
 import exception.DataAccessException;
@@ -10,8 +11,7 @@ import exception.DataAccessException;
 public class InquiryRepository extends Repository<Inquiry> {
     private static InquiryRepository inquiryRepository;
     private InquiryRepository() {
-        super();
-        this.path += "Inquiry.txt";
+        super(FilePath.INQUIRY_PATH);
     }
 
     public static InquiryRepository getInstance(){

@@ -1,5 +1,6 @@
 package repository;
 
+import constants.FilePath;
 import entity.Admin;
 import exception.BaseException;
 import exception.DataAccessException;
@@ -7,8 +8,7 @@ import exception.DataAccessException;
 public class AdminRepository extends Repository<Admin>{
     private static AdminRepository adminRepository;
     private AdminRepository() {
-        super();
-        this.path += "Admin.txt";
+        super(FilePath.ADMIN_PATH);
     }
 
     public static AdminRepository getInstance(){
