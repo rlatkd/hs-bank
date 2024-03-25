@@ -30,6 +30,7 @@ public class InitialView extends View{
 				}
 			} catch (IllegalArgumentException | IOException | NullPointerException e) {
 				System.out.println("잘못된 입력입니다.");
+				// e.printStackTrace();
 			}
 		}
 	}
