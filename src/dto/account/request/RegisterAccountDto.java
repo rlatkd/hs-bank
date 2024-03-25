@@ -19,7 +19,7 @@ public class RegisterAccountDto {
                 ownerId(ownerId).
                 balance(0).
                 registeredAt(dateTimeNow).
-                status("activate").
+                status("active").
                 build();
     }
 }

@@ -66,10 +66,11 @@ public class AccountService {
     }
 
     public synchronized void deposit(int id, long amount)
-            throws AccountNotFoundException, DataLoadingException, DataSavingException {
+            throws DataLoadingException, DataSavingException, AccountNotFoundException, DeactivateAccountException {
 
         Account account = accountRepository.getAccount(id);
         if(account == null) throw new AccountNotFoundException();
+        if(!isActiveAccount(account)) throw new DeactivateAccountException();
 
         Transaction transaction = Transaction.builder().
                 date(dateTimeNow).
@@ -86,10 +87,11 @@ public class AccountService {
     }
 
     public synchronized void withdraw(int id, long amount)
-            throws AccountNotFoundException, BalanceInsufficientException, DataLoadingException, DataSavingException {
+            throws AccountNotFoundException, BalanceInsufficientException, DataLoadingException, DataSavingException, DeactivateAccountException {
 
         Account account = accountRepository.getAccount(id);
         if(account == null) throw new AccountNotFoundException();
+        if(!isActiveAccount(account)) throw new DeactivateAccountException();
         if(account.getBalance() < amount) throw new BalanceInsufficientException();
 
         Transaction transaction = Transaction.builder().
@@ -107,15 +109,16 @@ public class AccountService {
     }
 
     public synchronized void transfer(int withdrawAccountId, String depositAccountNumber, long amount)
-            throws DataLoadingException, AccountNotFoundException, BalanceInsufficientException, DataSavingException {
+            throws DataLoadingException, AccountNotFoundException, BalanceInsufficientException, DataSavingException, DeactivateAccountException {
 
         Account withdrawAccount = accountRepository.getAccount(withdrawAccountId);
-        Account depositAccount = accountRepository.getAccountWithoutLoad(depositAccountNumber);
-
         if(withdrawAccount == null) throw new AccountNotFoundException("출금할 계좌가 존재하지 않습니다.");
+        if(!isActiveAccount(withdrawAccount)) throw new DeactivateAccountException("출금할 계좌가 비활성화 상태입니다.");
         if(withdrawAccount.getBalance() < amount) throw new BalanceInsufficientException();
 
+        Account depositAccount = accountRepository.getAccountWithoutLoad(depositAccountNumber);
         if(depositAccount == null) throw new AccountNotFoundException("입금할 계좌가 존재하지 않습니다.");
+        if(!isActiveAccount(withdrawAccount)) throw new DeactivateAccountException("입금할 계좌가 비활성화 상태입니다.");
 
         Transaction transaction = Transaction.builder().
                 date(dateTimeNow).
@@ -138,7 +141,7 @@ public class AccountService {
         Account account = accountRepository.getAccount(id);
         if(account == null) throw new AccountNotFoundException();
 
-        account.setStatus("activate");
+        account.setStatus("active");
         accountRepository.update();
     }
 
@@ -146,7 +149,11 @@ public class AccountService {
         Account account = accountRepository.getAccount(id);
         if(account == null) throw new AccountNotFoundException();
 
-        account.setStatus("deactivate");
+        account.setStatus("deactive");
         accountRepository.update();
+    }
+
+    protected boolean isActiveAccount(Account account) {
+        return account.getStatus().equals("active") ? true : false;
     }
 }
