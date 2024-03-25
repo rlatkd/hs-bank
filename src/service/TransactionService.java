@@ -19,11 +19,11 @@ import exception.transaction.TransactionNotFoundException;
 import exception.transaction.NotTransferException;
 import repository.AccountRepository;
 import repository.TransactionRepository;
+import utils.DateTimeGenerator;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static utils.DateUtils.dateTimeNow;
 
 public class TransactionService {
     private static TransactionService transactionService;
@@ -55,7 +55,7 @@ public class TransactionService {
         if(!isActiveAccount(account)) throw new AccountDeactivateException();
 
         Transaction transaction = Transaction.builder().
-                date(dateTimeNow).
+                date(DateTimeGenerator.getDateTimeNow()).
                 type(TransactionType.DEPOSIT).
                 amount(amount).
                 depositAccountId(id).
@@ -75,7 +75,7 @@ public class TransactionService {
         if(account.getBalance() < amount) throw new BalanceInsufficientException();
 
         Transaction transaction = Transaction.builder().
-                date(dateTimeNow).
+                date(DateTimeGenerator.getDateTimeNow()).
                 type(TransactionType.WITHDRAW).
                 amount(amount).
                 withdrawAccountId(id).
@@ -99,7 +99,7 @@ public class TransactionService {
         if(!isActiveAccount(depositAccount)) throw new DepositAccountDeactivateException();
 
         Transaction transaction = Transaction.builder().
-                date(dateTimeNow).
+                date(DateTimeGenerator.getDateTimeNow()).
                 type(TransactionType.TRANSFER).
                 amount(amount).
                 withdrawAccountId(withdrawAccountId).

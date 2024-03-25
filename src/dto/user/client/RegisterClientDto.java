@@ -6,9 +6,7 @@ import enumeration.ActivationStatus;
 import enumeration.client.Gender;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
-import utils.DateUtils;
-
-import java.time.LocalDate;
+import utils.DateTimeGenerator;
 
 @Getter
 @SuperBuilder
@@ -26,7 +24,7 @@ public class RegisterClientDto extends RegisterUserDto {
 				.birthDate(birthDate)
 				.gender(gender)
 				.phoneNumber(phoneNumber)
-				.createdAt(DateUtils.dateTimeNow)
+				.createdAt(DateTimeGenerator.getDateTimeNow())
 				.status(ActivationStatus.ACTIVATE)
 				.build();
 	}

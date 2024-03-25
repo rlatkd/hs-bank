@@ -12,7 +12,7 @@ public enum InquiryStatus implements Serializable {
     WAIT("대기");
 
     private String korean;
-    InquiryStatus(String korean){
+    private InquiryStatus(String korean){
         this.korean = korean;
     }
 }

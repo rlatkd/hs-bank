@@ -1,14 +1,13 @@
 package repository;
 
-import constants.FilePath;
+import utils.FilePathConstants;
 import entity.Client;
 import exception.BaseException;
-import exception.DataAccessException;
 
 public class ClientRepository extends Repository<Client> {
     private static ClientRepository clientRepository;
     private ClientRepository() {
-        super(FilePath.CLIENT_PATH);
+        super(FilePathConstants.CLIENT_PATH);
     }
 
     public static ClientRepository getInstance(){

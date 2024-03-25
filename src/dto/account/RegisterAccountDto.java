@@ -4,7 +4,7 @@ import entity.Account;
 import enumeration.ActivationStatus;
 import lombok.Builder;
 import lombok.Getter;
-import static utils.DateUtils.dateTimeNow;
+import static utils.DateTimeGenerator.getDateTimeNow;
 
 @Builder
 @Getter
@@ -19,7 +19,7 @@ public class RegisterAccountDto {
                 number(number).
                 ownerId(ownerId).
                 balance(0).
-                registeredAt(dateTimeNow).
+                registeredAt(getDateTimeNow()).
                 status(ActivationStatus.ACTIVATE).
                 build();
     }
