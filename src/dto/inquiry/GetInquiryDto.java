@@ -1,5 +1,6 @@
 package dto.inquiry;
 import entity.Inquiry;
+import enumeration.inquiry.InquiryCategory;
 import lombok.Builder;
 import lombok.Getter;
 @Builder
@@ -15,9 +16,9 @@ public class GetInquiryDto {
 
     public static GetInquiryDto toDto(Inquiry inquiry){
         return GetInquiryDto.builder()
-                .category(inquiry.getCategory())
+                .category(inquiry.getCategory().getKorean())
                 .authorId(inquiry.getAuthorId())
-                .status((inquiry.getStatus()))
+                .status(inquiry.getStatus().getKorean())
                 .content(inquiry.getContent())
                 .title(inquiry.getTitle())
                 .createdAt(inquiry.getCreatedAt())

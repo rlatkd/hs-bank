@@ -14,10 +14,10 @@ public class GetInquiryListDto {
 
     public static GetInquiryListDto toDto(Inquiry inquiry, String authorName){
         return GetInquiryListDto.builder().
-                category(inquiry.getCategory()).
+                category(inquiry.getCategory().getKorean()).
                 authorName(authorName).
                 title(inquiry.getTitle()).
-                status(inquiry.getStatus()).
+                status(inquiry.getStatus().getKorean()).
                 createdAt(inquiry.getCreatedAt()).build();
     }
 }

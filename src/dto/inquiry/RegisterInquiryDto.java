@@ -1,5 +1,7 @@
 package dto.inquiry;
 import entity.Inquiry;
+import enumeration.inquiry.InquiryCategory;
+import enumeration.inquiry.InquiryStatus;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -9,7 +11,7 @@ import static utils.DateUtils.dateTimeNow;
 @Getter
 public class RegisterInquiryDto {
     private int authorId;
-    private String category;
+    private InquiryCategory category;
     private String title;
     private String content;
 
@@ -17,7 +19,7 @@ public class RegisterInquiryDto {
         return Inquiry.builder()
                 .authorId(authorId)
                 .category(category)
-                .status("대기")
+                .status(InquiryStatus.WAIT)
                 .content(content)
                 .title(title)
                 .createdAt(dateTimeNow)

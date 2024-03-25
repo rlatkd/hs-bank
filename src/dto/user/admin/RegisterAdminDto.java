@@ -2,6 +2,8 @@ package dto.user.admin;
 
 import dto.user.RegisterUserDto;
 import entity.Admin;
+import enumeration.ActivationStatus;
+import enumeration.admin.AdminType;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 
@@ -14,7 +16,8 @@ public class RegisterAdminDto extends RegisterUserDto {
                 .name(name)
                 .email(email)
                 .password(password)
-                .status("sub")
+                .status(ActivationStatus.ACTIVATE)
+                .type(AdminType.SUB)
                 .build();
     }
 }

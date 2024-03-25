@@ -1,5 +1,6 @@
 package entity;
 
+import enumeration.ActivationStatus;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
@@ -14,13 +15,13 @@ public class Account extends Entity {
     private int ownerId;
     private long balance;
     private String registeredAt;
-    private String status;
+    private ActivationStatus status;
 
     public void setBalance(long balance){
         this.balance = balance;
     }
 
-    public void setStatus(String status){
+    public void setStatus(ActivationStatus status){
         this.status = status;
     }
 
