@@ -4,14 +4,11 @@ import dto.account.GetAccountDto;
 import dto.account.RegisterAccountDto;
 import dto.inquiry.RegisterInquiryDto;
 import dto.user.LoginDto;
-import dto.user.RegisterUserDto;
 import dto.user.client.RegisterClientDto;
 import dto.user.client.UpdateClientDto;
-import entity.Account;
 import enumeration.client.Gender;
-import enumeration.inquiry.InquiryCategory;
 import exception.*;
-import exception.view.InputNotCorrectException;
+import exception.regex.RegexNotValidException;
 import service.AccountService;
 import service.ClientService;
 import service.InquiryService;
@@ -206,7 +203,7 @@ public class ClientView extends View implements LoginView {
                 if (gender.equals("1") || gender.equals("2")) {
                     break;
                 } else {
-                    throw new InputNotCorrectException();
+                    throw new RegexNotValidException();
                 }
             } catch (IOException e) {
                 System.out.println(e.getMessage());
@@ -224,7 +221,7 @@ public class ClientView extends View implements LoginView {
                 if (matches) {
                     break;
                 } else
-                    throw new InputNotCorrectException();
+                    throw new RegexNotValidException();
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             } catch (BaseException e) {
@@ -241,7 +238,7 @@ public class ClientView extends View implements LoginView {
                 if (matches) {
                     break;
                 } else {
-                    throw new InputNotCorrectException();
+                    throw new RegexNotValidException();
                 }
             } catch (IOException e) {
                 System.out.println(e.getMessage());
@@ -259,7 +256,7 @@ public class ClientView extends View implements LoginView {
                 if (matches) {
                     break;
                 } else {
-                    throw new InputNotCorrectException();
+                    throw new RegexNotValidException();
                 }
             } catch (BaseException e) {
                 System.out.println(e.getMessage());
@@ -277,7 +274,7 @@ public class ClientView extends View implements LoginView {
                 if (matches) {
                     break;
                 } else {
-                    throw new InputNotCorrectException();
+                    throw new RegexNotValidException();
                 }
             } catch (BaseException e) {
                 System.out.println(e.getMessage());
@@ -326,7 +323,7 @@ public class ClientView extends View implements LoginView {
                 account = br.readLine();
                 matches = account.matches("^[0-9]+$");
                 if (!matches) {
-                    throw new InputNotCorrectException();
+                    throw new RegexNotValidException();
                 } else  {
                     break;
                 }
@@ -461,7 +458,7 @@ public class ClientView extends View implements LoginView {
                 if (gender.equals("1") || gender.equals("2")) {
                     break;
                 } else {
-                    throw new InputNotCorrectException();
+                    throw new RegexNotValidException();
                 }
             } catch (IOException e) {
                 System.out.println(e.getMessage());
@@ -479,7 +476,7 @@ public class ClientView extends View implements LoginView {
                 if (matches) {
                     break;
                 } else
-                    throw new InputNotCorrectException();
+                    throw new RegexNotValidException();
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             } catch (BaseException e) {
@@ -496,7 +493,7 @@ public class ClientView extends View implements LoginView {
                 if (matches) {
                     break;
                 } else {
-                    throw new InputNotCorrectException();
+                    throw new RegexNotValidException();
                 }
             } catch (IOException e) {
                 System.out.println(e.getMessage());
@@ -514,7 +511,7 @@ public class ClientView extends View implements LoginView {
                 if (matches) {
                     break;
                 } else {
-                    throw new InputNotCorrectException();
+                    throw new RegexNotValidException();
                 }
             } catch (BaseException e) {
                 System.out.println(e.getMessage());
@@ -532,7 +529,7 @@ public class ClientView extends View implements LoginView {
                 if (matches) {
                     break;
                 } else {
-                    throw new InputNotCorrectException();
+                    throw new RegexNotValidException();
                 }
             } catch (BaseException e) {
                 System.out.println(e.getMessage());
@@ -608,7 +605,7 @@ public class ClientView extends View implements LoginView {
                 if (matches) {
                     break;
                 } else {
-                    throw new InputNotCorrectException();
+                    throw new RegexNotValidException();
                 }
             } catch (IOException e) {
                 System.out.print(e.getMessage());

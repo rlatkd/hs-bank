@@ -5,7 +5,7 @@ import enumeration.inquiry.InquiryStatus;
 import lombok.Builder;
 import lombok.Getter;
 
-import static utils.DateUtils.dateTimeNow;
+import static utils.DateTimeGenerator.getDateTimeNow;
 
 @Builder
 @Getter
@@ -22,7 +22,7 @@ public class RegisterInquiryDto {
                 .status(InquiryStatus.WAIT)
                 .content(content)
                 .title(title)
-                .createdAt(dateTimeNow)
+                .createdAt(getDateTimeNow())
                 .build();
     }
 }

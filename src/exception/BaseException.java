@@ -1,10 +1,9 @@
 package exception;
 
-import constants.FilePath;
-import utils.DateUtils;
+import utils.FilePathConstants;
+import utils.DateTimeGenerator;
 
 import java.io.*;
-import java.util.Arrays;
 
 public class BaseException extends Exception{
 
@@ -28,9 +27,9 @@ public class BaseException extends Exception{
             printWriter.close();
             stringWriter.close();
 
-            fileWriter =  new FileWriter(FilePath.LOG_PATH, true);
+            fileWriter =  new FileWriter(FilePathConstants.LOG_PATH, true);
             bufferedWriter = new BufferedWriter(fileWriter);
-            bufferedWriter.write("[" + DateUtils.dateTimeNow + "] " + stackTraceAsString);
+            bufferedWriter.write("[" + DateTimeGenerator.getDateTimeNow() + "] " + stackTraceAsString);
             bufferedWriter.newLine();
         } catch (IOException e) {
             throw new BaseException();

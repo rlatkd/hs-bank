@@ -1,6 +1,6 @@
-package constants;
+package utils;
 
-public class FilePath {
+public class FilePathConstants {
     public static final String DATA_PATH = "data//";
     public static final String ACCOUNT_PATH = DATA_PATH + "Account.txt";
     public static final String ADMIN_PATH = DATA_PATH + "Admin.txt";
