@@ -11,10 +11,8 @@
  ├──── 📁 src
  │      ├──── 📁 dto
  │      │      ├──── 📁 account
- │      │      │      │──── 📁 request
- │      │      │      │      └──── 📄 RegisterAccountDto.java
- │      │      │      └──── 📁 response
- │      │      │             └──── 📄 GetAccountDto.java
+ │      │      │      ├──── 📄 RegisterAccountDto.java
+ │      │      │      └──── 📄 GetAccountDto.java
  │      │      ├──── 📁 inquiry
  │      │      │      ├──── 📄 EditInquiryDto.java
  │      │      │      ├──── 📄 GetInquiryDto.java
@@ -25,9 +23,11 @@
  │      │      │             └──── 📄 GetTransactionDto.java
  │      │      └──── 📁 user
  │      │             ├──── 📁 adimin
+ │      │             │      └──── 📄 RegisterAdminDto.java
  │      │             ├──── 📁 client
  │      │             │      ├──── 📄 GetClientDto.java
  │      │             │      ├──── 📄 GetCurrentClientDto.java
+ │      │             │      ├──── 📄 RegisterClientDto.java
  │      │             │      └──── 📄 UpdateClientDto.java
  │      │             ├──── 📄 LoginDto.java
  │      │             └──── 📄 RegisterUserDto.java
@@ -35,21 +35,53 @@
  │      │      ├──── 📄 Account.java
  │      │      ├──── 📄 Admin.java
  │      │      ├──── 📄 Client.java
+ │      │      ├──── 📄 Entity.java
  │      │      ├──── 📄 Inquiry.java
  │      │      ├──── 📄 Transaction.java
  │      │      └──── 📄 User.java
+ │      ├──── 📁 enumeration
+ │      │      ├──── 📁 admin
+ │      │      │      └──── 📄 AdminType.java
+ │      │      ├──── 📁 client
+ │      │      │      └──── 📄 Gender.java
+ │      │      ├──── 📁 inquiry
+ │      │      │      ├──── 📄 InquiryCategory.java
+ │      │      │      └──── 📄 InquiryStatus.java
+ │      │      ├──── 📁 transaction
+ │      │      │      ├──── 📄 TransactionStatus.java
+ │      │      │      └──── 📄 TransactionType.java
+ │      │      └──── 📄 ActivationStatus.java
  │      ├──── 📁 exception
- │      │      ├──── 📄 AccountAlreadyExistsException.java
- │      │      ├──── 📄 BalanceInsufficientException.java
- │      │      ├──── 📄 ClientNotFoundException.java
- │      │      ├──── 📄 DataLoadingException.java
- │      │      ├──── 📄 DataSavingException.java
- │      │      ├──── 📄 EmptyAccountListException.java
- │      │      ├──── 📄 EmptyInquiryListException.java
- │      │      ├──── 📄 EmptyTransactionListException.java
- │      │      ├──── 📄 ExistingUserException.java
- │      │      ├──── 📄 IncorrectCredentialsException.java
- │      │      └──── 📄 InquiryNotFoundException.java    
+ │      │      ├──── 📁 account
+ │      │      │      ├──── 📁 deposit
+ │      │      │      │      ├──── 📄 DepositAccountDeactivateException.java
+ │      │      │      │      └──── 📄 DepositAccountNotFoundException.java 
+ │      │      │      ├──── 📁 withdraw
+ │      │      │      │      ├──── 📄 WithdrawAccountDeactivateException.java
+ │      │      │      │      └──── 📄 WithdrawAccountNotFoundException.java 
+ │      │      │      ├──── 📄 AccountDeactivateException.java
+ │      │      │      ├──── 📄 AccountExistException.java
+ │      │      │      ├──── 📄 AccountListEmptyException.java
+ │      │      │      ├──── 📄 AccountNotFoundException.java
+ │      │      │      └──── 📄 BalanceInsufficientException.java
+ │      │      ├──── 📁 inquiry
+ │      │      │      ├──── 📄 InquiryListEmptyException.java
+ │      │      │      └──── 📄 InquiryNotFoundException.java
+ │      │      ├──── 📁 transaction
+ │      │      │      ├──── 📄 NotTransferException.java
+ │      │      │      ├──── 📄 TransactionListEmptyException.java
+ │      │      │      └──── 📄 TransactionNotFoundException.java
+ │      │      ├──── 📁 user
+ │      │      │      ├──── 📁 admin
+ │      │      │      │      ├──── 📄 AdminExistException.java
+ │      │      │      │      └──── 📄 AdminNotFoundException.java 
+ │      │      │      ├──── 📁 client
+ │      │      │      │      ├──── 📄 ClientExistException.java
+ │      │      │      │      └──── 📄 ClientNotFoundException.java 
+ │      │      │      ├──── 📄 UserExistException.java
+ │      │      │      └──── 📄 UserNotFoundException.java
+ │      │      ├──── 📄 BaseException.java
+ │      │      └──── 📄 DataAccessException.java
  │      ├──── 📁 repository
  │      │      ├──── 📄 AccountRepository.java
  │      │      ├──── 📄 AdminRepository.java
@@ -62,8 +94,8 @@
  │      │      ├──── 📄 AdminService.java
  │      │      ├──── 📄 ClientService.java
  │      │      ├──── 📄 InquiryService.java
- │      │      ├──── 📄 LoginService.java
- │      │      └──── 📄 TransactionService.java
+ │      │      ├──── 📄 TransactionService.java
+ │      │      └──── 📄 UserService.java
  │      ├──── 📁 utils
  │      │      └──── 📄 DateUtils.java 
  │      ├──── 📁 view
@@ -77,5 +109,6 @@
  │      └──── 📄 lombok.jar
  │──── 📄 .classpath
  │──── 📄 .gitignore
- └──── 📄 .project
+ │──── 📄 .project
+ └──── 📄 .README.md
 ```
