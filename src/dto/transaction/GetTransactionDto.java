@@ -23,7 +23,6 @@ public class GetTransactionDto {
                 .amount(transaction.getAmount())
                 .withdrawAccountNumber(transaction.getWithdrawAccountId())
                 .depositAccountNumber(transaction.getDepositAccountId())
-                .amount(transaction.getAmount())
                 .status(transaction.getStatus().getKorean())
                 .build();
     }
