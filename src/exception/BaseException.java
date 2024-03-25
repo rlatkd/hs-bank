@@ -1,6 +1,7 @@
 package exception;
 
 import constants.FilePath;
+import utils.DateUtils;
 
 import java.io.*;
 import java.util.Arrays;
@@ -29,7 +30,7 @@ public class BaseException extends Exception{
 
             fileWriter =  new FileWriter(FilePath.LOG_PATH, true);
             bufferedWriter = new BufferedWriter(fileWriter);
-            bufferedWriter.write(stackTraceAsString);
+            bufferedWriter.write("[" + DateUtils.dateTimeNow + "] " + stackTraceAsString);
             bufferedWriter.newLine();
         } catch (IOException e) {
             throw new BaseException();
