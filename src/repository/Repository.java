@@ -72,7 +72,7 @@ public abstract class Repository<E extends Entity> {
     }
     public final void add(E entity) throws BaseException {
         load();
-        entity.setId(getLastEntity() == null ? 0 : getLastEntity().getId());
+        entity.setId(getLastEntity() == null ? 0 : getLastEntity().getId() + 1);
         entityList.add(entity);
         save();
     }
