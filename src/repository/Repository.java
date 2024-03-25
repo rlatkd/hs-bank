@@ -1,5 +1,6 @@
 package repository;
 
+import constants.FilePath;
 import entity.Entity;
 import exception.BaseException;
 import exception.DataAccessException;
@@ -12,9 +13,9 @@ public abstract class Repository<E extends Entity> {
     protected List<E> entityList;
     protected String path;
 
-    protected Repository() {
+    protected Repository(String path) {
         this.entityList = new ArrayList<>();
-        this.path = "data\\";
+        this.path = path;
     }
 
     protected final void load() throws BaseException {

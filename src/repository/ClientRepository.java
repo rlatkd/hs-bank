@@ -1,5 +1,6 @@
 package repository;
 
+import constants.FilePath;
 import entity.Client;
 import exception.BaseException;
 import exception.DataAccessException;
@@ -7,8 +8,7 @@ import exception.DataAccessException;
 public class ClientRepository extends Repository<Client> {
     private static ClientRepository clientRepository;
     private ClientRepository() {
-        super();
-        this.path += "Client.txt";
+        super(FilePath.CLIENT_PATH);
     }
 
     public static ClientRepository getInstance(){

@@ -1,5 +1,6 @@
 package repository;
 
+import constants.FilePath;
 import entity.Account;
 import exception.BaseException;
 import exception.DataAccessException;
@@ -10,8 +11,7 @@ import java.util.List;
 public class AccountRepository extends Repository<Account> {
     private static AccountRepository accountRepository;
     private AccountRepository() {
-        super();
-        this.path += "Account.txt";
+        super(FilePath.ACCOUNT_PATH);
     }
 
     public static AccountRepository getInstance(){

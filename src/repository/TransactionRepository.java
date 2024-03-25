@@ -1,5 +1,6 @@
 package repository;
 
+import constants.FilePath;
 import entity.Transaction;
 import exception.BaseException;
 import exception.DataAccessException;
@@ -10,8 +11,7 @@ import java.util.List;
 public class TransactionRepository extends Repository<Transaction>{
     private static TransactionRepository transactionRepository;
     private TransactionRepository() {
-        super();
-        this.path += "Transaction.txt";
+        super(FilePath.TRANSACTION_PATH);
     }
 
     public static TransactionRepository getInstance(){
