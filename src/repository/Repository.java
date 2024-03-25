@@ -30,16 +30,14 @@ public abstract class Repository<E extends Entity> {
             while ((object = objectInputStream.readObject()) != null)
                 entityList = (List<E>) object;
         } catch (EOFException e) {
-        } catch (Exception e) {
-            // 로깅 작업'
+        } catch (IOException | ClassNotFoundException e) {
             throw new DataAccessException();
         } finally {
             try {
                 if(objectInputStream != null) objectInputStream.close();
                 if(bufferedInputStream != null) bufferedInputStream.close();
                 if(fileInputStream != null) fileInputStream.close();
-            } catch (Exception e) {
-                // 로깅 작업
+            } catch (IOException e) {
                 throw new DataAccessException();
             }
         }
@@ -54,16 +52,14 @@ public abstract class Repository<E extends Entity> {
             objectOutputStream = new ObjectOutputStream(bufferedOutputStream);
 
             objectOutputStream.writeObject(entityList);
-        } catch (Exception e) {
-            // 로깅 작업
+        } catch (IOException e) {
             throw new DataAccessException();
         } finally {
             try {
                 objectOutputStream.close();
                 bufferedOutputStream.close();
                 fileOutputStream.close();
-            } catch (Exception e) {
-                // 로깅 작업
+            } catch (IOException e) {
                 throw new DataAccessException();
             }
         }
