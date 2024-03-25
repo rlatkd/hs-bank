@@ -1,6 +1,7 @@
 package dto.account;
 
 import entity.Account;
+import enumeration.ActivationStatus;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -23,7 +24,7 @@ public class GetAccountDto {
                 ownerName(ownerName).
                 balance(account.getBalance()).
                 registeredAt(account.getRegisteredAt()).
-                status(account.getStatus()).
+                status(account.getStatus().getKorean()).
                 build();
     }
     @Override

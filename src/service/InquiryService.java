@@ -6,6 +6,7 @@ import dto.inquiry.GetInquiryListDto;
 import dto.inquiry.RegisterInquiryDto;
 import entity.Client;
 import entity.Inquiry;
+import enumeration.inquiry.InquiryStatus;
 import exception.BaseException;
 import exception.DataAccessException;
 import exception.inquiry.EmptyInquiryListException;
@@ -80,7 +81,7 @@ public class InquiryService {
     public void rejectInquiry(int id) throws BaseException {
         Inquiry inquiry = inquiryRepository.get(id);
         if(inquiry == null) throw new InquiryNotFoundException();
-        inquiry.setStatus("반려");
+        inquiry.setStatus(InquiryStatus.REJECT);
         inquiryRepository.update();
     }
 
@@ -88,7 +89,7 @@ public class InquiryService {
     public void completeInquiry(int id) throws BaseException {
         Inquiry inquiry = inquiryRepository.get(id);
         if(inquiry == null) throw new InquiryNotFoundException();
-        inquiry.setStatus("처리");
+        inquiry.setStatus(InquiryStatus.COMPLETE);
         inquiryRepository.update();
     }
 

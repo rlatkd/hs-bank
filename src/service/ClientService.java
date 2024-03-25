@@ -10,6 +10,7 @@ import dto.user.client.GetClientDto;
 import dto.user.client.GetCurrentClientDto;
 import dto.user.LoginDto;
 import entity.Client;
+import enumeration.ActivationStatus;
 import exception.BaseException;
 import exception.user.client.ClientNotFoundException;
 import exception.DataAccessException;
@@ -66,8 +67,7 @@ public class ClientService implements UserService {
     	client.setBirthDate(updateClientDto.getBirthDate());
     	client.setGender(updateClientDto.getGender());
     	client.setPhoneNumber(updateClientDto.getPhoneNumber());
-    	client.setAddress(updateClientDto.getAddress());
-    	
+
     	clientRepository.update();
     }
     
@@ -89,7 +89,7 @@ public class ClientService implements UserService {
     public void deactivate(int id) throws BaseException {
     	Client client = clientRepository.get(id);
     	if (client == null) throw new ClientNotFoundException();
-    	client.setStatus("deactive");
+    	client.setStatus(ActivationStatus.DEACTIVATE);
     	clientRepository.update();
     }
     
@@ -97,7 +97,7 @@ public class ClientService implements UserService {
     public void activate(int id) throws BaseException {
     	Client client = clientRepository.get(id);
     	if (client == null) throw new ClientNotFoundException();
-    	client.setStatus("active");
+    	client.setStatus(ActivationStatus.ACTIVATE);
     	clientRepository.update();
     }
 }

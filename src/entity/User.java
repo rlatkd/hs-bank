@@ -1,5 +1,6 @@
 package entity;
 
+import enumeration.ActivationStatus;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 
@@ -11,9 +12,9 @@ public abstract class User extends Entity {
     protected String name;
     protected String email;
     protected String password;
-    protected String status;
+    protected ActivationStatus status;
     
-    public final void setStatus(String status) {
+    public final void setStatus(ActivationStatus status) {
     	this.status = status;
     }
 

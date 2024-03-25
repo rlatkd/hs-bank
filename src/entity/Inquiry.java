@@ -1,22 +1,21 @@
 package entity;
 
-import lombok.Builder;
+import enumeration.inquiry.InquiryCategory;
+import enumeration.inquiry.InquiryStatus;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
-
-import java.io.Serializable;
 
 @Getter
 @SuperBuilder
 public class Inquiry extends Entity {
     private int authorId;
-    private String category;
+    private InquiryCategory category;
     private String title;
     private String content;
     private String createdAt;
-    private String status;
+    private InquiryStatus status;
 
-    public void setCategory(String category) {
+    public void setCategory(InquiryCategory category) {
         this.category = category;
     }
 
@@ -28,7 +27,7 @@ public class Inquiry extends Entity {
         this.content = content;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(InquiryStatus status) {
         this.status = status;
     }
 }

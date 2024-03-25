@@ -1,6 +1,7 @@
 package dto.account;
 
 import entity.Account;
+import enumeration.ActivationStatus;
 import lombok.Builder;
 import lombok.Getter;
 import static utils.DateUtils.dateTimeNow;
@@ -19,7 +20,7 @@ public class RegisterAccountDto {
                 ownerId(ownerId).
                 balance(0).
                 registeredAt(dateTimeNow).
-                status("active").
+                status(ActivationStatus.ACTIVATE).
                 build();
     }
 }

@@ -1,5 +1,6 @@
 package dto.user.client;
 
+import enumeration.client.Gender;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -11,7 +12,6 @@ public class UpdateClientDto {
 	private String email;
 	private String password;
 	private String birthDate;
-	private String gender;
+	private Gender gender;
 	private String phoneNumber;
-	private String address;
 }

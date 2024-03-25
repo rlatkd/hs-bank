@@ -13,8 +13,7 @@ public class GetCurrentClientDto {
 	private String birthDate;
 	private String gender;
 	private String phoneNumber;
-	private String address;
-	
+
 	public static GetCurrentClientDto toDto(Client client) {
 		return GetCurrentClientDto
 				.builder()
@@ -22,9 +21,8 @@ public class GetCurrentClientDto {
 				.email(client.getEmail())
 				.password(client.getPassword())
 				.birthDate(client.getBirthDate())
-				.gender(client.getGender())
+				.gender(client.getGender().getKorean())
 				.phoneNumber(client.getPhoneNumber())
-				.address(client.getAddress())
 				.build();
 	}
 }

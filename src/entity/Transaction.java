@@ -1,22 +1,22 @@
 package entity;
 
-import lombok.Builder;
+import enumeration.ActivationStatus;
+import enumeration.transaction.TransactionStatus;
+import enumeration.transaction.TransactionType;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
-
-import java.io.Serializable;
 
 @Getter
 @SuperBuilder
 public class Transaction extends Entity {
     private String date;
-    private String type;
+    private TransactionType type;
     private long amount;
     private int withdrawAccountId;
     private int depositAccountId;
-    private String status;
+    private TransactionStatus status;
 
-    public void setStatus(String status){
+    public void setStatus(TransactionStatus status){
         this.status = status;
     }
 

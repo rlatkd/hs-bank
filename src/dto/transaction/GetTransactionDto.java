@@ -19,12 +19,12 @@ public class GetTransactionDto {
         return GetTransactionDto.builder()
                 .id(transaction.getId())
                 .date(transaction.getDate())
-                .type(transaction.getType())
+                .type(transaction.getType().getKorean())
                 .amount(transaction.getAmount())
                 .withdrawAccountNumber(transaction.getWithdrawAccountId())
                 .depositAccountNumber(transaction.getDepositAccountId())
                 .amount(transaction.getAmount())
-                .status(transaction.getStatus())
+                .status(transaction.getStatus().getKorean())
                 .build();
     }
 

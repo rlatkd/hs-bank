@@ -2,6 +2,8 @@ package dto.user.client;
 
 import dto.user.RegisterUserDto;
 import entity.Client;
+import enumeration.ActivationStatus;
+import enumeration.client.Gender;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import utils.DateUtils;
@@ -12,9 +14,8 @@ import java.time.LocalDate;
 @SuperBuilder
 public class RegisterClientDto extends RegisterUserDto {
 	private String birthDate;
-	private String gender;
+	private Gender gender;
 	private String phoneNumber;
-	private String address;
 
 	public Client toEntity(){
 		return Client
@@ -25,9 +26,8 @@ public class RegisterClientDto extends RegisterUserDto {
 				.birthDate(birthDate)
 				.gender(gender)
 				.phoneNumber(phoneNumber)
-				.address(address)
 				.createdAt(DateUtils.dateTimeNow)
-				.status("active")
+				.status(ActivationStatus.ACTIVATE)
 				.build();
 	}
 }
