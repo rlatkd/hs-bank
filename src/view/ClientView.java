@@ -2,12 +2,14 @@ package view;
 
 import dto.account.GetAccountDto;
 import dto.account.RegisterAccountDto;
+import dto.inquiry.RegisterInquiryDto;
 import dto.user.LoginDto;
 import dto.user.RegisterUserDto;
 import dto.user.client.RegisterClientDto;
 import dto.user.client.UpdateClientDto;
 import entity.Account;
 import enumeration.client.Gender;
+import enumeration.inquiry.InquiryCategory;
 import exception.*;
 import exception.view.InputNotCorrectException;
 import service.AccountService;
@@ -112,8 +114,8 @@ public class ClientView extends View implements LoginView {
                     System.out.println(inquiryService.getInquiryList(userId));
                 case "2" :
                     System.out.println("[문의 등록]");
-                    String
-                    inquiryService.registerInquiry( );
+                    //String
+                    //inquiryService.registerInquiry( );
             }
         } catch (IOException e) {
             System.out.println("올바르지 않은 입력입니다. 다시 입력해 주세요.");
@@ -122,8 +124,36 @@ public class ClientView extends View implements LoginView {
         }
 
     }
+
+    public RegisterInquiryDto makeRegisterInquiryDto() { // registerInquiry(RegisterInquiryDto registerInquiryDto)
+        String title = "";
+        String content = "";
+        while (true) {
+            System.out.print("[제목] : ");
+            try {
+                title = br.readLine();
+                break;
+            } catch (IOException e) {
+                System.out.println("올바르지 않은 입력입니다. 다시 입력해 주세요.");
+            }
+        }
+        while (true) {
+            System.out.print("\n[본문] : ");
+            try {
+                content = br.readLine();
+                break;
+            } catch (IOException e) {
+                System.out.println("올바르지 않은 입력입니다. 다시 입력해 주세요.");
+            }
+        }
+
+        while (true) {
+
+        }
+        // RegisterInquiryDto.builder();
+    }
     public void myPage() {
-        System.out.println("[마이페이지]");
+        System.out.println("[마이 페이지]");
         System.out.println("원하시는 메뉴를 입력해 주세요");
         System.out.println("1. 계정 정보 조회\n2. 계정 정보 수정\n3. 계정 정보 삭제");
         try {

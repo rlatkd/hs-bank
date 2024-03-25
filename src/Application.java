@@ -1,5 +1,6 @@
 import dto.user.LoginDto;
 import dto.user.RegisterUserDto;
+import enumeration.inquiry.InquiryCategory;
 import view.InitialView;
 
 
