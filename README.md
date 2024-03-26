@@ -153,22 +153,22 @@
  └──── 📄 Application.java
 ```
 
-- dto:사용자에게 보여줄
+- dto: 사용자에게 입력받는 데이터 혹은 출력하는 데이터를 담는 객체 
   - account: 계좌 조회, 계좌 등록
   - inquiry: 문의 조회, 문의 리스트 조회, 문의 등록, 문의 수정
   - transaction: 거래 내역 조횐
   - user: 관리자 조회, 고객 조회, 현재 로그인한 고객 조회, 고객 등록, 고객 정보 수정
 
-- entity: 서비스의 주체가 되는 객체 모음
+- entity: 파일의 데이터를 담는 객체
   - 사용자(고객, 관리자), 계좌, 거래 내역, 문의
 
-- enumeration: 객체들을 집합체 형태로 관리하게 해주는 열거형식 모음
+- enumeration: 객체의 속성으로 사용되는 열거형 상수
   - admin: 관리자 타입
   - client: 성별
   - inquiry: 문의 카테고리, 문의 처리 상태
   - transaction: 거래 상태, 거래 종류
 
-- exception: 서비스에 특화된 커스텀 예외처리 모음
+- exception: 시스템에서 사용되는 사용자 정의 예외
   - account: 계좌 조회 불가, 유효하지 않는 계좌, ...
   - authentication: 인증 실패
   - inquiry: 문의 조회 불가, 존재하지 않는 문의
@@ -176,12 +176,12 @@
   - transaction: 거래내역 조회 불가, 이체 불가, ...
   - user: 계정 비활성화 상태, 존재하지 않는 계정, ...
   
-- repository: 데이터를 파일형식으로 저장하는 객체 모음
+- repository: 파일의 데이터를 저장하고 불러오는 객체
 
-- service: 
+- service: 비즈니스 로직을 처리하는 객체
 
-- utils: 편의성을 위한 부가기능 객체 모음
+- utils: 시스템에서 사용되는 부가기능 객체
 
-- view: 콘솔에 출력되는 객체 모음
+- view: 사용자로부터 데이터를 입력받고 출력하는 객체
 
-- Application.java: 프로그램 실행 시 사용하는 객체
+- Application.java: 프로그램을 실행하는 객체
