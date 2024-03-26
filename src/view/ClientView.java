@@ -531,7 +531,7 @@ public class ClientView extends View implements LoginView {
             		CaptchaAuthentication.printCaptchaImage(captchaNumbers);
             		System.out.print("인증번호 : ");
             		inputAuthNumber = br.readLine();
-            		matches = inputAuthNumber.matches(captchaNumbers);
+            		boolean matches = inputAuthNumber.matches(captchaNumbers);
             		if (matches) {
             			System.out.println("[캡챠인증] 인증에 성공했습니다.\n");
             			break;
