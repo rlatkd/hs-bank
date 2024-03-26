@@ -1,9 +1,6 @@
 package service;
 
-import dto.inquiry.EditInquiryDto;
-import dto.inquiry.GetInquiryDto;
-import dto.inquiry.GetInquiryListDto;
-import dto.inquiry.RegisterInquiryDto;
+import dto.inquiry.*;
 import entity.Client;
 import entity.Inquiry;
 import enumeration.inquiry.InquiryStatus;
@@ -40,10 +37,10 @@ public class InquiryService {
     }
 
     //문의 삭제
-    public void removeInquiry(int id) throws BaseException {
-        Inquiry inquiry = inquiryRepository.get(id);
+    public void removeInquiry(RemoveInquiryDto removeInquiryDto) throws BaseException {
+        Inquiry inquiry = inquiryRepository.get(removeInquiryDto.getId(), removeInquiryDto.getAuthorId());
         if (inquiry == null) throw new InquiryNotFoundException();
-        inquiryRepository.remove(id);
+        inquiryRepository.remove(removeInquiryDto.getId());
     }
 
     //문의목록 조회
@@ -67,7 +64,7 @@ public class InquiryService {
 
     //문의 수정
     public void editInquiry(EditInquiryDto editInquiryDto) throws BaseException {
-        Inquiry inq = inquiryRepository.get(editInquiryDto.getId());
+        Inquiry inq = inquiryRepository.get(editInquiryDto.getId(), editInquiryDto.getAuthorId());
         if (inq == null) throw new InquiryNotFoundException();
         inq.setCategory(editInquiryDto.getCategory());
         inq.setContent(editInquiryDto.getContent());
@@ -93,7 +90,7 @@ public class InquiryService {
     }
 
     public List<GetInquiryListDto> getInquiryList(int authorId) throws BaseException {
-        List<Inquiry> inquiryList = inquiryRepository.getEntityList(1);
+        List<Inquiry> inquiryList = inquiryRepository.getEntityList(authorId);
         if (inquiryList.isEmpty()) throw new InquiryListEmptyException();
 
         List<GetInquiryListDto> getInquiryListDtoList = new ArrayList<>();

@@ -1,6 +1,9 @@
 package service;
 
+import dto.transaction.DepositDto;
 import dto.transaction.GetTransactionDto;
+import dto.transaction.TransferDto;
+import dto.transaction.WithdrawDto;
 import entity.Account;
 import entity.Transaction;
 import enumeration.ActivationStatus;
@@ -17,6 +20,7 @@ import exception.account.withdraw.WithdrawAccountNotFoundException;
 import exception.transaction.TransactionListEmptyException;
 import exception.transaction.TransactionNotFoundException;
 import exception.transaction.NotTransferException;
+import lombok.With;
 import repository.AccountRepository;
 import repository.TransactionRepository;
 import utils.DateTimeGenerator;
@@ -48,68 +52,49 @@ public class TransactionService {
                 .collect(Collectors.toList());
     }
 
-    public synchronized void deposit(int id, long amount) throws BaseException {
+    public synchronized void deposit(DepositDto depositDto) throws BaseException {
 
-        Account account = accountRepository.get(id);
+        Account account = accountRepository.get(depositDto.getAccountId(), depositDto.getOwnerId());
         if(account == null) throw new AccountNotFoundException();
         if(!isActiveAccount(account)) throw new AccountDeactivateException();
 
-        Transaction transaction = Transaction.builder().
-                date(DateTimeGenerator.getDateTimeNow()).
-                type(TransactionType.DEPOSIT).
-                amount(amount).
-                depositAccountId(id).
-                status(TransactionStatus.COMPLETE).
-                build();
+        Transaction transaction = depositDto.toEntity();
 
-        account.setBalance(account.getBalance() + amount);
+        account.setBalance(account.getBalance() + depositDto.getAmount());
         accountRepository.update();
 
         transactionRepository.add(transaction);
     }
 
-    public synchronized void withdraw(int id, long amount) throws BaseException {
-        Account account = accountRepository.get(id);
+    public synchronized void withdraw(WithdrawDto withdrawDto) throws BaseException {
+        Account account = accountRepository.get(withdrawDto.getAccountId(), withdrawDto.getOwnerId());
         if(account == null) throw new AccountNotFoundException();
         if(!isActiveAccount(account)) throw new AccountDeactivateException();
-        if(account.getBalance() < amount) throw new BalanceInsufficientException();
+        if(account.getBalance() < withdrawDto.getAmount()) throw new BalanceInsufficientException();
 
-        Transaction transaction = Transaction.builder().
-                date(DateTimeGenerator.getDateTimeNow()).
-                type(TransactionType.WITHDRAW).
-                amount(amount).
-                withdrawAccountId(id).
-                status(TransactionStatus.COMPLETE).
-                build();
+        Transaction transaction = withdrawDto.toEntity();
 
-        account.setBalance(account.getBalance() - amount);
+        account.setBalance(account.getBalance() - withdrawDto.getAmount());
         accountRepository.update();
 
         transactionRepository.add(transaction);
     }
 
-    public synchronized void transfer(int withdrawAccountId, String depositAccountNumber, long amount) throws BaseException {
-        Account withdrawAccount = accountRepository.get(withdrawAccountId);
+    public synchronized void transfer(TransferDto transferDto) throws BaseException {
+        Account withdrawAccount = accountRepository.get(transferDto.getWithdrawAccountId(), transferDto.getWithdrawAccountOwnerId());
         if(withdrawAccount == null) throw new WithdrawAccountNotFoundException();
         if(!isActiveAccount(withdrawAccount)) throw new WithdrawAccountDeactivateException();
-        if(withdrawAccount.getBalance() < amount) throw new BalanceInsufficientException();
+        if(withdrawAccount.getBalance() < transferDto.getAmount()) throw new BalanceInsufficientException();
 
-        Account depositAccount = accountRepository.getWithoutLoad(depositAccountNumber);
+        Account depositAccount = accountRepository.getWithoutLoad(transferDto.getDepositAccountNumber());
         if(depositAccount == null) throw new DepositAccountNotFoundException();
         if(!isActiveAccount(depositAccount)) throw new DepositAccountDeactivateException();
 
-        Transaction transaction = Transaction.builder().
-                date(DateTimeGenerator.getDateTimeNow()).
-                type(TransactionType.TRANSFER).
-                amount(amount).
-                withdrawAccountId(withdrawAccountId).
-                depositAccountId(depositAccount.getId()).
-                status(TransactionStatus.COMPLETE).
-                build();
+        Transaction transaction = transferDto.toEntity(depositAccount.getId());
 
-        withdrawAccount.setBalance(withdrawAccount.getBalance() - amount);
+        withdrawAccount.setBalance(withdrawAccount.getBalance() - transferDto.getAmount());
 
-        depositAccount.setBalance(depositAccount.getBalance() + amount);
+        depositAccount.setBalance(depositAccount.getBalance() + transferDto.getAmount());
         accountRepository.update();
 
         transactionRepository.add(transaction);

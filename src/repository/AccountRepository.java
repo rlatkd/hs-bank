@@ -1,5 +1,6 @@
 package repository;
 
+import entity.Entity;
 import utils.FilePathConstants;
 import entity.Account;
 import exception.BaseException;
@@ -25,6 +26,13 @@ public class AccountRepository extends Repository<Account> {
         for(Account account : entityList)
             if(account.getNumber().equals(number)) return true;
         return false;
+    }
+
+    public Account get(int id, int ownerId) throws BaseException {
+        load();
+        for(Account account : entityList)
+            if(account.getId() == id && account.getOwnerId() == ownerId) return account;
+        return null;
     }
 
     public List<Account> getEntityList(int ownerId) throws BaseException {

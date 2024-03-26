@@ -2,6 +2,7 @@ package service;
 
 import dto.account.GetAccountDto;
 import dto.account.RegisterAccountDto;
+import dto.account.RemoveAccountDto;
 import entity.Account;
 import entity.Client;
 import enumeration.ActivationStatus;
@@ -54,10 +55,10 @@ public class AccountService {
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public void removeAccount(int id) throws BaseException {
-        Account account = accountRepository.get(id);
+    public void removeAccount(RemoveAccountDto removeAccountDto) throws BaseException {
+        Account account = accountRepository.get(removeAccountDto.getId(), removeAccountDto.getOwnerId());
         if(account == null) throw new AccountNotFoundException();
-        accountRepository.remove(id);
+        accountRepository.remove(removeAccountDto.getId());
     }
 
     public void activateAccount(int id) throws BaseException {
