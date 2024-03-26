@@ -17,6 +17,36 @@ public abstract class BaseException extends Exception{
         log();
     }
 
+    public static void log(Exception exception) throws BaseException {
+        StringWriter stringWriter = null;
+        PrintWriter printWriter = null;
+
+        FileWriter fileWriter = null;
+        BufferedWriter bufferedWriter = null;
+
+        try{
+            stringWriter = new StringWriter();
+            printWriter = new PrintWriter(stringWriter);
+            exception.printStackTrace(printWriter);
+
+            fileWriter =  new FileWriter(FilePathConstants.LOG_PATH, true);
+            bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write("[" + DateTimeGenerator.getDateTimeNow() + "] " + stringWriter);
+            bufferedWriter.newLine();
+        } catch (IOException e) {
+            throw new LogException();
+        } finally {
+            try {
+                bufferedWriter.close();
+                fileWriter.close();
+                stringWriter.close();
+                printWriter.close();
+            } catch (IOException e) {
+                throw new LogException();
+            }
+        }
+    }
+
     private void log() throws BaseException {
         StringWriter stringWriter = null;
         PrintWriter printWriter = null;
@@ -34,6 +64,7 @@ public abstract class BaseException extends Exception{
             bufferedWriter.write("[" + DateTimeGenerator.getDateTimeNow() + "] " + stringWriter.toString());
             bufferedWriter.newLine();
         } catch (IOException e) {
+            log(e);
             throw new LogException();
         } finally {
             try {
@@ -42,6 +73,7 @@ public abstract class BaseException extends Exception{
                 stringWriter.close();
                 printWriter.close();
             } catch (IOException e) {
+                log(e);
                 throw new LogException();
             }
         }

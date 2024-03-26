@@ -11,7 +11,7 @@ public enum TransactionStatus implements Serializable {
     CANCEL("취소");
 
     private String korean;
-    private TransactionStatus(String korean){
+    TransactionStatus(String korean){
         this.korean = korean;
     }
 }
