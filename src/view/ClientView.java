@@ -12,11 +12,13 @@ import enumeration.client.Gender;
 import enumeration.inquiry.InquiryCategory;
 import exception.*;
 import exception.regex.RegexNotValidException;
+import exception.verification.AuthFailureException;
 import service.AccountService;
 import service.ClientService;
 import service.InquiryService;
 import service.TransactionService;
 import utils.RegexValidator;
+import utils.CaptchaAuthentication;
 import java.io.IOException;
 
 public class ClientView extends View implements LoginView {
@@ -498,6 +500,7 @@ public class ClientView extends View implements LoginView {
         System.out.println("로그인 메뉴에 진입합니다.");
         String password = null;
         String email = null;
+        String inputAuthNumber = null;
 
         while (true) {
             System.out.println("계정에 사용된 이메일과 비밀번호를 입력하세요"); // 예외에 안 걸리면 성공
@@ -517,6 +520,31 @@ public class ClientView extends View implements LoginView {
                 //e.printStackTrace();
             }
 
+            //캡챠 인증 추가
+            System.out.println();
+        	System.out.println("[캡챠인증] 아래의 그림과 같은 번호를 입력해 인증을 완료해주세요.");
+        	System.out.println();
+            
+        	while (true) {
+        		try {
+            		String captchaNumbers = CaptchaAuthentication.generateCaptchaNumbers();
+            		CaptchaAuthentication.printCaptchaImage(captchaNumbers);
+            		System.out.print("인증번호 : ");
+            		inputAuthNumber = br.readLine();
+            		matches = inputAuthNumber.matches(captchaNumbers);
+            		if (matches) {
+            			System.out.println("[캡챠인증] 인증에 성공했습니다.\n");
+            			break;
+            		} else {
+            			throw new AuthFailureException();
+            		}
+    			} catch (IOException e) {
+    				System.out.println(e.getMessage());
+    			} catch (BaseException e) {
+    				System.out.println(e.getMessage());
+    			}
+        	}
+        	
             LoginDto loginDto = LoginDto.builder().email(email).password(password).build();
 
             try {
@@ -527,7 +555,6 @@ public class ClientView extends View implements LoginView {
                 System.out.println(e.getMessage());
             }
         }
-
     }
 
     public void receivePaid() {
@@ -667,7 +694,7 @@ public class ClientView extends View implements LoginView {
                 System.out.println("잘못된 입력입니다. 다시 입력해 주세요.");
             }
         }
-
+        
         try {
             if(gender.equals("1")) {
                 clientService.register(RegisterClientDto.builder().phoneNumber(userPhoneNumber).birthDate(birthDate).name(name).password(password).email(email).gender(Gender.MALE).build());
