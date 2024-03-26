@@ -12,6 +12,7 @@ import dto.user.LoginDto;
 import entity.Client;
 import enumeration.ActivationStatus;
 import exception.BaseException;
+import exception.user.client.ClientDeactivateException;
 import exception.user.client.ClientNotFoundException;
 import exception.user.client.ClientExistException;
 import repository.ClientRepository;
@@ -40,8 +41,8 @@ public class ClientService implements UserService {
     @Override
     public int login(LoginDto loginDto) throws BaseException {
     	Client client = clientRepository.get(loginDto.getEmail(), loginDto.getPassword());
-    	if (client == null) 
-    		throw new ClientNotFoundException();
+    	if (client == null) throw new ClientNotFoundException();
+		if (client.getStatus() == ActivationStatus.DEACTIVATE) throw new ClientDeactivateException();
     	
     	return client.getId();
     }

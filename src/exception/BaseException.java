@@ -1,11 +1,12 @@
 package exception;
 
+import lombok.extern.java.Log;
 import utils.FilePathConstants;
 import utils.DateTimeGenerator;
 
 import java.io.*;
 
-public class BaseException extends Exception{
+public abstract class BaseException extends Exception{
 
     public BaseException(){
         super("시스템에 오류가 발생했습니다. 다시 시도해주세요.");
@@ -17,28 +18,31 @@ public class BaseException extends Exception{
     }
 
     private void log() throws BaseException {
+        StringWriter stringWriter = null;
+        PrintWriter printWriter = null;
+
         FileWriter fileWriter = null;
         BufferedWriter bufferedWriter = null;
+
         try{
-            StringWriter stringWriter = new StringWriter();
-            PrintWriter printWriter = new PrintWriter(stringWriter);
+            stringWriter = new StringWriter();
+            printWriter = new PrintWriter(stringWriter);
             printStackTrace(printWriter);
-            String stackTraceAsString = stringWriter.toString();
-            printWriter.close();
-            stringWriter.close();
 
             fileWriter =  new FileWriter(FilePathConstants.LOG_PATH, true);
             bufferedWriter = new BufferedWriter(fileWriter);
-            bufferedWriter.write("[" + DateTimeGenerator.getDateTimeNow() + "] " + stackTraceAsString);
+            bufferedWriter.write("[" + DateTimeGenerator.getDateTimeNow() + "] " + stringWriter.toString());
             bufferedWriter.newLine();
         } catch (IOException e) {
-            throw new BaseException();
+            throw new LogException();
         } finally {
             try {
                 bufferedWriter.close();
                 fileWriter.close();
+                stringWriter.close();
+                printWriter.close();
             } catch (IOException e) {
-                throw new BaseException();
+                throw new LogException();
             }
         }
     }

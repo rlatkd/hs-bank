@@ -3,9 +3,12 @@ package service;
 import dto.user.LoginDto;
 import dto.user.RegisterUserDto;
 import entity.Admin;
+import enumeration.ActivationStatus;
 import exception.BaseException;
+import exception.user.admin.AdminDeactivateException;
 import exception.user.admin.AdminNotFoundException;
 import exception.user.admin.AdminExistException;
+import exception.user.client.ClientDeactivateException;
 import repository.AdminRepository;
 
 public class AdminService implements UserService {
@@ -31,7 +34,9 @@ public class AdminService implements UserService {
     public int login(LoginDto loginDto) throws BaseException {
     	Admin admin = adminRepository.get(loginDto.getEmail(), loginDto.getPassword());
 		if (admin == null) throw new AdminNotFoundException();
-		return admin.getId();
+        if (admin.getStatus() == ActivationStatus.DEACTIVATE) throw new AdminDeactivateException();
+
+        return admin.getId();
     }
     
 
