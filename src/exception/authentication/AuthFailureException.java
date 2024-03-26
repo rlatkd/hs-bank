@@ -1,4 +1,4 @@
-package exception.verification;
+package exception.authentication;
 
 import exception.BaseException;
 
