@@ -2,8 +2,13 @@ package view;
 
 import dto.account.GetAccountDto;
 import dto.account.RegisterAccountDto;
+import dto.account.RemoveAccountDto;
 import dto.inquiry.RegisterInquiryDto;
 import dto.inquiry.GetInquiryListDto;
+import dto.inquiry.RemoveInquiryDto;
+import dto.transaction.DepositDto;
+import dto.transaction.TransferDto;
+import dto.transaction.WithdrawDto;
 import dto.user.LoginDto;
 import dto.user.client.RegisterClientDto;
 import dto.user.client.UpdateClientDto;
@@ -421,7 +426,14 @@ public class ClientView extends View implements LoginView {
 						System.out.println(getAccountDto.toString());
 					}
 					System.out.print("> ");
-					accountService.removeAccount(Integer.parseInt(br.readLine()));
+					int id = Integer.parseInt(br.readLine());
+					accountService.removeAccount(
+							RemoveAccountDto
+									.builder()
+									.id(id)
+									.ownerId(userId)
+									.build()
+					);
 					System.out.println("         ___________________________________");
 					System.out.println("         |                                 |");
 					System.out.println("         |         삭제가 완료되었습니다         |");
@@ -514,7 +526,13 @@ public class ClientView extends View implements LoginView {
 					System.out.println();
 					System.out.print("> ");
 					amount = Long.parseLong(br.readLine());
-					transactionService.deposit(id, amount);
+					transactionService.deposit(
+							DepositDto.builder()
+									.accountId(id)
+									.amount(amount)
+									.ownerId(userId)
+									.build()
+					);
 					System.out.println();
 					System.out.println("         ___________________________________");
 					System.out.println("         |                                 |");
@@ -541,7 +559,13 @@ public class ClientView extends View implements LoginView {
 					System.out.println();
 					System.out.print("> ");
 					amount = Long.parseLong(br.readLine());
-					transactionService.withdraw(id, amount);
+					transactionService.withdraw(
+							WithdrawDto.builder()
+									.accountId(id)
+									.amount(amount)
+									.ownerId(userId)
+									.build()
+					);
 					System.out.println();
 					System.out.println("         ___________________________________");
 					System.out.println("         |                                 |");
@@ -619,7 +643,17 @@ public class ClientView extends View implements LoginView {
 		}
 
 		try {
-			transactionService.transfer(id, account, amount);
+//			transactionService.transfer(
+//					id, account, amount
+//			);
+			transactionService.transfer(
+					TransferDto.builder()
+							.withdrawAccountId(id)
+							.depositAccountNumber(account)
+							.amount(amount)
+							.withdrawAccountOwnerId(userId)
+							.build()
+			);
 			System.out.println("         ___________________________________");
 			System.out.println("         |                                 |");
 			System.out.println("         |         이체가 완료되었습니다         |");
@@ -676,7 +710,13 @@ public class ClientView extends View implements LoginView {
 					System.out.println("         |_________________________________|");
 					System.out.println();
 					System.out.print("> ");
-					inquiryService.removeInquiry(Integer.parseInt(br.readLine()));
+					int id = Integer.parseInt(br.readLine());
+					inquiryService.removeInquiry(
+							RemoveInquiryDto.builder()
+									.id(id)
+									.authorId(userId)
+									.build()
+					);
 					System.out.println("         ___________________________________");
 					System.out.println("         |                                 |");
 					System.out.println("         |         문의가 삭제되었습니다         |");
@@ -819,7 +859,7 @@ public class ClientView extends View implements LoginView {
 		if (category.equals("1")) {
 			try {
 				inquiryService.editInquiry(EditInquiryDto.builder().category(InquiryCategory.ACCOUNT).title(title)
-						.content(content).id(id).build());
+						.content(content).id(id).authorId(userId).build());
 				System.out.println("문의를 수정하였습니다.");
 			} catch (BaseException e) {
 				System.out.println(e.getMessage());
@@ -827,7 +867,7 @@ public class ClientView extends View implements LoginView {
 		} else if (category.equals("2")) {
 			try {
 				inquiryService.editInquiry(EditInquiryDto.builder().category(InquiryCategory.TRANSACTION).title(title)
-						.content(content).id(id).build());
+						.content(content).id(id).authorId(userId).build());
 				System.out.println("문의를 수정하였습니다.");
 			} catch (BaseException e) {
 				System.out.println(e.getMessage());
