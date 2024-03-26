@@ -214,7 +214,7 @@ public class ClientView extends View implements LoginView {
 
 		while (true) {
 			System.out.println("[이름]");
-			System.out.println("예) 김상훈");
+			System.out.println("예) 김덕배");
 			System.out.println();
 			System.out.print("> ");
 			try {
@@ -252,7 +252,7 @@ public class ClientView extends View implements LoginView {
 		while (true) {
 			System.out.println();
 			System.out.println("[전화번호]");
-			System.out.println("예) 010-2627-0378");
+			System.out.println("예) 010-1234-5678");
 			System.out.println();
 			System.out.print("> ");
 			try {
@@ -269,7 +269,7 @@ public class ClientView extends View implements LoginView {
 		while (true) {
 			System.out.println();
 			System.out.println("[생년월일]");
-			System.out.println("예) 19960429");
+			System.out.println("예) 19990101");
 			System.out.println();
 			System.out.print("> ");
 			try {
@@ -291,7 +291,7 @@ public class ClientView extends View implements LoginView {
 		while (true) {
 			System.out.println();
 			System.out.println("[이메일]");
-			System.out.println("예) rlatkdgns042@naver.com");
+			System.out.println("예) kosa123@hyosung.com");
 			System.out.println();
 			System.out.print("> ");
 			try {
@@ -895,6 +895,10 @@ public class ClientView extends View implements LoginView {
 					System.out.println();
 					System.out.println(clientService.getCurrentClient(userId).toString());
 					update();
+					System.out.println("         ___________________________________");
+					System.out.println("         |                                 |");
+					System.out.println("         |        회원 정보가 수정되었습니다      |");
+					System.out.println("         |_________________________________|");
 					break;
 				case "2":
 					System.out.println();
@@ -920,12 +924,18 @@ public class ClientView extends View implements LoginView {
 	//계정 정보 수정 - 프린트 미완
 	public void update() {
 		String email, password, name, gender, birthDate, userPhoneNumber = "";
-		System.out.println("[계정 정보 - 업데이트]");
-		System.out.print("업데이트에 필요한 정보를 입력해 주세요\n");
+		System.out.println("         ___________________________________");
+		System.out.println("         |                                 |");
+		System.out.println("         |         개인정보를 수정합니다         |");
+		System.out.println("         |   수정할 정보를 양식에 맞게 입력해주세요   |");		
+		System.out.println("         |_________________________________|");
+		System.out.println();
 
 		while (true) {
-			System.out.println("성함을 입력해 주세요");
-			System.out.print("성함 : ");
+			System.out.println("[이름]");
+			System.out.println("예) 김덕배");
+			System.out.println();
+			System.out.print("> ");
 			try {
 				name = br.readLine();
 				RegexValidator.validateRegex(name, RegexValidator.NAME_REGEX);
@@ -938,8 +948,12 @@ public class ClientView extends View implements LoginView {
 		}
 
 		while (true) {
-			System.out.println("성별을 입력해 주세요");
-			System.out.print("남성 (1), 여성 (2) : ");
+			System.out.println();
+			System.out.println("[성별]");
+			System.out.println("[1] 남성       [2] 여성");
+			System.out.println("예) 1");
+			System.out.println();
+			System.out.print("> ");
 			try {
 				gender = br.readLine();
 				if (gender.equals("1") || gender.equals("2")) {
@@ -955,8 +969,11 @@ public class ClientView extends View implements LoginView {
 		}
 
 		while (true) {
-			System.out.println("전화번호를 입력해 주세요");
-			System.out.print("전화번호 (ex. 010-1100-2034) : ");
+			System.out.println();
+			System.out.println("[전화번호]");
+			System.out.println("예) 010-1234-5678");
+			System.out.println();
+			System.out.print("> ");
 			try {
 				userPhoneNumber = br.readLine();
 				RegexValidator.validateRegex(userPhoneNumber, RegexValidator.PHONE_NUMBER_REGEX);
@@ -969,8 +986,11 @@ public class ClientView extends View implements LoginView {
 		}
 
 		while (true) {
-			System.out.println("생년월일을 입력해 주세요");
-			System.out.print("생년월일 (ex.19800203) : ");
+			System.out.println();
+			System.out.println("[생년월일]");
+			System.out.println("예) 19990101");
+			System.out.println();
+			System.out.print("> ");
 			try {
 				birthDate = br.readLine();
 				RegexValidator.validateRegex(birthDate, RegexValidator.BIRTH_DATE_REGEX);
@@ -983,8 +1003,11 @@ public class ClientView extends View implements LoginView {
 		}
 
 		while (true) {
-			System.out.println("이메일을 입력해 주세요");
-			System.out.print("이메일 (ex. hyoseung@kosa.or.kr) : ");
+			System.out.println();
+			System.out.println("[이메일]");
+			System.out.println("예) kosa123@hyosung.com");
+			System.out.println();
+			System.out.print("> ");
 			try {
 				email = br.readLine();
 				RegexValidator.validateRegex(email, RegexValidator.EMAIL_REGEX);
@@ -997,8 +1020,11 @@ public class ClientView extends View implements LoginView {
 		}
 
 		while (true) {
-			System.out.println("비밀번호를 입력해 주세요");
-			System.out.print("비밀번호 (6글자 이상, 특수 문자, 영문자, 숫자만 가능) : ");
+			System.out.println();
+			System.out.println("[비밀번호]");
+			System.out.println("영문, 숫자, 특수문자가 최소 1개씩 들어간 6자리 이상을 입력해주세요");
+			System.out.println();
+			System.out.print("> ");
 			try {
 				password = br.readLine();
 				RegexValidator.validateRegex(password, RegexValidator.PASSWORD_REGEX);
@@ -1021,7 +1047,6 @@ public class ClientView extends View implements LoginView {
 		} catch (BaseException e) {
 			System.out.println(e.getMessage());
 		}
-		System.out.println("업데이트 되었습니다.");
 	}
 
 	@Override
