@@ -11,7 +11,7 @@ public enum AdminType implements Serializable {
     SUB("서브 관리자");
 
     private String korean;
-    private AdminType(String korean){
+    AdminType(String korean){
         this.korean = korean;
     }
 }

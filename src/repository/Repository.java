@@ -8,6 +8,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static exception.BaseException.log;
+
 public abstract class Repository<E extends Entity> {
     protected List<E> entityList;
     protected String path;
@@ -28,9 +30,11 @@ public abstract class Repository<E extends Entity> {
 
             Object object = null;
             while ((object = objectInputStream.readObject()) != null)
-                entityList = (List<E>) object;
+                entityList = (ArrayList<E>) object;
         } catch (EOFException e) {
+            log(e);
         } catch (IOException | ClassNotFoundException e) {
+            log(e);
             throw new DataAccessException();
         } finally {
             try {
@@ -38,6 +42,7 @@ public abstract class Repository<E extends Entity> {
                 if(bufferedInputStream != null) bufferedInputStream.close();
                 if(fileInputStream != null) fileInputStream.close();
             } catch (IOException e) {
+                log(e);
                 throw new DataAccessException();
             }
         }
@@ -53,6 +58,7 @@ public abstract class Repository<E extends Entity> {
 
             objectOutputStream.writeObject(entityList);
         } catch (IOException e) {
+            log(e);
             throw new DataAccessException();
         } finally {
             try {
@@ -60,6 +66,7 @@ public abstract class Repository<E extends Entity> {
                 bufferedOutputStream.close();
                 fileOutputStream.close();
             } catch (IOException e) {
+                log(e);
                 throw new DataAccessException();
             }
         }

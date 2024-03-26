@@ -11,7 +11,7 @@ public enum Gender implements Serializable {
     FEMALE("여자");
 
     private String korean;
-    private Gender(String korean){
+    Gender(String korean){
         this.korean = korean;
     }
 }

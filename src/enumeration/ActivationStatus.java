@@ -11,7 +11,7 @@ public enum ActivationStatus implements Serializable {
     DEACTIVATE("비활성화");
 
     private String korean;
-    private ActivationStatus(String korean){
+    ActivationStatus(String korean){
         this.korean = korean;
     }
 }

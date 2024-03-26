@@ -12,7 +12,7 @@ public enum TransactionType implements Serializable {
     TRANSFER("이체");
 
     private String korean;
-    private TransactionType(String korean){
+    TransactionType(String korean){
         this.korean = korean;
     }
 }

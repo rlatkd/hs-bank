@@ -11,7 +11,7 @@ public enum InquiryCategory implements Serializable {
     TRANSACTION("거래");
 
     private String korean;
-    private InquiryCategory(String korean){
+    InquiryCategory(String korean){
         this.korean = korean;
     }
 }
