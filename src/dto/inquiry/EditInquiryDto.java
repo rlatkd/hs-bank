@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 public class EditInquiryDto {
     private int id;
+    private int authorId;
     private InquiryCategory category;
     private String title;
     private String content;

@@ -3,6 +3,7 @@ package repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import entity.Account;
 import utils.FilePathConstants;
 import entity.Inquiry;
 import exception.BaseException;
@@ -28,5 +29,12 @@ public class InquiryRepository extends Repository<Inquiry> {
             }
         }
         return inquiryList;
+    }
+
+    public Inquiry get(int id, int authorId) throws BaseException {
+        load();
+        for(Inquiry inquiry : entityList)
+            if(inquiry.getId() == id && inquiry.getAuthorId() == authorId) return inquiry;
+        return null;
     }
 }

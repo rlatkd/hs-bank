@@ -80,7 +80,6 @@ public abstract class Repository<E extends Entity> {
     public final void add(E entity) throws BaseException {
         load();
         entity.setId(getLastEntity() == null ? 1 : getLastEntity().getId() + 1);
-        //System.out.println(entity.getId());
         entityList.add(entity);
         save();
     }
