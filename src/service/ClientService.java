@@ -61,7 +61,7 @@ public class ClientService implements UserService {
 
     	client.setName(updateClientDto.getName());
     	client.setEmail(updateClientDto.getEmail());
-    	client.setPassword(updateClientDto.getEmail());
+    	client.setPassword(updateClientDto.getPassword());
     	client.setBirthDate(updateClientDto.getBirthDate());
     	client.setGender(updateClientDto.getGender());
     	client.setPhoneNumber(updateClientDto.getPhoneNumber());

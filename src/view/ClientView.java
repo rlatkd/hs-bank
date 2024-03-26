@@ -522,9 +522,10 @@ public class ClientView extends View implements LoginView {
 
             //캡챠 인증 추가
             System.out.println();
-        	System.out.println("[캡챠인증] 아래의 그림과 같은 번호를 입력해 인증을 완료해주세요.");
+        	System.out.println("[CAPTCHA 인증] 아래의 그림과 같은 번호를 입력해 인증을 완료해주세요.");
         	System.out.println();
-            
+
+            int count = 0;
         	while (true) {
         		try {
             		String captchaNumbers = CaptchaAuthentication.generateCaptchaNumbers();
@@ -533,18 +534,27 @@ public class ClientView extends View implements LoginView {
             		inputAuthNumber = br.readLine();
             		boolean matches = inputAuthNumber.matches(captchaNumbers);
             		if (matches) {
-            			System.out.println("[캡챠인증] 인증에 성공했습니다.\n");
-            			break;
-            		} else {
+                        System.out.println("[CAPTCHA 인증] 인증에 성공했습니다.\n");
+                        break;
+                    } else if(++count == 5) {
+                        System.out.println("CAPTCHA 인증을 5회 잘못 입력하셨습니다.\n10초간 대기 후 다시 시도해주세요.");
+                        for (int i = 10; i > 0; i--) {
+                            System.out.println(i + "....");
+                            Thread.sleep(1000);
+                        }
+                        count = 0;
+                    } else {
             			throw new AuthFailureException();
             		}
     			} catch (IOException e) {
     				System.out.println(e.getMessage());
-    			} catch (BaseException e) {
-    				System.out.println(e.getMessage());
-    			}
-        	}
-        	
+    			} catch (InterruptedException e) {
+                    System.out.println("시스템에 오류가 발생했습니다. 다시 시도해주세요.");
+                } catch (BaseException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+
             LoginDto loginDto = LoginDto.builder().email(email).password(password).build();
 
             try {
