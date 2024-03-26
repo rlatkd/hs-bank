@@ -14,6 +14,7 @@ public class GetInquiryListDto {
 
     public static GetInquiryListDto toDto(Inquiry inquiry, String authorName){
         return GetInquiryListDto.builder().
+                id(inquiry.getId()).
                 category(inquiry.getCategory().getKorean()).
                 authorName(authorName).
                 title(inquiry.getTitle()).

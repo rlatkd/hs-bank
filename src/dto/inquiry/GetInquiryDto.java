@@ -16,6 +16,7 @@ public class GetInquiryDto {
 
     public static GetInquiryDto toDto(Inquiry inquiry){
         return GetInquiryDto.builder()
+                .id(inquiry.getId())
                 .category(inquiry.getCategory().getKorean())
                 .authorId(inquiry.getAuthorId())
                 .status(inquiry.getStatus().getKorean())
