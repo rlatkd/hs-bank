@@ -26,7 +26,7 @@ public class AdminService implements UserService {
     @Override
     public void register(RegisterUserDto registerAdminDto) throws BaseException {
         if (adminRepository.isExist(registerAdminDto.getEmail())) throw new AdminExistException();
-        adminRepository.add((Admin) registerAdminDto.toEntity());
+        adminRepository.add((Admin) registerAdminDto.toEntity(adminRepository.getNextId()));
     }
 
     //로그인

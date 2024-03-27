@@ -40,7 +40,7 @@ public class AccountService {
         if(accountRepository.isExist(registerAccountDto.getNumber()))
             throw new AccountExistException();
 
-        accountRepository.add(registerAccountDto.toEntity());
+        accountRepository.add(registerAccountDto.toEntity(accountRepository.getNextId()));
     }
 
     public List<GetAccountDto> getAccountList(int ownerId) throws BaseException {

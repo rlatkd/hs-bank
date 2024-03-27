@@ -14,13 +14,14 @@ public class WithdrawDto {
     private int ownerId;
     private long amount;
 
-    public Transaction toEntity(){
-        return Transaction.builder().
-                date(DateTimeGenerator.getDateTimeNow()).
-                type(TransactionType.WITHDRAW).
-                amount(amount).
-                withdrawAccountId(accountId).
-                status(TransactionStatus.COMPLETE).
-                build();
+    public Transaction toEntity(int id){
+        return Transaction.builder()
+                .id(id)
+                .date(DateTimeGenerator.getDateTimeNow())
+                .type(TransactionType.WITHDRAW)
+                .amount(amount)
+                .withdrawAccountId(accountId)
+                .status(TransactionStatus.COMPLETE)
+                .build();
     }
 }

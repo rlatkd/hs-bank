@@ -15,8 +15,9 @@ public class RegisterInquiryDto {
     private String title;
     private String content;
 
-    public Inquiry toEntity(){
+    public Inquiry toEntity(int id){
         return Inquiry.builder()
+                .id(id)
                 .authorId(authorId)
                 .category(category)
                 .status(InquiryStatus.WAIT)

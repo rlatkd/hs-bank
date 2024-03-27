@@ -74,12 +74,13 @@ public abstract class Repository<E extends Entity> {
     public final void update() throws BaseException {
         save();
     }
-    protected final E getLastEntity() {
-        return entityList.isEmpty() ? null : entityList.get(entityList.size() - 1);
+
+    public final int getNextId() throws BaseException {
+        load();
+        return entityList.isEmpty() ? 1 : entityList.get(entityList.size() - 1).getId();
     }
     public final void add(E entity) throws BaseException {
         load();
-        entity.setId(getLastEntity() == null ? 1 : getLastEntity().getId() + 1);
         entityList.add(entity);
         save();
     }

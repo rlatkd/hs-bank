@@ -15,15 +15,17 @@ public class RegisterClientDto extends RegisterUserDto {
 	private Gender gender;
 	private String phoneNumber;
 
-	public Client toEntity(){
+	public Client toEntity(int id){
 		return Client
 				.builder()
+				.id(id)
 				.name(name)
 				.email(email)
 				.password(password)
 				.birthDate(birthDate)
 				.gender(gender)
 				.phoneNumber(phoneNumber)
+				.point(0)
 				.createdAt(DateTimeGenerator.getDateTimeNow())
 				.status(ActivationStatus.ACTIVATE)
 				.build();

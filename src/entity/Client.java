@@ -10,6 +10,7 @@ public class Client extends User{
 	private String birthDate;
 	private Gender gender;
 	private String phoneNumber;
+	private int point;
 	private String createdAt;
 	
 	public void setBirthDate(String birthDate) {
@@ -21,5 +22,10 @@ public class Client extends User{
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-	
+	public void setPoint(int point) {
+		this.point = point;
+	}
+
+
+
 }

@@ -59,7 +59,7 @@ public class InquiryService {
 
     // 문의 등록
     public void registerInquiry(RegisterInquiryDto registerInquiryDto) throws BaseException {
-        inquiryRepository.add(registerInquiryDto.toEntity());
+        inquiryRepository.add(registerInquiryDto.toEntity(inquiryRepository.getNextId()));
     }
 
     //문의 수정

@@ -11,5 +11,5 @@ public abstract class RegisterUserDto {
 	protected String email;
 	protected String password;
 
-	public abstract User toEntity();
+	public abstract User toEntity(int id);
 }
