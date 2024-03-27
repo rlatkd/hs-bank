@@ -23,10 +23,9 @@ public class TransactionRepository extends Repository<Transaction>{
         load();
         List<Transaction> transactionList = new ArrayList<>();
         for(Transaction transaction : entityList)
-            if(transaction.getDepositAccountId() == accountId
-                    && transaction.getWithdrawAccountId() == accountId)
+            if(transaction.getDepositAccountId() == accountId | transaction.getWithdrawAccountId() == accountId)
                 transactionList.add(transaction);
 
-        return entityList;
+        return transactionList;
     }
 }

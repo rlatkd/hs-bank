@@ -10,6 +10,7 @@ import exception.user.admin.AdminNotFoundException;
 import exception.user.admin.AdminExistException;
 import exception.user.client.ClientDeactivateException;
 import repository.AdminRepository;
+import dto.user.admin.RegisterMainAdminDto;
 
 public class AdminService implements UserService {
     private static AdminService adminService;
@@ -22,11 +23,21 @@ public class AdminService implements UserService {
         return adminService;
     }
 
+
     //서브관리자 생성
     @Override
     public void register(RegisterUserDto registerAdminDto) throws BaseException {
         if (adminRepository.isExist(registerAdminDto.getEmail())) throw new AdminExistException();
         adminRepository.add((Admin) registerAdminDto.toEntity(adminRepository.getNextId()));
+    }
+
+    public void registerMain(RegisterUserDto registerMainAdminDto) throws BaseException {
+        if (adminRepository.isExist(registerMainAdminDto.getEmail())) throw new AdminExistException();
+        adminRepository.add((Admin) registerMainAdminDto.toEntity());
+    }
+
+    public void checkExistMain(RegisterUserDto registerMainAdminDto) throws BaseException {
+        if (adminRepository.isExist(registerMainAdminDto.getEmail())) throw new AdminExistException();
     }
 
     //로그인
@@ -38,6 +49,5 @@ public class AdminService implements UserService {
 
         return admin.getId();
     }
-    
 
 }
