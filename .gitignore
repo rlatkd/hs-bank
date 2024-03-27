@@ -7,6 +7,7 @@ out
 bin
 .classpath
 .project
+.setting
 
 # file
 data
