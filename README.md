@@ -1,7 +1,7 @@
 ## 📁 디렉터리 구조
 
 ```
-📁 internet-banking
+📁 HS_BANK
  ├──── 📁 .github
  │      ├──── 📁 ISSUE_TEMPLATE
  │      │      ├──── 📄 ✅-feature-request.md
