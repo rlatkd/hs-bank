@@ -9,7 +9,7 @@ import lombok.experimental.SuperBuilder;
 
 @Getter
 @SuperBuilder
-public class RegisterAdminDto extends RegisterUserDto {
+public class RegisterMainAdminDto extends RegisterUserDto {
     public Admin toEntity(){
         return Admin
                 .builder()
@@ -17,7 +17,7 @@ public class RegisterAdminDto extends RegisterUserDto {
                 .email(email)
                 .password(password)
                 .status(ActivationStatus.ACTIVATE)
-                .type(AdminType.SUB)
+                .type(AdminType.MAIN)
                 .build();
     }
 }
