@@ -13,6 +13,7 @@ public class GetCurrentClientDto {
 	private String birthDate;
 	private String gender;
 	private String phoneNumber;
+	private int point;
 
 	public static GetCurrentClientDto toDto(Client client) {
 		return GetCurrentClientDto
@@ -23,6 +24,7 @@ public class GetCurrentClientDto {
 				.birthDate(client.getBirthDate())
 				.gender(client.getGender().getKorean())
 				.phoneNumber(client.getPhoneNumber())
+				.point(client.getPoint())
 				.build();
 	}
 
@@ -35,6 +37,7 @@ public class GetCurrentClientDto {
 				", birthDate='" + birthDate + '\'' +
 				", gender='" + gender + '\'' +
 				", phoneNumber='" + phoneNumber + '\'' +
+				", point='" + point + '\'' +
 				'}' + '\n';
 	}
 }

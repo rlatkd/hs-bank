@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import dto.user.RegisterUserDto;
+import dto.user.client.AddPointDto;
 import dto.user.client.UpdateClientDto;
 import dto.user.client.GetClientDto;
 import dto.user.client.GetCurrentClientDto;
@@ -34,7 +35,7 @@ public class ClientService implements UserService {
 	public void register(RegisterUserDto registerClientDto) throws BaseException {
     	if (clientRepository.isExist(registerClientDto.getEmail()))
 			throw new ClientExistException();
-    	clientRepository.add((Client) registerClientDto.toEntity());
+    	clientRepository.add((Client) registerClientDto.toEntity(clientRepository.getNextId()));
 	}
 
 	//로그인
@@ -98,4 +99,11 @@ public class ClientService implements UserService {
     	client.setStatus(ActivationStatus.ACTIVATE);
     	clientRepository.update();
     }
+
+	public void addBonus(AddPointDto addPointDto) throws BaseException {
+		Client client = clientRepository.get(addPointDto.getClientId());
+		if (client == null) throw new ClientNotFoundException();
+		client.setPoint(client.getPoint() + addPointDto.getPoint());
+		clientRepository.update();
+	}
 }

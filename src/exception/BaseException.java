@@ -7,9 +7,10 @@ import utils.DateTimeGenerator;
 import java.io.*;
 
 public abstract class BaseException extends Exception{
+    public static final String DEFAULT_MESSAGE = "시스템에 오류가 발생했습니다. 다시 시도해주세요.";
 
     public BaseException(){
-        super("시스템에 오류가 발생했습니다. 다시 시도해주세요.");
+        super(DEFAULT_MESSAGE);
     }
 
     public BaseException(String message) throws BaseException {

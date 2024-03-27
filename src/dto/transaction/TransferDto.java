@@ -15,14 +15,15 @@ public class TransferDto {
     private String depositAccountNumber;
     private long amount;
 
-    public Transaction toEntity(int depositAccountId){
-        return Transaction.builder().
-                date(DateTimeGenerator.getDateTimeNow()).
-                type(TransactionType.TRANSFER).
-                amount(amount).
-                withdrawAccountId(withdrawAccountId).
-                depositAccountId(depositAccountId).
-                status(TransactionStatus.COMPLETE).
-                build();
+    public Transaction toEntity(int id, int depositAccountId){
+        return Transaction.builder()
+                .id(id)
+                .date(DateTimeGenerator.getDateTimeNow())
+                .type(TransactionType.TRANSFER)
+                .amount(amount)
+                .withdrawAccountId(withdrawAccountId)
+                .depositAccountId(depositAccountId)
+                .status(TransactionStatus.COMPLETE)
+                .build();
     }
 }

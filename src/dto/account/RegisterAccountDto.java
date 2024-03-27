@@ -13,14 +13,15 @@ public class RegisterAccountDto {
     private String number;
     private int ownerId;
 
-    public Account toEntity(){
-        return Account.builder().
-                bankName(bankName).
-                number(number).
-                ownerId(ownerId).
-                balance(0).
-                registeredAt(getDateTimeNow()).
-                status(ActivationStatus.ACTIVATE).
-                build();
+    public Account toEntity(int id){
+        return Account.builder()
+                .id(id)
+                .bankName(bankName)
+                .number(number)
+                .ownerId(ownerId)
+                .balance(0)
+                .registeredAt(getDateTimeNow())
+                .status(ActivationStatus.ACTIVATE)
+                .build();
     }
 }

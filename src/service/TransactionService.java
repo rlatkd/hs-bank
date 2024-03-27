@@ -43,7 +43,10 @@ public class TransactionService {
         return transactionService;
     }
 
-    public List<GetTransactionDto> getTransactionList(int accountId) throws BaseException {
+    public List<GetTransactionDto> getTransactionList(int accountId, int ownerId) throws BaseException {
+        Account account = accountRepository.get(accountId, ownerId);
+        if(account == null) throw new AccountNotFoundException();
+
         List<Transaction> transactionList = transactionRepository.getEntityList(accountId);
         if(transactionList.isEmpty()) throw new TransactionListEmptyException();
 
@@ -52,13 +55,13 @@ public class TransactionService {
                 .collect(Collectors.toList());
     }
 
-    public synchronized void deposit(DepositDto depositDto) throws BaseException {
+    public void deposit(DepositDto depositDto) throws BaseException {
 
         Account account = accountRepository.get(depositDto.getAccountId(), depositDto.getOwnerId());
         if(account == null) throw new AccountNotFoundException();
         if(!isActiveAccount(account)) throw new AccountDeactivateException();
 
-        Transaction transaction = depositDto.toEntity();
+        Transaction transaction = depositDto.toEntity(transactionRepository.getNextId());
 
         account.setBalance(account.getBalance() + depositDto.getAmount());
         accountRepository.update();
@@ -66,13 +69,13 @@ public class TransactionService {
         transactionRepository.add(transaction);
     }
 
-    public synchronized void withdraw(WithdrawDto withdrawDto) throws BaseException {
+    public void withdraw(WithdrawDto withdrawDto) throws BaseException {
         Account account = accountRepository.get(withdrawDto.getAccountId(), withdrawDto.getOwnerId());
         if(account == null) throw new AccountNotFoundException();
         if(!isActiveAccount(account)) throw new AccountDeactivateException();
         if(account.getBalance() < withdrawDto.getAmount()) throw new BalanceInsufficientException();
 
-        Transaction transaction = withdrawDto.toEntity();
+        Transaction transaction = withdrawDto.toEntity(transactionRepository.getNextId());
 
         account.setBalance(account.getBalance() - withdrawDto.getAmount());
         accountRepository.update();
@@ -80,7 +83,7 @@ public class TransactionService {
         transactionRepository.add(transaction);
     }
 
-    public synchronized void transfer(TransferDto transferDto) throws BaseException {
+    public void transfer(TransferDto transferDto) throws BaseException {
         Account withdrawAccount = accountRepository.get(transferDto.getWithdrawAccountId(), transferDto.getWithdrawAccountOwnerId());
         if(withdrawAccount == null) throw new WithdrawAccountNotFoundException();
         if(!isActiveAccount(withdrawAccount)) throw new WithdrawAccountDeactivateException();
@@ -90,7 +93,7 @@ public class TransactionService {
         if(depositAccount == null) throw new DepositAccountNotFoundException();
         if(!isActiveAccount(depositAccount)) throw new DepositAccountDeactivateException();
 
-        Transaction transaction = transferDto.toEntity(depositAccount.getId());
+        Transaction transaction = transferDto.toEntity(transactionRepository.getNextId(), depositAccount.getId());
 
         withdrawAccount.setBalance(withdrawAccount.getBalance() - transferDto.getAmount());
 
@@ -100,7 +103,7 @@ public class TransactionService {
         transactionRepository.add(transaction);
     }
 
-    public synchronized void cancelTransaction(int id) throws BaseException {
+    public void cancelTransaction(int id) throws BaseException {
         Transaction transaction = transactionRepository.get(id);
         if(transaction == null) throw new TransactionNotFoundException();
         if(!(transaction.getType() == TransactionType.TRANSFER)) throw new NotTransferException();

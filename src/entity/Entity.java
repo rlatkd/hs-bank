@@ -9,7 +9,4 @@ import java.io.Serializable;
 @SuperBuilder
 public abstract class Entity implements Serializable {
     protected int id;
-    public final void setId(int id){
-        this.id = id;
-    }
 }
