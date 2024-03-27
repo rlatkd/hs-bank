@@ -2,8 +2,13 @@ package view;
 
 import dto.account.GetAccountDto;
 import dto.account.RegisterAccountDto;
+import dto.account.RemoveAccountDto;
 import dto.inquiry.RegisterInquiryDto;
 import dto.inquiry.GetInquiryListDto;
+import dto.inquiry.RemoveInquiryDto;
+import dto.transaction.DepositDto;
+import dto.transaction.TransferDto;
+import dto.transaction.WithdrawDto;
 import dto.user.LoginDto;
 import dto.user.client.RegisterClientDto;
 import dto.user.client.UpdateClientDto;
@@ -47,6 +52,7 @@ public class ClientView extends View implements LoginView {
 		System.out.println();
 	}
 
+	//고객서비스
 	public void mainMenu() {
 		boolean isRunning = true;
 		while (isRunning) {
@@ -76,6 +82,7 @@ public class ClientView extends View implements LoginView {
 		}
 	}
 	
+	//로그인
 	@Override
 	public void login() {
 		System.out.println("         ___________________________________");
@@ -187,7 +194,6 @@ public class ClientView extends View implements LoginView {
 				System.out.println("         |                                 |");
 				System.out.println("         |           로그인되었습니다           |");
 				System.out.println("         |_________________________________|");
-				System.out.println();
 				break;
 			} catch (BaseException e) {
 				System.out.println(e.getMessage());
@@ -195,7 +201,8 @@ public class ClientView extends View implements LoginView {
 		}
 	}
 	
-	public void signup() { // 회원가입
+	//회원가입
+	public void signup() {
 		String email, password, name, gender, birthDate, userPhoneNumber = "";
 		System.out.println("         ___________________________________");
 		System.out.println("         |                                 |");
@@ -207,7 +214,7 @@ public class ClientView extends View implements LoginView {
 
 		while (true) {
 			System.out.println("[이름]");
-			System.out.println("예) 김상훈");
+			System.out.println("예) 김덕배");
 			System.out.println();
 			System.out.print("> ");
 			try {
@@ -245,7 +252,7 @@ public class ClientView extends View implements LoginView {
 		while (true) {
 			System.out.println();
 			System.out.println("[전화번호]");
-			System.out.println("예) 010-2627-0378");
+			System.out.println("예) 010-1234-5678");
 			System.out.println();
 			System.out.print("> ");
 			try {
@@ -262,7 +269,7 @@ public class ClientView extends View implements LoginView {
 		while (true) {
 			System.out.println();
 			System.out.println("[생년월일]");
-			System.out.println("예) 19960429");
+			System.out.println("예) 19990101");
 			System.out.println();
 			System.out.print("> ");
 			try {
@@ -284,7 +291,7 @@ public class ClientView extends View implements LoginView {
 		while (true) {
 			System.out.println();
 			System.out.println("[이메일]");
-			System.out.println("예) rlatkdgns042@naver.com");
+			System.out.println("예) kosa123@hyosung.com");
 			System.out.println();
 			System.out.print("> ");
 			try {
@@ -333,12 +340,13 @@ public class ClientView extends View implements LoginView {
 		System.out.println();
 	}
 	
-
+	//메인
 	@Override
 	protected void proceed() {
 		mainMenu();
 		boolean isRunning = true;
 		while (isRunning) {
+			System.out.println();
 			System.out.println("         ___________________________________");
 			System.out.println("         |                                 |");
 			System.out.println("         |           메인 화면입니다           |");
@@ -384,6 +392,7 @@ public class ClientView extends View implements LoginView {
 		}
 	}
 	
+	//내 계좌 관리
 	public void manageMyAccount() {
 		boolean isRunning = true;
 		while (isRunning) {
@@ -417,7 +426,14 @@ public class ClientView extends View implements LoginView {
 						System.out.println(getAccountDto.toString());
 					}
 					System.out.print("> ");
-					accountService.removeAccount(Integer.parseInt(br.readLine()));
+					int id = Integer.parseInt(br.readLine());
+					accountService.removeAccount(
+							RemoveAccountDto
+									.builder()
+									.id(id)
+									.ownerId(userId)
+									.build()
+					);
 					System.out.println("         ___________________________________");
 					System.out.println("         |                                 |");
 					System.out.println("         |         삭제가 완료되었습니다         |");
@@ -438,6 +454,7 @@ public class ClientView extends View implements LoginView {
 		}
 	}
 	
+	//계좌 등록 DTO
 	public RegisterAccountDto returnRegisterAccountDto() {
 		String bankName, number;
 		while (true) {
@@ -473,43 +490,240 @@ public class ClientView extends View implements LoginView {
 		}
 		return RegisterAccountDto.builder().ownerId(userId).bankName(bankName).number(number).build();
 	}
-
-	public void customerInquiry() {
-		boolean isRunning = true;
-		System.out.println("[문의 페이지]");
+	
+	//입출금
+	public void receivePaid() {
+		Boolean isRunning = true;
 		while (isRunning) {
-			System.out.println("원하시는 기능을 입력해 주세요");
-			System.out.println("1. 문의 조회\n2. 문의 등록\n3. 문의 변경\n4. 문의 삭제");
+			System.out.println("         ___________________________________");
+			System.out.println("         |                                 |");
+			System.out.println("         |          입출금 서비스입니다          |");
+			System.out.println("         |       원하시는 메뉴를 선택 해주세요     |");
+			System.out.println("         |_________________________________|");
+			System.out.println();
+			System.out.println("[1] 입금       [2] 출금");
+			System.out.println();
+			System.out.print("> ");
 			try {
 				switch (br.readLine()) {
 				case "1":
-					System.out.println("[문의 조회]");
-					for (GetInquiryListDto getInquiryListDto : inquiryService.getInquiryList(userId)) {
-						System.out.println(getInquiryListDto.toString());
+					System.out.println();
+					for (GetAccountDto getAccountDto : accountService.getAccountList(userId)) {
+						System.out.println(getAccountDto.toString());
 					}
+					System.out.println("         ___________________________________");
+					System.out.println("         |                                 |");
+					System.out.println("         |       입금할 계좌를 선택해주세요       |");
+					System.out.println("         |_________________________________|");
+					System.out.println();
+					System.out.print("> ");
+					id = Integer.parseInt(br.readLine());
+					System.out.println();
+					System.out.println("         ___________________________________");
+					System.out.println("         |                                 |");
+					System.out.println("         |       입금할 금액을 입력해주세요        |");
+					System.out.println("         |_________________________________|");
+					System.out.println();
+					System.out.print("> ");
+					amount = Long.parseLong(br.readLine());
+					transactionService.deposit(
+							DepositDto.builder()
+									.accountId(id)
+									.amount(amount)
+									.ownerId(userId)
+									.build()
+					);
+					System.out.println();
+					System.out.println("         ___________________________________");
+					System.out.println("         |                                 |");
+					System.out.println("         |         입금이 완료되었습니다         |");
+					System.out.println("         |_________________________________|");
 					isRunning = false;
 					break;
 				case "2":
-					System.out.println("[문의 등록]");
-					makeRegisterInquiry();
+					System.out.println();
+					for (GetAccountDto getAccountDto : accountService.getAccountList(userId)) {
+						System.out.println(getAccountDto.toString());
+					}
+					System.out.println("         ___________________________________");
+					System.out.println("         |                                 |");
+					System.out.println("         |       출금할 계좌를 선택해주세요       |");
+					System.out.println("         |_________________________________|");
+					System.out.println();
+					System.out.print("> ");
+					id = Integer.parseInt(br.readLine());
+					System.out.println("         ___________________________________");
+					System.out.println("         |                                 |");
+					System.out.println("         |       출금할 금액을 입력해주세요        |");
+					System.out.println("         |_________________________________|");
+					System.out.println();
+					System.out.print("> ");
+					amount = Long.parseLong(br.readLine());
+					transactionService.withdraw(
+							WithdrawDto.builder()
+									.accountId(id)
+									.amount(amount)
+									.ownerId(userId)
+									.build()
+					);
+					System.out.println();
+					System.out.println("         ___________________________________");
+					System.out.println("         |                                 |");
+					System.out.println("         |         출금이 완료되었습니다         |");
+					System.out.println("         |_________________________________|");
 					isRunning = false;
 					break;
-				case "3":
+				default:
+					throw new IllegalArgumentException();
+				}
+			} catch (IllegalArgumentException | IOException e) {
+				System.out.println("올바른 입력이 아닙니다. 다시 입력해 주세요. ");
+			} catch (BaseException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+	}
+
+	//계좌 이체
+	public void accountTransfer() {
+		String account = "";
+		System.out.println();
+		try {
+			for (GetAccountDto getAccountDto : accountService.getAccountList(userId)) {
+				System.out.println(getAccountDto.toString());
+			}
+		} catch (BaseException e) {
+			System.out.println(e.getMessage());
+		}
+		while (true) {
+			System.out.println("         ___________________________________");
+			System.out.println("         |                                 |");
+			System.out.println("         |        본인 계좌를 선택해주세요        |");
+			System.out.println("         |_________________________________|");
+			System.out.println();
+			System.out.print("> ");
+			try {
+				id = Integer.parseInt(br.readLine());
+				break;
+			} catch (IOException e) {
+				System.out.println("올바르지 않은 입력입니다. 다시 입력해 주세요. ");
+			}
+		}
+		while (true) {
+			System.out.println();
+			System.out.println("         ___________________________________");
+			System.out.println("         |                                 |");
+			System.out.println("         |      이체할 계좌번호를 입력해주세요      |");
+			System.out.println("         |_________________________________|");
+			System.out.println();
+			System.out.print("> ");
+			try {
+				account = br.readLine();
+				RegexValidator.validateRegex(account, RegexValidator.ACCOUNT_NUMBER_REGEX);
+				break;
+			} catch (IOException | BaseException e) {
+				System.out.println("올바르지 않은 입력입니다. 다시 입력해 주세요. ");
+			}
+		}
+
+		while (true) {
+			System.out.println();
+			System.out.println("         ___________________________________");
+			System.out.println("         |                                 |");
+			System.out.println("         |       이체할 금액을 입력해주세요       |");
+			System.out.println("         |_________________________________|");
+			System.out.println();
+			System.out.print("> ");
+			try {
+				amount = Long.parseLong(br.readLine());
+				break;
+			} catch (IOException e) {
+				System.out.println("올바르지 않은 입력입니다. 다시 입력해 주세요. ");
+			}
+		}
+
+		try {
+//			transactionService.transfer(
+//					id, account, amount
+//			);
+			transactionService.transfer(
+					TransferDto.builder()
+							.withdrawAccountId(id)
+							.depositAccountNumber(account)
+							.amount(amount)
+							.withdrawAccountOwnerId(userId)
+							.build()
+			);
+			System.out.println("         ___________________________________");
+			System.out.println("         |                                 |");
+			System.out.println("         |         이체가 완료되었습니다         |");
+			System.out.println("         |_________________________________|");
+		} catch (BaseException e) {
+			System.out.print(e.getMessage());
+		}
+	}
+	
+	//고객 문의
+	public void customerInquiry() {
+		boolean isRunning = true;
+		while (isRunning) {
+			System.out.println("         ___________________________________");
+			System.out.println("         |                                 |");
+			System.out.println("         |         고객 문의 서비스입니다         |");
+			System.out.println("         |       원하시는 메뉴를 선택 해주세요     |");
+			System.out.println("         |_________________________________|");
+			System.out.println();
+			System.out.println("[1] 문의 조회       [2] 문의 등록       [3] 문의 변경       [4] 문의 삭제       [5] 메인으로");
+			System.out.println();
+			System.out.print("> ");
+			try {
+				switch (br.readLine()) {
+				case "1":
+					System.out.println();
 					for (GetInquiryListDto getInquiryListDto : inquiryService.getInquiryList(userId)) {
 						System.out.println(getInquiryListDto.toString());
 					}
-					System.out.println("[문의 변경]");
-					System.out.print("변경할 문의를 선택해 주세요. (id) : ");
+					break;
+				case "2":
+					System.out.println();
+					makeRegisterInquiry();
+					break;
+				case "3":
+					System.out.println();
+					for (GetInquiryListDto getInquiryListDto : inquiryService.getInquiryList(userId)) {
+						System.out.println(getInquiryListDto.toString());
+					}
+					System.out.println("         ___________________________________");
+					System.out.println("         |                                 |");
+					System.out.println("         |        변경할 문의를 선택해주세요       |");
+					System.out.println("         |_________________________________|");
+					System.out.println();
+					System.out.print("> ");
 					updateInquiry(Integer.parseInt(br.readLine()));
-					isRunning = false;
 					break;
 				case "4":
-					System.out.println("[문의 삭제]");
+					System.out.println();
 					System.out.println(inquiryService.getInquiryList(userId));
-					System.out.println("삭제할 문의를 선택해 주세요. (id) : ");
-					inquiryService.removeInquiry(Integer.parseInt(br.readLine()));
-					isRunning = false;
+					System.out.println("         ___________________________________");
+					System.out.println("         |                                 |");
+					System.out.println("         |        삭제할 문의를 선택해주세요       |");
+					System.out.println("         |_________________________________|");
+					System.out.println();
+					System.out.print("> ");
+					int id = Integer.parseInt(br.readLine());
+					inquiryService.removeInquiry(
+							RemoveInquiryDto.builder()
+									.id(id)
+									.authorId(userId)
+									.build()
+					);
+					System.out.println("         ___________________________________");
+					System.out.println("         |                                 |");
+					System.out.println("         |         문의가 삭제되었습니다         |");
+					System.out.println("         |_________________________________|");
 					break;
+				case "5":
+					isRunning = false;
 				default:
 					throw new IllegalArgumentException();
 				}
@@ -520,15 +734,89 @@ public class ClientView extends View implements LoginView {
 			}
 		}
 	}
+	
+	//문의 등록
+	public void makeRegisterInquiry() { // registerInquiry(RegisterInquiryDto registerInquiryDto)
+		String title = "";
+		String content = "";
+		InquiryCategory category = null;
+		boolean isRunning = true;
 
+		while (isRunning) {
+			System.out.println("         ___________________________________");
+			System.out.println("         |                                 |");
+			System.out.println("         |       문의 카테고리를 선택해주세요      |");
+			System.out.println("         |_________________________________|");
+			System.out.println();
+			System.out.println("[1] 계좌       [2] 거래");
+			System.out.println();
+			System.out.print("> ");
+			try {
+				String input = br.readLine();
+				switch (input) {
+				case "1":
+					category = InquiryCategory.ACCOUNT;
+					isRunning = false;
+					break;
+				case "2":
+					category = InquiryCategory.TRANSACTION;
+					isRunning = false;
+					break;
+				default:
+					throw new IllegalArgumentException("잘못된 카테고리입니다.");
+				}
+			} catch (IllegalArgumentException | IOException e) {
+				System.out.println("잘못된 입력입니다. 다시 입력해 주세요.");
+			}
+		}
+
+		while (true) {
+			System.out.println("         ___________________________________");
+			System.out.println("         |                                 |");
+			System.out.println("         |          문의를 작성해주세요          |");
+			System.out.println("         |_________________________________|");
+			System.out.println();
+			System.out.println("[제목]");
+			System.out.print("> ");
+			try {
+				title = br.readLine();
+				break;
+			} catch (IOException e) {
+				System.out.println("올바르지 않은 입력입니다. 다시 입력해 주세요.");
+			}
+		}
+
+		while (true) {
+			System.out.println();
+			System.out.println("[내용]");
+			System.out.print("> ");
+			try {
+				content = br.readLine();
+				break;
+			} catch (IOException e) {
+				System.out.println("올바르지 않은 입력입니다. 다시 입력해 주세요.");
+			}
+		}
+
+		try {
+			inquiryService.registerInquiry(RegisterInquiryDto.builder().category(category).title(title).content(content)
+					.authorId(userId).build());
+			System.out.println("         ___________________________________");
+			System.out.println("         |                                 |");
+			System.out.println("         |          문의를 등록했습니다          |");
+			System.out.println("         |_________________________________|");
+		} catch (BaseException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	//문의 변경 - 프린트 미완
 	public void updateInquiry(int id) {
-		System.out.println("문의 변경 페이지입니다. 변경할 사항을 적어 주세요. ");
 		String title = "";
 		String content = "";
 		String category = null;
 		boolean isRunning = true;
 		while (isRunning) {
-			System.out.println("카테고리를 지정해 주세요.");
 			System.out.println("1. 계좌\n2. 거래");
 			System.out.print("[입력] : ");
 			try {
@@ -571,7 +859,7 @@ public class ClientView extends View implements LoginView {
 		if (category.equals("1")) {
 			try {
 				inquiryService.editInquiry(EditInquiryDto.builder().category(InquiryCategory.ACCOUNT).title(title)
-						.content(content).id(id).build());
+						.content(content).id(id).authorId(userId).build());
 				System.out.println("문의를 수정하였습니다.");
 			} catch (BaseException e) {
 				System.out.println(e.getMessage());
@@ -579,7 +867,7 @@ public class ClientView extends View implements LoginView {
 		} else if (category.equals("2")) {
 			try {
 				inquiryService.editInquiry(EditInquiryDto.builder().category(InquiryCategory.TRANSACTION).title(title)
-						.content(content).id(id).build());
+						.content(content).id(id).authorId(userId).build());
 				System.out.println("문의를 수정하였습니다.");
 			} catch (BaseException e) {
 				System.out.println(e.getMessage());
@@ -587,91 +875,39 @@ public class ClientView extends View implements LoginView {
 		}
 	}
 
-	public void makeRegisterInquiry() { // registerInquiry(RegisterInquiryDto registerInquiryDto)
-		String title = "";
-		String content = "";
-		InquiryCategory category = null;
-		boolean isRunning = true;
-
-		while (isRunning) {
-			System.out.println("카테고리를 지정해 주세요.");
-			System.out.println("1. 계좌\n2. 거래");
-			System.out.print("[입력] : ");
-			try {
-				String input = br.readLine();
-				switch (input) {
-				case "1":
-					System.out.println("[계좌] 카테고리를 선택하셨습니다.");
-					category = InquiryCategory.ACCOUNT;
-					isRunning = false;
-					break;
-				case "2":
-					System.out.println("[거래] 카테고리를 선택하셨습니다.");
-					category = InquiryCategory.TRANSACTION;
-					isRunning = false;
-					break;
-				default:
-					throw new IllegalArgumentException("잘못된 카테고리입니다.");
-				}
-			} catch (IllegalArgumentException | IOException e) {
-				System.out.println("잘못된 입력입니다. 다시 입력해 주세요.");
-			}
-		}
-
-		while (true) {
-			System.out.print("[제목] : ");
-			try {
-				title = br.readLine();
-				break;
-			} catch (IOException e) {
-				System.out.println("올바르지 않은 입력입니다. 다시 입력해 주세요.");
-			}
-		}
-
-		while (true) {
-			System.out.print("\n[본문] : ");
-			try {
-				content = br.readLine();
-				break;
-			} catch (IOException e) {
-				System.out.println("올바르지 않은 입력입니다. 다시 입력해 주세요.");
-			}
-		}
-
-		try {
-			inquiryService.registerInquiry(RegisterInquiryDto.builder().category(category).title(title).content(content)
-					.authorId(userId).build());
-			System.out.println("문의를 등록하였습니다.");
-		} catch (BaseException e) {
-			System.out.println(e.getMessage());
-		}
-	}
-
+	//마이페이지
 	public void myPage() {
 		boolean isRunning = true;
-		System.out.println("[마이 페이지]");
 		while (isRunning) {
-			System.out.println("원하시는 메뉴를 입력해 주세요");
-			System.out.println("1. 계정 정보 조회\n2. 계정 정보 수정\n3. 계정 정보 삭제");
-			System.out.print("[입력] : ");
+			System.out.println("         ___________________________________");
+			System.out.println("         |                                 |");
+			System.out.println("         |         마이페이지 서비스입니다        |");
+			System.out.println("         |       원하시는 메뉴를 선택 해주세요     |");
+			System.out.println("         |_________________________________|");
+			System.out.println();
+			System.out.println("[1] 계정 정보 수정       [2] 회원 탈퇴");
+			System.out.println();
+			System.out.print("> ");
+
 			try {
 				switch (br.readLine()) {
 				case "1":
-					System.out.println("[계정 정보 조회]");
+					System.out.println();
 					System.out.println(clientService.getCurrentClient(userId).toString());
-					isRunning = false;
+					update();
+					System.out.println("         ___________________________________");
+					System.out.println("         |                                 |");
+					System.out.println("         |        회원 정보가 수정되었습니다      |");
+					System.out.println("         |_________________________________|");
 					break;
 				case "2":
-					System.out.println("[계정 정보 수정]");
 					System.out.println();
-					update();
-					isRunning = false;
-					break;
-				case "3":
-					System.out.println("[계정 정보 삭제]");
-					System.out.println("계정 삭제를 진행합니다...");
 					clientService.removeClient(userId);
-					System.out.println("계정 삭제가 완료됐습니다. 다른 계정으로 회원가입 해 주세요.");
+					System.out.println("         ___________________________________");
+					System.out.println("         |                                 |");
+					System.out.println("         |        회원 탈퇴가 완료되었습니다      |");
+					System.out.println("         |        이용해주셔서 감사합니다         |");
+					System.out.println("         |_________________________________|");
 					proceed();
 					break;
 				default:
@@ -685,14 +921,21 @@ public class ClientView extends View implements LoginView {
 		}
 	}
 
+	//계정 정보 수정 - 프린트 미완
 	public void update() {
 		String email, password, name, gender, birthDate, userPhoneNumber = "";
-		System.out.println("[계정 정보 - 업데이트]");
-		System.out.print("업데이트에 필요한 정보를 입력해 주세요\n");
+		System.out.println("         ___________________________________");
+		System.out.println("         |                                 |");
+		System.out.println("         |         개인정보를 수정합니다         |");
+		System.out.println("         |   수정할 정보를 양식에 맞게 입력해주세요   |");		
+		System.out.println("         |_________________________________|");
+		System.out.println();
 
 		while (true) {
-			System.out.println("성함을 입력해 주세요");
-			System.out.print("성함 : ");
+			System.out.println("[이름]");
+			System.out.println("예) 김덕배");
+			System.out.println();
+			System.out.print("> ");
 			try {
 				name = br.readLine();
 				RegexValidator.validateRegex(name, RegexValidator.NAME_REGEX);
@@ -705,8 +948,12 @@ public class ClientView extends View implements LoginView {
 		}
 
 		while (true) {
-			System.out.println("성별을 입력해 주세요");
-			System.out.print("남성 (1), 여성 (2) : ");
+			System.out.println();
+			System.out.println("[성별]");
+			System.out.println("[1] 남성       [2] 여성");
+			System.out.println("예) 1");
+			System.out.println();
+			System.out.print("> ");
 			try {
 				gender = br.readLine();
 				if (gender.equals("1") || gender.equals("2")) {
@@ -722,8 +969,11 @@ public class ClientView extends View implements LoginView {
 		}
 
 		while (true) {
-			System.out.println("전화번호를 입력해 주세요");
-			System.out.print("전화번호 (ex. 010-1100-2034) : ");
+			System.out.println();
+			System.out.println("[전화번호]");
+			System.out.println("예) 010-1234-5678");
+			System.out.println();
+			System.out.print("> ");
 			try {
 				userPhoneNumber = br.readLine();
 				RegexValidator.validateRegex(userPhoneNumber, RegexValidator.PHONE_NUMBER_REGEX);
@@ -736,8 +986,11 @@ public class ClientView extends View implements LoginView {
 		}
 
 		while (true) {
-			System.out.println("생년월일을 입력해 주세요");
-			System.out.print("생년월일 (ex.19800203) : ");
+			System.out.println();
+			System.out.println("[생년월일]");
+			System.out.println("예) 19990101");
+			System.out.println();
+			System.out.print("> ");
 			try {
 				birthDate = br.readLine();
 				RegexValidator.validateRegex(birthDate, RegexValidator.BIRTH_DATE_REGEX);
@@ -750,8 +1003,11 @@ public class ClientView extends View implements LoginView {
 		}
 
 		while (true) {
-			System.out.println("이메일을 입력해 주세요");
-			System.out.print("이메일 (ex. hyoseung@kosa.or.kr) : ");
+			System.out.println();
+			System.out.println("[이메일]");
+			System.out.println("예) kosa123@hyosung.com");
+			System.out.println();
+			System.out.print("> ");
 			try {
 				email = br.readLine();
 				RegexValidator.validateRegex(email, RegexValidator.EMAIL_REGEX);
@@ -764,8 +1020,11 @@ public class ClientView extends View implements LoginView {
 		}
 
 		while (true) {
-			System.out.println("비밀번호를 입력해 주세요");
-			System.out.print("비밀번호 (6글자 이상, 특수 문자, 영문자, 숫자만 가능) : ");
+			System.out.println();
+			System.out.println("[비밀번호]");
+			System.out.println("영문, 숫자, 특수문자가 최소 1개씩 들어간 6자리 이상을 입력해주세요");
+			System.out.println();
+			System.out.print("> ");
 			try {
 				password = br.readLine();
 				RegexValidator.validateRegex(password, RegexValidator.PASSWORD_REGEX);
@@ -788,115 +1047,10 @@ public class ClientView extends View implements LoginView {
 		} catch (BaseException e) {
 			System.out.println(e.getMessage());
 		}
-		System.out.println("업데이트 되었습니다.");
-	}
-
-	public void accountTransfer() {
-		String account = "";
-		System.out.println("[계좌 리스트]");
-		try {
-			for (GetAccountDto getAccountDto : accountService.getAccountList(userId)) {
-				System.out.println(getAccountDto.toString());
-			}
-		} catch (BaseException e) {
-			System.out.println(e.getMessage());
-		}
-		while (true) {
-			System.out.print("이체에 사용할 계좌를 입력해 주세요");
-			System.out.print("[계좌 ID] : ");
-			try {
-				id = Integer.parseInt(br.readLine());
-				break;
-			} catch (IOException e) {
-				System.out.println("올바르지 않은 입력입니다. 다시 입력해 주세요. ");
-			}
-		}
-		while (true) {
-			System.out.print("입금할 계좌의 번호를 입력해 주세요");
-			System.out.print("[계좌 번호] : ");
-			try {
-				account = br.readLine();
-				RegexValidator.validateRegex(account, RegexValidator.ACCOUNT_NUMBER_REGEX);
-				break;
-			} catch (IOException | BaseException e) {
-				System.out.println("올바르지 않은 입력입니다. 다시 입력해 주세요. ");
-			}
-		}
-
-		while (true) {
-			System.out.println("이체하실 금액을 적어 주세요");
-			System.out.print("[금액] : ");
-			try {
-				amount = Long.parseLong(br.readLine());
-				break;
-			} catch (IOException e) {
-				System.out.println("올바르지 않은 입력입니다. 다시 입력해 주세요. ");
-			}
-		}
-
-		try {
-			transactionService.transfer(id, account, amount);
-		} catch (BaseException e) {
-			System.out.print(e.getMessage());
-		}
 	}
 
 	@Override
 	protected void end() {
 
 	}
-
-
-
-	public void receivePaid() {
-		Boolean isRunning = true;
-		while (isRunning) {
-			System.out.println("원하시는 기능을 입력해 주세요");
-			System.out.println("1. 입금\n2. 출금");
-			System.out.print("[입력] : ");
-			try {
-				switch (br.readLine()) {
-				case "1":
-					System.out.println("[계좌 리스트]");
-					for (GetAccountDto getAccountDto : accountService.getAccountList(userId)) {
-						System.out.println(getAccountDto.toString());
-					}
-					System.out.println("입금할 계좌를 선택해 주세요 (ID 입력) : ");
-					id = Integer.parseInt(br.readLine());
-					System.out.println("얼마를 입금하시겠습니까?");
-					amount = Long.parseLong(br.readLine());
-					transactionService.deposit(id, amount);
-					System.out.println("입금이 완료되었습니다.");
-					isRunning = false;
-					break;
-				case "2":
-					System.out.println("[계좌 리스트]");
-					for (GetAccountDto getAccountDto : accountService.getAccountList(userId)) {
-						System.out.println(getAccountDto.toString());
-					}
-					System.out.println("출금할 계좌를 선택해 주세요 (ID 입력) : ");
-					id = Integer.parseInt(br.readLine());
-					System.out.println("출금할 금액을 입력해 주세요. ");
-					amount = Long.parseLong(br.readLine());
-					transactionService.withdraw(id, amount);
-					System.out.println("출금이 완료됐습니다.");
-					isRunning = false;
-					break;
-				default:
-					throw new IllegalArgumentException();
-				}
-			} catch (IllegalArgumentException | IOException e) {
-				System.out.println("올바른 입력이 아닙니다. 다시 입력해 주세요. ");
-			} catch (BaseException e) {
-				System.out.println(e.getMessage());
-			}
-		}
-	}
-
-
-
-	
-
-	
-
 }
