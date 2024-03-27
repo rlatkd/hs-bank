@@ -20,9 +20,8 @@ public class GetClientDto {
 
 	@Override
 	public String toString() {
-		return "GetClientDto{" +
-				"id=" + id +
-				", email='" + email + '\'' +
-				'}' + '\n';
+		return "[고객ID : " + id + "] " +
+				"[이메일" + email + "] " +
+				"\n";
 	}
 }

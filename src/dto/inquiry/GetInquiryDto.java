@@ -28,14 +28,13 @@ public class GetInquiryDto {
 
     @Override
     public String toString() {
-        return "GetInquiryDto{" +
-                "id=" + id +
-                ", authorId=" + authorId +
-                ", category='" + category + '\'' +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", createdAt='" + createdAt + '\'' +
-                ", status='" + status + '\'' +
-                '}' + '\n';
+        return "[문의ID : " + id + "] " +
+                "[작성자ID : " + authorId + "] " +
+                "[분류 : " + category + "] " +
+                "[제목 : " + title + "] " +
+                "[내용 : " + content + "] " +
+                "[생성일시 : " + createdAt + "] " +
+                "[처리상태 : " + status + "] " +
+                '\n';
     }
 }

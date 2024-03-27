@@ -29,14 +29,13 @@ public class GetAccountDto {
     }
     @Override
     public String toString() {
-        return "GetAccountDto{" +
-                "id=" + id +
-                ", bankName='" + bankName + '\'' +
-                ", number='" + number + '\'' +
-                ", ownerName='" + ownerName + '\'' +
-                ", balance=" + balance +
-                ", registeredAt='" + registeredAt + '\'' +
-                ", status='" + status + '\'' +
-                '}' + '\n';
+        return "[계좌ID : " + id + "] " +
+                "[은행 : " + bankName + "] " +
+                "[계좌번호 : " + number + "] " +
+                "[소유주 : " + ownerName + "] " +
+                "[잔액(원) : " + balance + "] " +
+                "[등록일시 : " + registeredAt + "] " +
+                "[상태 : " + status + "] " +
+                "\n";
     }
 }

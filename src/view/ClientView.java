@@ -7,6 +7,7 @@ import dto.inquiry.RegisterInquiryDto;
 import dto.inquiry.GetInquiryListDto;
 import dto.inquiry.RemoveInquiryDto;
 import dto.transaction.DepositDto;
+import dto.transaction.GetTransactionDto;
 import dto.transaction.TransferDto;
 import dto.transaction.WithdrawDto;
 import dto.user.LoginDto;
@@ -25,6 +26,7 @@ import service.TransactionService;
 import utils.RegexValidator;
 import utils.CaptchaAuthentication;
 import java.io.IOException;
+import java.util.List;
 
 public class ClientView extends View implements LoginView {
 	private final ClientService clientService;
@@ -370,7 +372,7 @@ public class ClientView extends View implements LoginView {
 					accountTransfer();
 					break;
 				case "4":
-					//거래내역 조회 필요
+					viewTransactionList();
 					break;
 				case "5":
 					customerInquiry();
@@ -395,6 +397,45 @@ public class ClientView extends View implements LoginView {
 		}
 	}
 	
+	private void viewTransactionList() {
+		List<GetAccountDto> getAccountDtoList = null;
+		try {
+			getAccountDtoList = accountService.getAccountList(userId);
+		} catch (BaseException e) {
+			System.out.println(e.getMessage());
+			return;
+		}
+		
+		for(GetAccountDto getAccountDto : getAccountDtoList) {
+			System.out.println(getAccountDto);
+		}
+		
+		System.out.println("거래내역을 조회할 계좌ID를 입력하세요.");
+		System.out.print("> ");
+		int transactionId = 0;
+		try {
+			transactionId = Integer.parseInt(br.readLine());
+		} catch (NumberFormatException e) {
+			System.out.println("잘못된 입력입니다.");
+			return;
+		} catch (IOException e) {
+			System.out.println(BaseException.DEFAULT_MESSAGE);
+			return;
+		}
+		List<GetTransactionDto> getTransactionList = null;
+		
+		try {
+			getTransactionList = transactionService.getTransactionList(transactionId, userId);
+		} catch (BaseException e) {
+			System.out.println(e.getMessage());
+			return;
+		}
+		
+		for(GetTransactionDto getTransactionDto : getTransactionList) {
+			System.out.println(getTransactionDto);
+		}
+	}
+
 	//내 계좌 관리
 	public void manageMyAccount() {
 		boolean isRunning = true;

@@ -24,13 +24,12 @@ public class GetInquiryListDto {
 
     @Override
     public String toString() {
-        return "GetInquiryListDto{" +
-                "id=" + id +
-                ", authorName='" + authorName + '\'' +
-                ", category='" + category + '\'' +
-                ", title='" + title + '\'' +
-                ", createdAt='" + createdAt + '\'' +
-                ", status='" + status + '\'' +
-                '}' + "\n";
+        return "[문의ID : " + id + "] " +
+                "[작성자 이름 : " + authorName + "] " +
+                "[분류 : " + category + "] " +
+                "[제목 : " + title + "] " +
+                "[생성일시 : " + createdAt + "] " +
+                "[처리상태 : " + status + "] " +
+                '\n';
     }
 }

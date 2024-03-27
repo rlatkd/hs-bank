@@ -11,32 +11,31 @@ public class GetTransactionDto {
     private String date;
     private String type;
     private long amount;
-    private int withdrawAccountNumber;
-    private int depositAccountNumber;
+    private String withdrawAccountNumber;
+    private String depositAccountNumber;
     private String status;
 
-    public static GetTransactionDto toDto(Transaction transaction){
+    public static GetTransactionDto toDto(Transaction transaction, String withdrawAccountNumber, String depositAccountNumber){
         return GetTransactionDto.builder()
                 .id(transaction.getId())
                 .date(transaction.getDate())
                 .type(transaction.getType().getKorean())
                 .amount(transaction.getAmount())
-                .withdrawAccountNumber(transaction.getWithdrawAccountId())
-                .depositAccountNumber(transaction.getDepositAccountId())
+                .withdrawAccountNumber(withdrawAccountNumber)
+                .depositAccountNumber(depositAccountNumber)
                 .status(transaction.getStatus().getKorean())
                 .build();
     }
 
     @Override
     public String toString() {
-        return "GetTransactionDto{" +
-                "id=" + id +
-                ", date='" + date + '\'' +
-                ", type='" + type + '\'' +
-                ", amount=" + amount +
-                ", withdrawAccountNumber=" + withdrawAccountNumber +
-                ", depositAccountNumber=" + depositAccountNumber +
-                ", status='" + status + '\'' +
-                '}' + '\n';
+        return "[거래ID : " + id + "] " + 
+                "[거래일시 : " + date + "] " +
+                "[거래유형 : " + type + "] " +
+                "[금액 : " + amount + "] " +
+                "[출금계좌번호 : " + withdrawAccountNumber + "] " +
+                "[입금계좌번호 : " + depositAccountNumber + "] " +
+                "[거래상태 : " + status + "] " +
+                '\n';
     }
 }

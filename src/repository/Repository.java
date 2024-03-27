@@ -77,7 +77,7 @@ public abstract class Repository<E extends Entity> {
 
     public final int getNextId() throws BaseException {
         load();
-        return entityList.isEmpty() ? 1 : entityList.get(entityList.size() - 1).getId();
+        return entityList.isEmpty() ? 1 : entityList.get(entityList.size() - 1).getId() + 1;
     }
     public final void add(E entity) throws BaseException {
         load();
@@ -97,8 +97,10 @@ public abstract class Repository<E extends Entity> {
     public final void remove(int id) throws BaseException {
         load();
         for(int i = 0; i < entityList.size(); i++){
-            if(entityList.get(i).getId() == id) entityList.remove(i);
-            break;
+            if(entityList.get(i).getId() == id) {
+            	entityList.remove(i);
+                break;
+            }
         }
         save();
     }

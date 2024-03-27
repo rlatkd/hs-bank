@@ -25,6 +25,7 @@ import repository.AccountRepository;
 import repository.TransactionRepository;
 import utils.DateTimeGenerator;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,10 +50,24 @@ public class TransactionService {
 
         List<Transaction> transactionList = transactionRepository.getEntityList(accountId);
         if(transactionList.isEmpty()) throw new TransactionListEmptyException();
+        
+        List<GetTransactionDto> getTransactionDtoList = new ArrayList<>();
+        for(Transaction transaction : transactionList) {
+        	Account withdrawAccount = accountRepository.get(transaction.getWithdrawAccountId());
+        	Account depositAccount = accountRepository.get(transaction.getDepositAccountId());
+        	String withdrawAccountNubmer = "";
+        	String depositAccountNubmer = "";
+        	if(withdrawAccount != null) 
+        		withdrawAccountNubmer = withdrawAccount.getNumber();
+        	
+        	if(depositAccount != null) 
+        		depositAccountNubmer = depositAccount.getNumber();
+        	
+        	getTransactionDtoList.add(GetTransactionDto
+        			.toDto(transaction, withdrawAccountNubmer, depositAccountNubmer));
+        }
 
-        return transactionList.stream()
-                .map(transaction -> GetTransactionDto.toDto(transaction))
-                .collect(Collectors.toList());
+        return getTransactionDtoList;
     }
 
     public void deposit(DepositDto depositDto) throws BaseException {
