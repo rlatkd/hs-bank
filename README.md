@@ -12,18 +12,25 @@
  │      ├──── 📁 dto
  │      │      ├──── 📁 account
  │      │      │      ├──── 📄 GetAccountDto.java
- │      │      │      └──── 📄 RegisterAccountDto.java
+ │      │      │      ├──── 📄 RegisterAccountDto.java
+ │      │      │      └──── 📄 RemoveAccount.java
  │      │      ├──── 📁 inquiry
  │      │      │      ├──── 📄 EditInquiryDto.java
  │      │      │      ├──── 📄 GetInquiryDto.java
  │      │      │      ├──── 📄 GetInquiryListDto.java
- │      │      │      └──── 📄 RegisterInquiryDto.java
+ │      │      │      ├──── 📄 RegisterInquiryDto.java
+ │      │      │      └──── 📄 RemoveInquiry.java
  │      │      ├──── 📁 transaction
- │      │      │      └──── 📄 GetTransactionDto.java
+ │      │      │      ├──── 📄 Deposit.java
+ │      │      │      ├──── 📄 GetTransactionDto.java
+ │      │      │      ├──── 📄 TransferDto.java
+ │      │      │      └──── 📄 WithdrawDto.java
  │      │      └──── 📁 user
  │      │             ├──── 📁 adimin
- │      │             │      └──── 📄 RegisterAdminDto.java
+ │      │             │      ├──── 📄 RegisterAdminDto.java
+ │      │             │      └──── 📄 RegisterMainAdminDto.java
  │      │             ├──── 📁 client
+ │      │             │      ├──── 📄 AddPointDto.java
  │      │             │      ├──── 📄 GetClientDto.java
  │      │             │      ├──── 📄 GetCurrentClientDto.java
  │      │             │      ├──── 📄 RegisterClientDto.java
@@ -46,6 +53,8 @@
  │      │      ├──── 📁 inquiry
  │      │      │      ├──── 📄 InquiryCategory.java
  │      │      │      └──── 📄 InquiryStatus.java
+ │      │      ├──── 📁 quiz
+ │      │      │      └──── 📄 Quiz.java 
  │      │      ├──── 📁 transaction
  │      │      │      ├──── 📄 TransactionStatus.java
  │      │      │      └──── 📄 TransactionType.java
@@ -110,6 +119,7 @@
  │      │      ├──── 📄 ClientView.java
  │      │      ├──── 📄 InitialView.java
  │      │      ├──── 📄 LoginView.java
+ │      │      ├──── 📄 QuizView.java
  │      │      └──── 📄 View.java
  │      └──── 📄 Application.java
  │──── 📁 Referenced Libraries
@@ -134,6 +144,7 @@
  │      ├──── 📁 admin
  │      ├──── 📁 client
  │      ├──── 📁 inquiry
+ │      ├──── 📁 quiz
  │      └──── 📁 transaction
  ├──── 📁 exception
  │      ├──── 📁 account
