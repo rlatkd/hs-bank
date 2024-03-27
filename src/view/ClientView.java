@@ -355,7 +355,7 @@ public class ClientView extends View implements LoginView {
 			System.out.println();
 			System.out.println("[1] 내 계좌 관리		[2] 입출금		[3] 계좌 이체");
 			System.out.println("[4] 거래 내역 조회		[5] 고객 문의		[6] 마이페이지");
-			System.out.println("[7] 로그아웃		[0] 홈으로");
+			System.out.println("[7] 금융 상식 퀴즈		[8] 로그아웃		[0] 홈으로");
 			System.out.println();
 			System.out.print("> ");
 			try {
@@ -379,6 +379,9 @@ public class ClientView extends View implements LoginView {
 					myPage();
 					break;
 				case "7":
+					new QuizView(userId).display();
+					break;
+				case "8":
 					proceed();
 				case "0":
 					isRunning = false;
