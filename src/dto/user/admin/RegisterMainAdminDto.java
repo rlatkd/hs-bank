@@ -10,9 +10,10 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @SuperBuilder
 public class RegisterMainAdminDto extends RegisterUserDto {
-    public Admin toEntity(){
+    public Admin toEntity(int id){
         return Admin
                 .builder()
+                .id(id)
                 .name(name)
                 .email(email)
                 .password(password)

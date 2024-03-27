@@ -43,7 +43,10 @@ public class TransactionService {
         return transactionService;
     }
 
-    public List<GetTransactionDto> getTransactionList(int accountId) throws BaseException {
+    public List<GetTransactionDto> getTransactionList(int accountId, int ownerId) throws BaseException {
+        Account account = accountRepository.get(accountId, ownerId);
+        if(account == null) throw new AccountNotFoundException();
+
         List<Transaction> transactionList = transactionRepository.getEntityList(accountId);
         if(transactionList.isEmpty()) throw new TransactionListEmptyException();
 

@@ -37,6 +37,15 @@ public class QuizView extends View{
         System.out.println("금융 상식 퀴즈에 오신걸 환영합니다!");
         System.out.println("1문제 당 1포인트를 얻으실 수 있습니다.");
         System.out.println("퀴즈는 30초 동안 진행됩니다.");
+        try {
+            System.out.println(
+                    "고객님이 현재 보유하신 포인트는 "
+                    + clientService.getCurrentClient(userId).getPoint()
+                    + "입니다."
+            );
+        } catch (BaseException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override
@@ -73,11 +82,6 @@ public class QuizView extends View{
     }
 
     private void startQuiz() {
-        try {
-            System.out.println(clientService.getCurrentClient(userId));
-        } catch (BaseException e) {
-            throw new RuntimeException(e);
-        }
         Thread timerThread = new Thread(() -> startTimer());
         Thread quizThread = new Thread(() -> displayQuiz());
 
@@ -109,9 +113,13 @@ public class QuizView extends View{
         }
         System.out.println(point + " 포인트를 획득하셨습니다!");
         try {
-            System.out.println(clientService.getCurrentClient(userId));
+            System.out.println(
+                    "고객님이 현재 보유하신 포인트는 "
+                    + clientService.getCurrentClient(userId).getPoint()
+                    + "입니다."
+            );
         } catch (BaseException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
         }
     }
 

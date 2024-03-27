@@ -33,7 +33,7 @@ public class AdminService implements UserService {
 
     public void registerMain(RegisterUserDto registerMainAdminDto) throws BaseException {
         if (adminRepository.isExist(registerMainAdminDto.getEmail())) throw new AdminExistException();
-        adminRepository.add((Admin) registerMainAdminDto.toEntity());
+        adminRepository.add((Admin) registerMainAdminDto.toEntity(adminRepository.getNextId()));
     }
 
     public void checkExistMain(RegisterUserDto registerMainAdminDto) throws BaseException {

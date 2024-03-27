@@ -147,7 +147,7 @@ public class AdminView extends View implements LoginView {
         while (true) {
             System.out.println("해당 계좌의 이체 내역을 불러 옵니다...");
             try {
-                for (GetTransactionDto getTransactionDto : transactionService.getTransactionList(Integer.parseInt(accountID))) {
+                for (GetTransactionDto getTransactionDto : transactionService.getTransactionList(Integer.parseInt(accountID), userId)) {
                     System.out.println(getTransactionDto.toString());
                 }
                 break;
