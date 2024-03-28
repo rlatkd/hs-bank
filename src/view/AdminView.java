@@ -415,12 +415,13 @@ public class AdminView extends View implements LoginView {
 
         while (true) {
             try {
-                for (GetTransactionDto getTransactionDto : transactionService.getTransactionList(Integer.parseInt(accountID), userId)) {
+                for (GetTransactionDto getTransactionDto : transactionService.getTransactionList(Integer.parseInt(accountID))) {
                     System.out.println(getTransactionDto.toString());
                 }
                 break;
             } catch (BaseException e) {
-                System.out.println("올바른 입력이 아닙니다. 다시 입력해 주세요. ");
+                System.out.println(e.getMessage());
+                break;
             }
         }
         while (true) {

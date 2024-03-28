@@ -19,6 +19,7 @@ import exception.account.withdraw.WithdrawAccountDeactivateException;
 import exception.account.withdraw.WithdrawAccountNotFoundException;
 import exception.transaction.TransactionListEmptyException;
 import exception.transaction.TransactionNotFoundException;
+import exception.transaction.NotCompeleteTransactionException;
 import exception.transaction.NotTransferException;
 import lombok.With;
 import repository.AccountRepository;
@@ -49,6 +50,32 @@ public class TransactionService {
         if(account == null) throw new AccountNotFoundException();
 
         List<Transaction> transactionList = transactionRepository.getEntityList(accountId);
+        if(transactionList.isEmpty()) throw new TransactionListEmptyException();
+        
+        List<GetTransactionDto> getTransactionDtoList = new ArrayList<>();
+        for(Transaction transaction : transactionList) {
+        	Account withdrawAccount = accountRepository.get(transaction.getWithdrawAccountId());
+        	Account depositAccount = accountRepository.get(transaction.getDepositAccountId());
+        	String withdrawAccountNubmer = "";
+        	String depositAccountNubmer = "";
+        	if(withdrawAccount != null) 
+        		withdrawAccountNubmer = withdrawAccount.getNumber();
+        	
+        	if(depositAccount != null) 
+        		depositAccountNubmer = depositAccount.getNumber();
+        	
+        	getTransactionDtoList.add(GetTransactionDto
+        			.toDto(transaction, withdrawAccountNubmer, depositAccountNubmer));
+        }
+
+        return getTransactionDtoList;
+    }
+    
+    public List<GetTransactionDto> getTransactionList(int id) throws BaseException {
+        Account account = accountRepository.get(id);
+        if(account == null) throw new AccountNotFoundException();
+        
+        List<Transaction> transactionList = transactionRepository.getEntityList(id);
         if(transactionList.isEmpty()) throw new TransactionListEmptyException();
         
         List<GetTransactionDto> getTransactionDtoList = new ArrayList<>();
@@ -122,6 +149,8 @@ public class TransactionService {
         Transaction transaction = transactionRepository.get(id);
         if(transaction == null) throw new TransactionNotFoundException();
         if(!(transaction.getType() == TransactionType.TRANSFER)) throw new NotTransferException();
+        if(!(transaction.getStatus() == TransactionStatus.COMPLETE)) throw new NotCompeleteTransactionException();
+
 
         long amount = transaction.getAmount();
         int withdrawAccountId = transaction.getDepositAccountId();
