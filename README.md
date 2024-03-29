@@ -2,6 +2,16 @@
 
 ## 1차 미니 프로젝트
 
+## 개요
+
+- 프로젝트 이름: HS Bank
+- 프로젝트 목적 :
+  - 금융 서비스의 대표적인 예시인 인터넷 뱅킹을 Java로 console과 In-memory를 이용해 간단하게 구현
+  - I/O 및 Stream을 이용하여 한정된 환경에서 고객을 위한 서비스의 개선점을 찾아감
+- 프로젝트 기간: 2024.03.25. - 2024.03.27. (03.21. 시작)
+- 언어: Java (JDK v17.0.10 & Eclipse v4.31.0)
+- 멤버: 김상훈, 안수현, 이우성
+
 ## 클래스 다이어그램
 
 <img src="https://github.com/rlatkd/hs-bank/blob/main/assets/class_diagram/%ED%81%B4%EB%9E%98%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8.jpg">
