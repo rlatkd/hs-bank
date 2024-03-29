@@ -2,307 +2,7 @@
 
 <img src="https://github.com/rlatkd/hs-bank/blob/main/assets/class_diagram/%ED%81%B4%EB%9E%98%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8.jpg">
 
-## 트러블 슈팅
 
-<details>
-<summary>이체 시 잔액 반영 오류 </summary>
-
-# 이체 시 잔액 반영 오류
-
-### 문제 상황
-
-TransactionService에서 이체 기능을 제공하는 transfer 함수를 개발하고 테스트하는 과정에서 문제가 발생했다.
-
-```java
-    public synchronized void transfer(int withdrawAccountId, String depositAccountNumber, long amount) throws BaseException {
-        Account withdrawAccount = accountRepository.get(withdrawAccountId);
-        if(withdrawAccount == null) throw new WithdrawAccountNotFoundException();
-        if(!isActiveAccount(withdrawAccount)) throw new WithdrawAccountDeactivateException();
-        if(withdrawAccount.getBalance() < amount) throw new BalanceInsufficientException();
-
-        Account depositAccount = accountRepository.get(depositAccountNumber);
-        if(depositAccount == null) throw new DepositAccountNotFoundException();
-        if(!isActiveAccount(depositAccount)) throw new DepositAccountDeactivateException();
-
-        Transaction transaction = Transaction.builder().
-                date(DateTimeGenerator.getDateTimeNow()).
-                type(TransactionType.TRANSFER).
-                amount(amount).
-                withdrawAccountId(withdrawAccountId).
-                depositAccountId(depositAccount.getId()).
-                status(TransactionStatus.COMPLETE).
-                build();
-
-        withdrawAccount.setBalance(withdrawAccount.getBalance() - amount);
-
-        depositAccount.setBalance(depositAccount.getBalance() + amount);
-        accountRepository.update();
-
-        transactionRepository.add(transaction);
-    }
-```
-
-transfer 함수의 코드이다. AccountRepository의 get 함수를 사용해서 출금 계좌와 입금 계좌를 가져온다. 
-
-일단 출금 계좌와 입금 계좌가 이체 가능한 상태인지 확인한다. 
-
-만약 이체 가능한 상태라면 출금 계좌와 입금 계좌의 잔액을 수정하고, 거래 내역을 추가한다.
-
-이 함수를 사용해서 이체를 진행해보자.
-
-```bash
-GetAccountDto{id=1, bankName='신한', number='110466796544', ownerName='이우성', balance=10000, registeredAt='2024-03-26 11:29:29', status='활성화'}
-
-GetAccountDto{id=2, bankName='카카오뱅크', number='45832813', ownerName='이우성', balance=0, registeredAt='2024-03-26 11:30:07', status='활성화'}
-```
-
-현재 계좌 목록이다. 
-
-1번 계좌에서 2번 계좌로 5000원 이체를 진행할 것이다.
-
-```bash
-GetAccountDto{id=1, bankName='신한', number='110466796544', ownerName='이우성', balance=10000, registeredAt='2024-03-26 11:29:29', status='활성화'}
-
-GetAccountDto{id=2, bankName='카카오뱅크', number='45832813', ownerName='이우성', balance=5000, registeredAt='2024-03-26 11:30:07', status='활성화'}
-```
-
-이체를 진행한 후 결과이다. 
-
-잔액을 보면 2번 계좌에 5000원이 입금되긴 했지만, 1번 계좌에서 5000원이 출금이 되지 않았다.
-
-### 원인
-
-```java
-    public synchronized void transfer(int withdrawAccountId, String depositAccountNumber, long amount) throws BaseException {
-        Account withdrawAccount = accountRepository.get(withdrawAccountId);
-//        if(withdrawAccount == null) throw new WithdrawAccountNotFoundException();
-//        if(!isActiveAccount(withdrawAccount)) throw new WithdrawAccountDeactivateException();
-//        if(withdrawAccount.getBalance() < amount) throw new BalanceInsufficientException();
-
-        Account depositAccount = accountRepository.get(depositAccountNumber);
-//        if(depositAccount == null) throw new DepositAccountNotFoundException();
-//        if(!isActiveAccount(depositAccount)) throw new DepositAccountDeactivateException();
-
-//        Transaction transaction = Transaction.builder().
-//                date(DateTimeGenerator.getDateTimeNow()).
-//                type(TransactionType.TRANSFER).
-//                amount(amount).
-//                withdrawAccountId(withdrawAccountId).
-//                depositAccountId(depositAccount.getId()).
-//                status(TransactionStatus.COMPLETE).
-//                build();
-
-        withdrawAccount.setBalance(withdrawAccount.getBalance() - amount);
-
-        depositAccount.setBalance(depositAccount.getBalance() + amount);
-        accountRepository.update();
-
-//        transactionRepository.add(transaction);
-    }
-
-```
-
-transfer 함수 코드를 다시 보자. 
-
-문제가 되는 부분을 제외하고 모두 주석 처리했다.
-
-여기서 AccountRepository의 함수는 get(int id), get(String number), update()가 사용된다.
-
-```java
-    public final E get(int id) throws BaseException {
-        load();
-        for(Entity entity : entityList)
-            if(entity.getId() == id) return (E)entity;
-        return null;
-    }
-    
-    public Account get(String number) throws BaseException {
-        load();
-        for(Account account : entityList)
-            if(account.getNumber().equals(number)) return account;
-        return null;
-    }
-    
-    public final void update() throws BaseException {
-        save();
-    }
-```
-
-AccountRepository의 get(int id), get(String number), update() 코드이다. 
-
-get(int id)와 update()는 AccountRepository의 추상 클래스 Repository의 함수이다.
-
-get(int id)과 get(String number)은 제일 먼저 load()를 호출한다.
-
-update()는 save()를 호출한다.
-
-```java
-    protected final void load() throws BaseException {
-        FileInputStream fileInputStream = null;
-        BufferedInputStream bufferedInputStream = null;
-        ObjectInputStream objectInputStream = null;
-        try {
-            fileInputStream = new FileInputStream(path);
-            bufferedInputStream = new BufferedInputStream(fileInputStream);
-            objectInputStream = new ObjectInputStream(bufferedInputStream);
-
-            Object object = null;
-            while ((object = objectInputStream.readObject()) != null)
-                entityList = (ArrayList<E>) object;
-        } catch (EOFException e) {
-            log(e);
-        } catch (IOException | ClassNotFoundException e) {
-            log(e);
-            throw new DataAccessException();
-        } finally {
-            try {
-                if(objectInputStream != null) objectInputStream.close();
-                if(bufferedInputStream != null) bufferedInputStream.close();
-                if(fileInputStream != null) fileInputStream.close();
-            } catch (IOException e) {
-                log(e);
-                throw new DataAccessException();
-            }
-        }
-    }
-```
-
-Repository의 load() 코드이다. 파일의 내용을 ArrayList<E>로 변환해서 멤버 변수에 담는 역할을 한다. 
-
-다시 말해 현재 파일의 내용을 Repository의 entityList에 최신화하는 것이다.
-
-```java
-    protected final void save() throws BaseException {
-        FileOutputStream fileOutputStream = null;
-        BufferedOutputStream bufferedOutputStream = null;
-        ObjectOutputStream objectOutputStream = null;
-        try {
-            fileOutputStream = new FileOutputStream(path);
-            bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
-            objectOutputStream = new ObjectOutputStream(bufferedOutputStream);
-
-            objectOutputStream.writeObject(entityList);
-        } catch (IOException e) {
-            log(e);
-            throw new DataAccessException();
-        } finally {
-            try {
-                objectOutputStream.close();
-                bufferedOutputStream.close();
-                fileOutputStream.close();
-            } catch (IOException e) {
-                log(e);
-                throw new DataAccessException();
-            }
-        }
-    }
-```
-
-Repository의 save() 코드이다. 
-
-entityList의 현재 내용을 파일에 저장하는 역할을 한다.
-
-```java
-    public synchronized void transfer(int withdrawAccountId, String depositAccountNumber, long amount) throws BaseException {
-        Account withdrawAccount = accountRepository.get(withdrawAccountId);
-//        if(withdrawAccount == null) throw new WithdrawAccountNotFoundException();
-//        if(!isActiveAccount(withdrawAccount)) throw new WithdrawAccountDeactivateException();
-//        if(withdrawAccount.getBalance() < amount) throw new BalanceInsufficientException();
-
-        Account depositAccount = accountRepository.get(depositAccountNumber);
-//        if(depositAccount == null) throw new DepositAccountNotFoundException();
-//        if(!isActiveAccount(depositAccount)) throw new DepositAccountDeactivateException();
-
-//        Transaction transaction = Transaction.builder().
-//                date(DateTimeGenerator.getDateTimeNow()).
-//                type(TransactionType.TRANSFER).
-//                amount(amount).
-//                withdrawAccountId(withdrawAccountId).
-//                depositAccountId(depositAccount.getId()).
-//                status(TransactionStatus.COMPLETE).
-//                build();
-
-        withdrawAccount.setBalance(withdrawAccount.getBalance() - amount);
-
-        depositAccount.setBalance(depositAccount.getBalance() + amount);
-        accountRepository.update();
-
-//        transactionRepository.add(transaction);
-    }
-```
-
-다시 transfer 함수로 돌아오자. 
-
-get(int id)와 get(String number)는 모두 load()를 호출한다.
-
-그리고 각 함수는 load()를 호출한다.
-
-그렇게 되면 AccountRepository의 entityList는 마지막으로 실행된 get(String number)에 의해 주소가 변경된다.
-
-get(int id)를 호출했을 때는 AccountRepository의 entityList가 1번 주소를 참조하고 있었다면, 그 후 get(String number)를 호출했을 때는 entityList가 2번 주소를 참조하게 되는 것이다.
-
-따라서 withdrawAccount는 1번 주소를 참조하고 있는 entityList에 있는 Account를 참조하게 되고, depositAccount는 2번 주소를 참조하고 있는 entityList에 있는 Account를 참조하게 된다.
-
-때문에 withdrawAccount를 수정하고 update()를 호출해도, update()는 AccountReposiotry의 2번 주소를 참조하고 있는 entityList를 파일에 반영하기 때문에 withdrawAccount의 수정 사항은 반영이 안되는 것이다.
-
-### 해결
-
-transfer 함수 내에서 load()를 두 번 호출하여 생긴 문제이니, 한 번만 호출하도록 코드를 수정하면 된다.
-
-```java
-    public Account getWithoutLoad(String number){
-        for(Account account : entityList)
-            if(account.getNumber().equals(number)) return account;
-        return null;
-    }
-```
-
-AccountRepository에 load()를 호출하지 않는 getWithoutLoad(String number)를 만들었다.
-
-```java
-    public synchronized void transfer(int withdrawAccountId, String depositAccountNumber, long amount) throws BaseException {
-        Account withdrawAccount = accountRepository.get(withdrawAccountId);
-//        if(withdrawAccount == null) throw new WithdrawAccountNotFoundException();
-//        if(!isActiveAccount(withdrawAccount)) throw new WithdrawAccountDeactivateException();
-//        if(withdrawAccount.getBalance() < amount) throw new BalanceInsufficientException();
-
-        Account depositAccount = accountRepository.getWithoutLoad(depositAccountNumber);
-//        if(depositAccount == null) throw new DepositAccountNotFoundException();
-//        if(!isActiveAccount(depositAccount)) throw new DepositAccountDeactivateException();
-
-//        Transaction transaction = Transaction.builder().
-//                date(DateTimeGenerator.getDateTimeNow()).
-//                type(TransactionType.TRANSFER).
-//                amount(amount).
-//                withdrawAccountId(withdrawAccountId).
-//                depositAccountId(depositAccount.getId()).
-//                status(TransactionStatus.COMPLETE).
-//                build();
-
-        withdrawAccount.setBalance(withdrawAccount.getBalance() - amount);
-
-        depositAccount.setBalance(depositAccount.getBalance() + amount);
-        accountRepository.update();
-
-//        transactionRepository.add(transaction);
-    }
-```
-
-수정된 transfer 함수 코드이다.
-
-get(int id)에 의해서 이미 load()가 실행됐으니, 그 다음부터는 load()가 실행되지 않도록 getWithoutLoad(String number)를 호출한다.
-
-```java
-GetAccountDto{id=1, bankName='신한', number='110466796544', ownerName='이우성', balance=5000, registeredAt='2024-03-26 11:29:29', status='활성화'}
-
-GetAccountDto{id=2, bankName='카카오뱅크', number='45832813', ownerName='이우성', balance=5000, registeredAt='2024-03-26 11:30:07', status='활성화'}
-```
-
-수정된 코드를 테스트한 결과이다.
-
-아까와 달리 1번 계좌에서 5000원이 출금되었다.
-
-</details>
 
 
 
@@ -655,3 +355,303 @@ HS BANK의 금융 상식 퀴즈 게임을 구현하기 위해 멀티 스레드�
 </details>
 
 
+
+## 트러블 슈팅
+
+<details>
+<summary>이체 시 잔액 반영 오류 </summary>
+
+### 문제 상황
+
+TransactionService에서 이체 기능을 제공하는 transfer 함수를 개발하고 테스트하는 과정에서 문제가 발생했다.
+
+```java
+    public synchronized void transfer(int withdrawAccountId, String depositAccountNumber, long amount) throws BaseException {
+        Account withdrawAccount = accountRepository.get(withdrawAccountId);
+        if(withdrawAccount == null) throw new WithdrawAccountNotFoundException();
+        if(!isActiveAccount(withdrawAccount)) throw new WithdrawAccountDeactivateException();
+        if(withdrawAccount.getBalance() < amount) throw new BalanceInsufficientException();
+
+        Account depositAccount = accountRepository.get(depositAccountNumber);
+        if(depositAccount == null) throw new DepositAccountNotFoundException();
+        if(!isActiveAccount(depositAccount)) throw new DepositAccountDeactivateException();
+
+        Transaction transaction = Transaction.builder().
+                date(DateTimeGenerator.getDateTimeNow()).
+                type(TransactionType.TRANSFER).
+                amount(amount).
+                withdrawAccountId(withdrawAccountId).
+                depositAccountId(depositAccount.getId()).
+                status(TransactionStatus.COMPLETE).
+                build();
+
+        withdrawAccount.setBalance(withdrawAccount.getBalance() - amount);
+
+        depositAccount.setBalance(depositAccount.getBalance() + amount);
+        accountRepository.update();
+
+        transactionRepository.add(transaction);
+    }
+```
+
+transfer 함수의 코드이다. AccountRepository의 get 함수를 사용해서 출금 계좌와 입금 계좌를 가져온다. 
+
+일단 출금 계좌와 입금 계좌가 이체 가능한 상태인지 확인한다. 
+
+만약 이체 가능한 상태라면 출금 계좌와 입금 계좌의 잔액을 수정하고, 거래 내역을 추가한다.
+
+이 함수를 사용해서 이체를 진행해보자.
+
+```bash
+GetAccountDto{id=1, bankName='신한', number='110466796544', ownerName='이우성', balance=10000, registeredAt='2024-03-26 11:29:29', status='활성화'}
+
+GetAccountDto{id=2, bankName='카카오뱅크', number='45832813', ownerName='이우성', balance=0, registeredAt='2024-03-26 11:30:07', status='활성화'}
+```
+
+현재 계좌 목록이다. 
+
+1번 계좌에서 2번 계좌로 5000원 이체를 진행할 것이다.
+
+```bash
+GetAccountDto{id=1, bankName='신한', number='110466796544', ownerName='이우성', balance=10000, registeredAt='2024-03-26 11:29:29', status='활성화'}
+
+GetAccountDto{id=2, bankName='카카오뱅크', number='45832813', ownerName='이우성', balance=5000, registeredAt='2024-03-26 11:30:07', status='활성화'}
+```
+
+이체를 진행한 후 결과이다. 
+
+잔액을 보면 2번 계좌에 5000원이 입금되긴 했지만, 1번 계좌에서 5000원이 출금이 되지 않았다.
+
+### 원인
+
+```java
+    public synchronized void transfer(int withdrawAccountId, String depositAccountNumber, long amount) throws BaseException {
+        Account withdrawAccount = accountRepository.get(withdrawAccountId);
+//        if(withdrawAccount == null) throw new WithdrawAccountNotFoundException();
+//        if(!isActiveAccount(withdrawAccount)) throw new WithdrawAccountDeactivateException();
+//        if(withdrawAccount.getBalance() < amount) throw new BalanceInsufficientException();
+
+        Account depositAccount = accountRepository.get(depositAccountNumber);
+//        if(depositAccount == null) throw new DepositAccountNotFoundException();
+//        if(!isActiveAccount(depositAccount)) throw new DepositAccountDeactivateException();
+
+//        Transaction transaction = Transaction.builder().
+//                date(DateTimeGenerator.getDateTimeNow()).
+//                type(TransactionType.TRANSFER).
+//                amount(amount).
+//                withdrawAccountId(withdrawAccountId).
+//                depositAccountId(depositAccount.getId()).
+//                status(TransactionStatus.COMPLETE).
+//                build();
+
+        withdrawAccount.setBalance(withdrawAccount.getBalance() - amount);
+
+        depositAccount.setBalance(depositAccount.getBalance() + amount);
+        accountRepository.update();
+
+//        transactionRepository.add(transaction);
+    }
+
+```
+
+transfer 함수 코드를 다시 보자. 
+
+문제가 되는 부분을 제외하고 모두 주석 처리했다.
+
+여기서 AccountRepository의 함수는 get(int id), get(String number), update()가 사용된다.
+
+```java
+    public final E get(int id) throws BaseException {
+        load();
+        for(Entity entity : entityList)
+            if(entity.getId() == id) return (E)entity;
+        return null;
+    }
+    
+    public Account get(String number) throws BaseException {
+        load();
+        for(Account account : entityList)
+            if(account.getNumber().equals(number)) return account;
+        return null;
+    }
+    
+    public final void update() throws BaseException {
+        save();
+    }
+```
+
+AccountRepository의 get(int id), get(String number), update() 코드이다. 
+
+get(int id)와 update()는 AccountRepository의 추상 클래스 Repository의 함수이다.
+
+get(int id)과 get(String number)은 제일 먼저 load()를 호출한다.
+
+update()는 save()를 호출한다.
+
+```java
+    protected final void load() throws BaseException {
+        FileInputStream fileInputStream = null;
+        BufferedInputStream bufferedInputStream = null;
+        ObjectInputStream objectInputStream = null;
+        try {
+            fileInputStream = new FileInputStream(path);
+            bufferedInputStream = new BufferedInputStream(fileInputStream);
+            objectInputStream = new ObjectInputStream(bufferedInputStream);
+
+            Object object = null;
+            while ((object = objectInputStream.readObject()) != null)
+                entityList = (ArrayList<E>) object;
+        } catch (EOFException e) {
+            log(e);
+        } catch (IOException | ClassNotFoundException e) {
+            log(e);
+            throw new DataAccessException();
+        } finally {
+            try {
+                if(objectInputStream != null) objectInputStream.close();
+                if(bufferedInputStream != null) bufferedInputStream.close();
+                if(fileInputStream != null) fileInputStream.close();
+            } catch (IOException e) {
+                log(e);
+                throw new DataAccessException();
+            }
+        }
+    }
+```
+
+Repository의 load() 코드이다. 파일의 내용을 ArrayList<E>로 변환해서 멤버 변수에 담는 역할을 한다. 
+
+다시 말해 현재 파일의 내용을 Repository의 entityList에 최신화하는 것이다.
+
+```java
+    protected final void save() throws BaseException {
+        FileOutputStream fileOutputStream = null;
+        BufferedOutputStream bufferedOutputStream = null;
+        ObjectOutputStream objectOutputStream = null;
+        try {
+            fileOutputStream = new FileOutputStream(path);
+            bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
+            objectOutputStream = new ObjectOutputStream(bufferedOutputStream);
+
+            objectOutputStream.writeObject(entityList);
+        } catch (IOException e) {
+            log(e);
+            throw new DataAccessException();
+        } finally {
+            try {
+                objectOutputStream.close();
+                bufferedOutputStream.close();
+                fileOutputStream.close();
+            } catch (IOException e) {
+                log(e);
+                throw new DataAccessException();
+            }
+        }
+    }
+```
+
+Repository의 save() 코드이다. 
+
+entityList의 현재 내용을 파일에 저장하는 역할을 한다.
+
+```java
+    public synchronized void transfer(int withdrawAccountId, String depositAccountNumber, long amount) throws BaseException {
+        Account withdrawAccount = accountRepository.get(withdrawAccountId);
+//        if(withdrawAccount == null) throw new WithdrawAccountNotFoundException();
+//        if(!isActiveAccount(withdrawAccount)) throw new WithdrawAccountDeactivateException();
+//        if(withdrawAccount.getBalance() < amount) throw new BalanceInsufficientException();
+
+        Account depositAccount = accountRepository.get(depositAccountNumber);
+//        if(depositAccount == null) throw new DepositAccountNotFoundException();
+//        if(!isActiveAccount(depositAccount)) throw new DepositAccountDeactivateException();
+
+//        Transaction transaction = Transaction.builder().
+//                date(DateTimeGenerator.getDateTimeNow()).
+//                type(TransactionType.TRANSFER).
+//                amount(amount).
+//                withdrawAccountId(withdrawAccountId).
+//                depositAccountId(depositAccount.getId()).
+//                status(TransactionStatus.COMPLETE).
+//                build();
+
+        withdrawAccount.setBalance(withdrawAccount.getBalance() - amount);
+
+        depositAccount.setBalance(depositAccount.getBalance() + amount);
+        accountRepository.update();
+
+//        transactionRepository.add(transaction);
+    }
+```
+
+다시 transfer 함수로 돌아오자. 
+
+get(int id)와 get(String number)는 모두 load()를 호출한다.
+
+그리고 각 함수는 load()를 호출한다.
+
+그렇게 되면 AccountRepository의 entityList는 마지막으로 실행된 get(String number)에 의해 주소가 변경된다.
+
+get(int id)를 호출했을 때는 AccountRepository의 entityList가 1번 주소를 참조하고 있었다면, 그 후 get(String number)를 호출했을 때는 entityList가 2번 주소를 참조하게 되는 것이다.
+
+따라서 withdrawAccount는 1번 주소를 참조하고 있는 entityList에 있는 Account를 참조하게 되고, depositAccount는 2번 주소를 참조하고 있는 entityList에 있는 Account를 참조하게 된다.
+
+때문에 withdrawAccount를 수정하고 update()를 호출해도, update()는 AccountReposiotry의 2번 주소를 참조하고 있는 entityList를 파일에 반영하기 때문에 withdrawAccount의 수정 사항은 반영이 안되는 것이다.
+
+### 해결
+
+transfer 함수 내에서 load()를 두 번 호출하여 생긴 문제이니, 한 번만 호출하도록 코드를 수정하면 된다.
+
+```java
+    public Account getWithoutLoad(String number){
+        for(Account account : entityList)
+            if(account.getNumber().equals(number)) return account;
+        return null;
+    }
+```
+
+AccountRepository에 load()를 호출하지 않는 getWithoutLoad(String number)를 만들었다.
+
+```java
+    public synchronized void transfer(int withdrawAccountId, String depositAccountNumber, long amount) throws BaseException {
+        Account withdrawAccount = accountRepository.get(withdrawAccountId);
+//        if(withdrawAccount == null) throw new WithdrawAccountNotFoundException();
+//        if(!isActiveAccount(withdrawAccount)) throw new WithdrawAccountDeactivateException();
+//        if(withdrawAccount.getBalance() < amount) throw new BalanceInsufficientException();
+
+        Account depositAccount = accountRepository.getWithoutLoad(depositAccountNumber);
+//        if(depositAccount == null) throw new DepositAccountNotFoundException();
+//        if(!isActiveAccount(depositAccount)) throw new DepositAccountDeactivateException();
+
+//        Transaction transaction = Transaction.builder().
+//                date(DateTimeGenerator.getDateTimeNow()).
+//                type(TransactionType.TRANSFER).
+//                amount(amount).
+//                withdrawAccountId(withdrawAccountId).
+//                depositAccountId(depositAccount.getId()).
+//                status(TransactionStatus.COMPLETE).
+//                build();
+
+        withdrawAccount.setBalance(withdrawAccount.getBalance() - amount);
+
+        depositAccount.setBalance(depositAccount.getBalance() + amount);
+        accountRepository.update();
+
+//        transactionRepository.add(transaction);
+    }
+```
+
+수정된 transfer 함수 코드이다.
+
+get(int id)에 의해서 이미 load()가 실행됐으니, 그 다음부터는 load()가 실행되지 않도록 getWithoutLoad(String number)를 호출한다.
+
+```java
+GetAccountDto{id=1, bankName='신한', number='110466796544', ownerName='이우성', balance=5000, registeredAt='2024-03-26 11:29:29', status='활성화'}
+
+GetAccountDto{id=2, bankName='카카오뱅크', number='45832813', ownerName='이우성', balance=5000, registeredAt='2024-03-26 11:30:07', status='활성화'}
+```
+
+수정된 코드를 테스트한 결과이다.
+
+아까와 달리 1번 계좌에서 5000원이 출금되었다.
+
+</details>
