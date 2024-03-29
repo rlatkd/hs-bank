@@ -39,11 +39,6 @@
  └──── 📄 Application.java
 ```
 
-</details>
-
-<details>
-<summary>디렉토리 개요</summary>
-
 - dto: 사용자에게 입력받는 데이터 혹은 출력하는 데이터를 담는 객체 
   - account: 계좌 조회, 계좌 등록
   - inquiry: 문의 조회, 문의 리스트 조회, 문의 등록, 문의 수정
