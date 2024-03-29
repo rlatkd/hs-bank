@@ -329,6 +329,15 @@ HS BANK의 금융 상식 퀴즈 게임을 구현하기 위해 멀티 스레드�
 <details>
 <summary>유스케이스 다이어그램</summary>
 
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/%EC%9C%A0%EC%8A%A4%EC%BC%80%EC%9D%B4%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8_%EA%B3%A0%EA%B0%9D.jpg">
+
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/%EC%9C%A0%EC%8A%A4%EC%BC%80%EC%9D%B4%EC%8A%A4_%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8_%EA%B4%80%EB%A6%AC%EC%9E%90.jpg">
+
+</details>
+
+<details>
+<summary>코드 정의</summary>
+
 
 
 </details>
