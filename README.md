@@ -212,6 +212,17 @@
 </details>
 
 <details>
+<summary>코드 정의</summary>
+
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/code_convention/%EC%BD%94%EB%93%9C%20%EC%A0%95%EC%9D%98%EC%84%9C%201.png">
+
+
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/code_convention/%EC%BD%94%EB%93%9C%20%EC%A0%95%EC%9D%98%EC%84%9C%202.png">
+
+</details>
+
+
+<details>
 <summary>요구사항 명세</summary>
 
 <img src="https://github.com/rlatkd/hs-bank/blob/main/assets/requirements/%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD%20%EB%AA%85%EC%84%B8%EC%84%9C.png">
@@ -221,6 +232,21 @@
 
 </details>
 
+<details>
+<summary>유스케이스 다이어그램</summary>
+
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/usecase_diagram/%EC%9C%A0%EC%8A%A4%EC%BC%80%EC%9D%B4%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8%20%EA%B3%A0%EA%B0%9D.jpg">
+
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/usecase_diagram/%EC%9C%A0%EC%8A%A4%EC%BC%80%EC%9D%B4%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8%20%EA%B4%80%EB%A6%AC%EC%9E%90.jpg">
+
+</details>
+
+<details>
+<summary>시퀀스 다이어그램</summary>
+
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/sequence_diagram/%EC%8B%9C%ED%80%80%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8.png">
+
+</details>
 
 <details>
 <summary>기술 요서</summary>
@@ -328,30 +354,11 @@ HS BANK의 금융 상식 퀴즈 게임을 구현하기 위해 멀티 스레드�
 </details>
 
 <details>
-<summary>유스케이스 다이어그램</summary>
-
-<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/usecase_diagram/%EC%9C%A0%EC%8A%A4%EC%BC%80%EC%9D%B4%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8%20%EA%B3%A0%EA%B0%9D.jpg">
-
-<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/usecase_diagram/%EC%9C%A0%EC%8A%A4%EC%BC%80%EC%9D%B4%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8%20%EA%B4%80%EB%A6%AC%EC%9E%90.jpg">
-
-</details>
-
-<details>
-<summary>시퀀스 다이어그램</summary>
-
-<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/sequence_diagram/%EC%8B%9C%ED%80%80%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8.png">
-
-</details>
-
-<details>
 <summary>단위 테스트 시나리오</summary>
 
 <img src="https://github.com/rlatkd/hs-bank/blob/main/assets/test_scenario/%EB%8B%A8%EC%9C%84%20%ED%85%8C%EC%8A%A4%ED%8A%B8%20%EC%8B%9C%EB%82%98%EB%A6%AC%EC%98%A4.png">
 
-
 </details>
-
-
 
 ## 트러블 슈팅
 
@@ -1109,5 +1116,3 @@ try {
 BaseException이 아닌 예외가 발생하면 catch문에서 log(Exception exception)을 호출한다.
 
 </details>
-
-<details>
