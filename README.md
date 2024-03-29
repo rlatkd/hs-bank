@@ -1,5 +1,5 @@
 <details>
-<summary>디렉터리 구조</summary>
+<summary>디렉토리 구조</summary>
 
 ```
 📁 src
@@ -37,7 +37,7 @@
 </details>
 
 <details>
-<summary>디렉터리 개요</summary>
+<summary>디렉토리 개요</summary>
 
 - dto: 사용자에게 입력받는 데이터 혹은 출력하는 데이터를 담는 객체 
   - account: 계좌 조회, 계좌 등록
@@ -74,7 +74,7 @@
 </details>
 
 <details>
-<summary>디렉터리 상세 구조</summary>
+<summary>디렉토리 상세 구조</summary>
 
 ```
 📁 HS_BANK
@@ -205,4 +205,12 @@
  │──── 📄 .project
  └──── 📄 README.md
 ```
+</details>
+
+<details>
+<summary>디렉토리 구조</summary>
+
+
+
+
 </details>
