@@ -255,6 +255,8 @@
 <details>
 <summary>기술 요서</summary>
 
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/sequence_diagram/%EC%8B%9C%ED%80%80%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8.png">
+
 1. **BufferedReader**
 
 자바에서 콘솔을 통해 사용자에게 입력받을 수 있는 방법은 Scanner 혹은 BufferedReader를 사용하는 것이다. Scanner는 1KB의 버퍼 사이즈를 갖고 있으며 데이터를 입력받는 즉시 전달한다. BufferedReader는 8KB의 버퍼 사이즈를 갖고 있으며 버퍼가 가득차거나 개행 문자가 나타나면 버퍼의 내용을 한번에 전달한다. Scanner는 입력받을 때마다 전달하기 때문에 한번에 읽어서 전달하는 BufferedReader보다 속도가 느리다. 
