@@ -1,3 +1,7 @@
+# 효성에프엠에스 풀스택 개발 전문가 양성과정 1기
+
+## 1차 미니 프로젝트
+
 ## 클래스 다이어그램
 
 <img src="https://github.com/rlatkd/hs-bank/blob/main/assets/class_diagram/%ED%81%B4%EB%9E%98%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8.jpg">
