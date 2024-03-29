@@ -34,7 +34,6 @@
  ├──── 📁 view
  └──── 📄 Application.java
 ```
-
 </details>
 
 <details>
@@ -72,10 +71,10 @@
 - view: 사용자에게 데이터를 입력받고 출력하는 객체
 
 - Application.java: 프로그램을 실행하는 객체
-
 </details>
 
-## 📁 디렉터리 상세 구조
+<details>
+<summary>디렉터리 상세 구조</summary>
 
 ```
 📁 HS_BANK
@@ -206,3 +205,4 @@
  │──── 📄 .project
  └──── 📄 README.md
 ```
+</details>
