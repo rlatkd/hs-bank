@@ -433,7 +433,14 @@ HS BANK의 금융 상식 퀴즈 게임을 구현하기 위해 멀티 스레드�
 <details>
 <summary>회의</summary>
 
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/collaboration/meeting.png">
 
+</details>
+
+<details>
+<summary>Slack</summary>
+
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/collaboration/slack.png">
 
 </details>
 
