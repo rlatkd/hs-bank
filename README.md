@@ -62,7 +62,7 @@
 
 </details>
 
-## 서비스 개요
+## 산출물
 
 <details>
 <summary>디렉토리 구조</summary>
