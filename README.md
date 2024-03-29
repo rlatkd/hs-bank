@@ -2,10 +2,7 @@
 
 <img src="https://github.com/rlatkd/hs-bank/blob/main/assets/class_diagram/%ED%81%B4%EB%9E%98%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8.jpg">
 
-
-
-
-
+## 서비스 개요
 
 <details>
 <summary>디렉토리 구조</summary>
@@ -655,3 +652,462 @@ GetAccountDto{id=2, bankName='카카오뱅크', number='45832813', ownerName='�
 아까와 달리 1번 계좌에서 5000원이 출금되었다.
 
 </details>
+
+<details>
+<summary>Repository 반복 로직</summary>
+
+### 문제상황
+
+```java
+public abstract class Repository<E> {
+    protected List<E> entityList;
+    protected String path;
+
+    protected Repository(String path) {
+        this.entityList = new ArrayList<>();
+        this.path = path;
+    }
+
+    protected final void load() throws BaseException {
+        FileInputStream fileInputStream = null;
+        BufferedInputStream bufferedInputStream = null;
+        ObjectInputStream objectInputStream = null;
+        try {
+            fileInputStream = new FileInputStream(path);
+            bufferedInputStream = new BufferedInputStream(fileInputStream);
+            objectInputStream = new ObjectInputStream(bufferedInputStream);
+
+            Object object = null;
+            while ((object = objectInputStream.readObject()) != null)
+                entityList = (ArrayList<E>) object;
+        } catch (EOFException e) {
+            log(e);
+        } catch (IOException | ClassNotFoundException e) {
+            log(e);
+            throw new DataAccessException();
+        } finally {
+            try {
+                if(objectInputStream != null) objectInputStream.close();
+                if(bufferedInputStream != null) bufferedInputStream.close();
+                if(fileInputStream != null) fileInputStream.close();
+            } catch (IOException e) {
+                log(e);
+                throw new DataAccessException();
+            }
+        }
+    }
+    protected final void save() throws BaseException {
+        FileOutputStream fileOutputStream = null;
+        BufferedOutputStream bufferedOutputStream = null;
+        ObjectOutputStream objectOutputStream = null;
+        try {
+            fileOutputStream = new FileOutputStream(path);
+            bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
+            objectOutputStream = new ObjectOutputStream(bufferedOutputStream);
+
+            objectOutputStream.writeObject(entityList);
+        } catch (IOException e) {
+            log(e);
+            throw new DataAccessException();
+        } finally {
+            try {
+                objectOutputStream.close();
+                bufferedOutputStream.close();
+                fileOutputStream.close();
+            } catch (IOException e) {
+                log(e);
+                throw new DataAccessException();
+            }
+        }
+    }
+    
+    public final void update() throws BaseException {
+        save();
+    }
+    
+    protected final E getLastEntity() {
+        return entityList.isEmpty() ? null : entityList.get(entityList.size() - 1);
+    }
+
+```
+
+추상 클래스 Repository의 코드이다. 
+
+load()는 파일의 내용을 entityList에 담는다. 
+
+save()는 entityList를 파일에 저장한다.
+
+update()는 save()를 호출한다.
+
+getLastEntity()는 entityList에서 가장 마지막 주소에 있는 요소를 반환한다.
+
+```java
+public class ClientRepository extends Repository<Client> {
+    private static ClientRepository clientRepository;
+    private ClientRepository() {
+        super(FilePathConstants.CLIENT_PATH);
+    }
+
+    public static ClientRepository getInstance(){
+        if(clientRepository == null)
+            clientRepository = new ClientRepository();
+        return clientRepository;
+    }
+
+    public void add(Client client) throws BaseException {
+        load();
+        client.setId(getLastEntity() == null ? 1 : getLastEntity().getId() + 1);
+        entityList.add(client);
+        save();
+    }
+    public Account get(int id) throws BaseException {
+        load();
+        for(Client client : entityList)
+            if(client.getId() == id) return client;
+        return null;
+    }
+    public List<Account> getClientList() throws BaseException {
+        load();
+        return entityList;
+    }
+    public void remove(int id) throws BaseException {
+        load();
+        for(int i = 0; i < entityList.size(); i++){
+            if(entityList.get(i).getId() == id) entityList.remove(i);
+            break;
+        }
+        save();
+    }
+```
+
+Repository의 자식인 AccountRepository이다.
+
+add, get, getAccountList, remove 함수가 구현되어 있다.
+
+```java
+public class AccountRepository extends Repository<Account> {
+    private static AccountRepository accountRepository;
+    private AccountRepository() {
+        super(FilePathConstants.ACCOUNT_PATH);
+    }
+
+    public static AccountRepository getInstance(){
+        if(accountRepository == null)
+            accountRepository = new AccountRepository();
+        return accountRepository;
+
+    }
+
+    public void add(Account account) throws BaseException {
+        load();
+        account.setId(getLastEntity() == null ? 1 : getLastEntity().getId() + 1);
+        entityList.add(account);
+        save();
+    }
+    public Account get(int id) throws BaseException {
+        load();
+        for(Account account : entityList)
+            if(account.getId() == id) return account;
+        return null;
+    }
+    public List<Account> getAccountList() throws BaseException {
+        load();
+        return entityList;
+    }
+    public void remove(int id) throws BaseException {
+        load();
+        for(int i = 0; i < entityList.size(); i++){
+            if(entityList.get(i).getId() == id) entityList.remove(i);
+            break;
+        }
+        save();
+    }
+```
+
+Repository의 자식인 AccountRepository이다.
+
+add, get, getAccountList, remove 함수가 구현되어 있다.
+
+ClientRepository와 AccountRepository의 함수가 반복되는 것을 볼 수 있다.
+
+불필요한 반복은 유지보수를 어렵게 하니, 반복 로직을 공통화해야한다.
+
+### 해결
+
+```java
+    public void add(Client client) throws BaseException {
+        load();
+        client.setId(getLastEntity() == null ? 1 : getLastEntity().getId() + 1);
+        entityList.add(client);
+        save();
+    }
+    public Account get(int id) throws BaseException {
+        load();
+        for(Client client : entityList)
+            if(client.getId() == id) return client;
+        return null;
+    }
+    public void remove(int id) throws BaseException {
+        load();
+        for(int i = 0; i < entityList.size(); i++){
+            if(entityList.get(i).getId() == id) entityList.remove(i);
+            break;
+        }
+        save();
+    }
+```
+
+add, get, remove는 E의 id로 로직을 처리하는데, E가 id를 가지고 있는지는 Repository에서 알 수가 없다.
+
+```java
+@Getter
+@SuperBuilder
+public abstract class Entity implements Serializable {
+    protected int id;
+    public final void setId(int id){
+        this.id = id;
+    }
+}
+```
+
+Client와 Account의 부모인 Entity는 id를 가지고 있다.
+
+Repository에서 제네릭 E를 Entity에 상속시키면 E가 id를 갖고 있다는 것을 Repository가 알 수 있다.
+
+```java
+public abstract class Repository<E extends Entity> {
+```
+
+Repository로 이동해 제네릭 E를 Entity에 상속시켜 E가 id를 갖고 있다는 것을 명시한다.
+
+이제 반복 로직을 공통화 해보자.
+
+```java
+public abstract class Repository<E extends Entity> {
+    protected List<E> entityList;
+    protected String path;
+
+    protected Repository(String path) {
+        this.entityList = new ArrayList<>();
+        this.path = path;
+    }
+
+    protected final void load() throws BaseException {
+				.....
+    }
+    protected final void save() throws BaseException {
+        .....
+    }
+    public final void update() throws BaseException {
+        save();
+    }
+    protected final E getLastEntity() {
+        return entityList.isEmpty() ? null : entityList.get(entityList.size() - 1);
+    }
+    
+    // 공통화 코드
+    public final void add(E entity) throws BaseException {
+        load();
+        entity.setId(getLastEntity() == null ? 0 : getLastEntity().getId() + 1);
+        entityList.add(entity);
+        save();
+    }
+    public final E get(int id) throws BaseException {
+        load();
+        for(Entity entity : entityList)
+            if(entity.getId() == id) return (E)entity;
+        return null;
+    }
+    public final List<E> getEntityList() throws BaseException {
+        load();
+        return entityList;
+    }
+    public final void remove(int id) throws BaseException {
+        load();
+        for(int i = 0; i < entityList.size(); i++){
+            if(entityList.get(i).getId() == id) entityList.remove(i);
+            break;
+        }
+        save();
+    }
+}
+```
+
+제네릭과 상속을 활용해서 반복되는 로직을 Repository에 공통화한 코드이다.
+
+</details>
+
+<details>
+<summary>Exception 상속</summary>
+
+### 문제 상황
+
+```java
+    public synchronized void cancelTransaction(int id) throws 
+            TransactionNotFoundException,
+            NotTransferException,
+            WithdrawAccountNotFoundException,
+            WithdrawAccountDeactivateException,
+            BalanceInsufficientException,
+            DepositAccountNotFoundException,
+            DepositAccountDeactivateException,
+            DataAccessException {
+```
+
+cancelTransaction 함수는 이체를 취소하는 기능을 한다. 
+
+해당 함수는 사용자 정의 예외를 총 8개 던지고 있다.
+
+해당 함수를 사용하는 것은 고객에게 보여줄 화면을 출력하는 View 클래스다.
+
+View 클래스는 해당 함수를 사용하려면 예외 처리를 8번해야한다.
+
+하지만 현재 개발 중인 시스템은 콘솔 프로그램이기 때문에 예외가 발생해도 View는 경고 메시지를 출력하고 다시 전 화면을 출력하는 것이 예외 처리의 전부다.
+
+즉 cancelTransaction 함수가 예외를 여러 개 던져도 View에서는 예외 처리가 공통된다는 것이다.
+
+따라서 예외를 여러 개 던질 필요가 없다.
+
+### 해결
+
+```java
+public abstract class BaseException extends Exception{
+
+    public BaseException(){
+        super("시스템에 오류가 발생했습니다. 다시 시도해주세요.");
+    }
+
+    public BaseException(String message)  {
+        super(message);
+    }
+```
+
+BaseException이라는 추상 클래스를 만들고 Exception을 상속시킨다.
+
+시스템 내의 모든 사용자 예외는 BaseException을 상속받도록 처리한다.
+
+```java
+public synchronized void cancelTransaction(int id) throws BaseException {
+```
+
+cancelTransaction 함수 내에서 발생시키는 예외는 모두 BaseException의 자식이기 때문에 BaseException만 던지면 된다.
+
+</details>
+
+<details>
+<summary>Exception 로깅</summary>
+
+### 문제상황
+
+e.printStackTrace()를 사용하면 예외 상세내용을 쉽게 확인할 수 있지만, 현재 개발 중인 시스템은 콘솔 프로그램이기 때문에 예외가 발생해도 예외의 상세내용을 출력할 수 없다.
+
+때문에 예외가 발생하더라도 출력할 수 있는 내용은 사용자에게 보여줄 경고 메시지밖에 없다.
+
+문제는 예외가 발생하여도 예외의 상세내용을 개발자도 볼 수 없다는 것이다.
+
+따라서 예외의 상세내용은 별도로 파일에 기록해서 개발자가 열람할 수 있도록 하고, 사용자에게는 경고 메시지만 출력하도록 해야한다.
+
+### 해결
+
+```java
+public abstract class BaseException extends Exception{
+
+    public BaseException(){
+        super("시스템에 오류가 발생했습니다. 다시 시도해주세요.");
+    }
+
+    public BaseException(String message) throws BaseException {
+        super(message);
+        log();
+    }
+
+    private void log() throws BaseException {
+        StringWriter stringWriter = null;
+        PrintWriter printWriter = null;
+
+        FileWriter fileWriter = null;
+        BufferedWriter bufferedWriter = null;
+
+        try{
+            stringWriter = new StringWriter();
+            printWriter = new PrintWriter(stringWriter);
+            printStackTrace(printWriter);
+
+            fileWriter =  new FileWriter(FilePathConstants.LOG_PATH, true);
+            bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write("[" + DateTimeGenerator.getDateTimeNow() + "] " + stringWriter.toString());
+            bufferedWriter.newLine();
+        } catch (IOException e) {
+            log(e);
+            throw new LogException();
+        } finally {
+            try {
+                bufferedWriter.close();
+                fileWriter.close();
+                stringWriter.close();
+                printWriter.close();
+            } catch (IOException e) {
+                log(e);
+                throw new LogException();
+            }
+        }
+    }
+}
+```
+
+개발자가 만든 예외는 모두 BaseException을 부모로 가진다. BaseException이 생성되면 log()를 호출한다.
+
+log()는 예외 상세내용을 로그 파일에 기록한다.
+
+만약 발생한 예외가 BaseException이라면 로그에 기록이 남겠지만, BaseException이 아니라면 기록이 남지 않는다.
+
+BaseException이 아닌 예외가 발생할 수도 있기 때문에 예외를 받아 로그에 기록하는 함수가 필요하다.
+
+```java
+    public static void log(Exception exception) throws BaseException {
+        StringWriter stringWriter = null;
+        PrintWriter printWriter = null;
+
+        FileWriter fileWriter = null;
+        BufferedWriter bufferedWriter = null;
+
+        try{
+            stringWriter = new StringWriter();
+            printWriter = new PrintWriter(stringWriter);
+            exception.printStackTrace(printWriter);
+
+            fileWriter =  new FileWriter(FilePathConstants.LOG_PATH, true);
+            bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write("[" + DateTimeGenerator.getDateTimeNow() + "] " + stringWriter);
+            bufferedWriter.newLine();
+        } catch (IOException e) {
+            throw new LogException();
+        } finally {
+            try {
+                bufferedWriter.close();
+                fileWriter.close();
+                stringWriter.close();
+                printWriter.close();
+            } catch (IOException e) {
+                throw new LogException();
+            }
+        }
+    }
+```
+
+log(Exception exception)는 파라미터로 받은 Exception의 상세내용을 로그 파일에 기록한다. 정적 함수이기 때문에 어디서든 호출할 수 있다.
+
+```java
+try {
+    FileInputStream fis = new FileInputStream(path);
+} catch (FileNotFoundException e) {
+    log(e);
+    throw new DataAccessException();
+}
+```
+
+BaseException이 아닌 예외가 발생하면 catch문에서 log(Exception exception)을 호출한다.
+
+</details>
+
+<details>
