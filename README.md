@@ -283,7 +283,7 @@
 
 
 <details>
-<summary>요구사항 명세</summary>
+<summary>요구사항 정의</summary>
 
 <img src="https://github.com/rlatkd/hs-bank/blob/main/assets/requirements/%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD%20%EC%A0%95%EC%9D%98%EC%84%9C.png">
 
