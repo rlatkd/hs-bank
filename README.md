@@ -34,6 +34,7 @@
  ├──── 📁 view
  └──── 📄 Application.java
 ```
+
 </details>
 
 <details>
@@ -71,6 +72,7 @@
 - view: 사용자에게 데이터를 입력받고 출력하는 객체
 
 - Application.java: 프로그램을 실행하는 객체
+
 </details>
 
 <details>
@@ -205,12 +207,15 @@
  │──── 📄 .project
  └──── 📄 README.md
 ```
+
 </details>
 
 <details>
-<summary>디렉토리 구조</summary>
+<summary>요구사항</summary>
+
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD%EC%A0%95%EC%9D%98.png">
 
 
-
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD%EB%AA%85%EC%84%B8.png">
 
 </details>
