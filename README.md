@@ -255,7 +255,7 @@
 <details>
 <summary>기술 요서</summary>
 
-<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/sequence_diagram/%EC%8B%9C%ED%80%80%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8.png">
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/tech/%EA%B8%B0%EC%88%A0%20%EC%9A%94%EC%84%9C.png">
 
 1. **BufferedReader**
 
