@@ -341,3 +341,18 @@ HS BANK의 금융 상식 퀴즈 게임을 구현하기 위해 멀티 스레드�
 <img src="https://github.com/rlatkd/hs-bank/blob/main/assets/sequence_diagram/%EC%8B%9C%ED%80%80%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8.png">
 
 </details>
+
+<details>
+<summary>단위 테스트 시나리오</summary>
+
+<img src="">
+
+
+
+
+<details>
+<summary>트러블슈팅</summary>
+
+
+
+</details>
