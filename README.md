@@ -325,3 +325,10 @@ HS BANK의 금융 상식 퀴즈 게임을 구현하기 위해 멀티 스레드�
 적용 : QuizView.java
 
 </details>
+
+<details>
+<summary>유스케이스 다이어그램</summary>
+
+
+
+</details>
