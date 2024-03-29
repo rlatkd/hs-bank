@@ -213,10 +213,10 @@
 <details>
 <summary>요구사항</summary>
 
-<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD%EC%A0%95%EC%9D%98.png">
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD%20%EB%AA%85%EC%84%B8%EC%84%9C.png">
 
 
-<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD%EB%AA%85%EC%84%B8.png">
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD%20%EC%A0%95%EC%9D%98%EC%84%9C.png">
 
 </details>
 
