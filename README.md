@@ -546,8 +546,6 @@ HS BANK의 금융 상식 퀴즈 게임을 구현하기 위해 멀티 스레드�
 
 ## 10. ClassDiagram
 
-<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/class_diagram/%ED%81%B4%EB%9E%98%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8.jpg">
-
 <details>
 <summary>View</summary>
 
