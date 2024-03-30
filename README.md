@@ -511,9 +511,9 @@ HS BANK의 금융 상식 퀴즈 게임을 구현하기 위해 멀티 스레드�
 </details>
 
 <details>
-<summary></summary>
+<summary>로그아웃, 내계좌관리, 입출금</summary>
 
-<img src="">
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/requirements/%EB%A1%9C%EA%B7%B8%EC%95%84%EC%9B%83_%EB%82%B4%EA%B3%84%EC%A2%8C%EA%B4%80%EB%A6%AC_%EC%9E%85%EC%B6%9C%EA%B8%88.png">
 
 </details>
 
