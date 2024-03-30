@@ -501,12 +501,54 @@ HS BANK의 금융 상식 퀴즈 게임을 구현하기 위해 멀티 스레드�
 
 ## 6. Requirements
 
+
+
 <details>
-<summary>요구사항 정의</summary>
+<summary></summary>
 
-<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/requirements/%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD%20%EC%A0%95%EC%9D%98%EC%84%9C.png">
+<img src="">
 
-<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/requirements/%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD%20%EB%AA%85%EC%84%B8%EC%84%9C.png">
+</details>
+
+<details>
+<summary></summary>
+
+<img src="">
+
+</details>
+
+<details>
+<summary></summary>
+
+<img src="">
+
+</details>
+
+<details>
+<summary></summary>
+
+<img src="">
+
+</details>
+
+<details>
+<summary></summary>
+
+<img src="">
+
+</details>
+
+<details>
+<summary></summary>
+
+<img src="">
+
+</details>
+
+<details>
+<summary></summary>
+
+<img src="">
 
 </details>
 
@@ -538,9 +580,9 @@ HS BANK의 금융 상식 퀴즈 게임을 구현하기 위해 멀티 스레드�
 ## 9. FlowChart
 
 <details>
-<summary>플로우 차트</summary>
+<summary></summary>
 
-<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/sequence_diagram/%EC%8B%9C%ED%80%80%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8.png">
+<img src="">
 
 </details>
 
