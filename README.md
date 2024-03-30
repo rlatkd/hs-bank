@@ -503,6 +503,8 @@ HS BANK의 금융 상식 퀴즈 게임을 구현하기 위해 멀티 스레드�
 
 <img src="https://github.com/rlatkd/hs-bank/blob/main/assets/requirements/%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD%20%EC%A0%95%EC%9D%98%EC%84%9C.png">
 
+### 고객
+
 <details>
 <summary>서비스시작, 로그인, 회원가입</summary>
 
@@ -530,6 +532,8 @@ HS BANK의 금융 상식 퀴즈 게임을 구현하기 위해 멀티 스레드�
 <img src="https://github.com/rlatkd/hs-bank/blob/main/assets/requirements/%EB%A7%88%EC%9D%B4%ED%8E%98%EC%9D%B4%EC%A7%80_%EA%B0%9C%EC%9D%B8%EB%B3%B4%EC%95%88_%EB%A1%9C%EA%B7%B8%EC%9D%B8.png">
 
 </details>
+
+### 관리자
 
 <details>
 <summary>로그아웃, 고객계정관리, 고객계좌관리</summary>
@@ -586,6 +590,8 @@ HS BANK의 금융 상식 퀴즈 게임을 구현하기 위해 멀티 스레드�
 
 ## 9. FlowChart
 
+### 고객
+
 <details>
 <summary>로그인, 회원가입</summary>
 
@@ -634,6 +640,8 @@ HS BANK의 금융 상식 퀴즈 게임을 구현하기 위해 멀티 스레드�
 <img src="https://github.com/rlatkd/hs-bank/blob/main/assets/flow_chart/%EB%A7%88%EC%9D%B4%ED%8E%98%EC%9D%B4%EC%A7%80.png">
 
 </details>
+
+### 관리자
 
 <details>
 <summary>로그인, 서브관리자등록</summary>
