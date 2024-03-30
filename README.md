@@ -761,7 +761,7 @@ HS BANK의 금융 상식 퀴즈 게임을 구현하기 위해 멀티 스레드�
 <details>
 <summary>GitHub Flow</summary>
 
-<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/collaboration/slack.png">
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/collaboration/%EA%B9%83%ED%97%99%ED%94%8C%EB%A1%9C%EC%9A%B0.png">
 
 </details>
 
