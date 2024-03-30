@@ -245,11 +245,16 @@
 ## 4. TechStack
 
 <details>
-<summary>기술 요서</summary>
+<summary>기술 요약</summary>
 
 <img src="https://github.com/rlatkd/hs-bank/blob/main/assets/tech/%EA%B8%B0%EC%88%A0%20%EC%9A%94%EC%84%9C.png">
 
-1. **BufferedReader**
+</details>
+
+<details>
+<summary>기술 상세</summary>
+
+**1. BufferedReader**
 
 자바에서 콘솔을 통해 사용자에게 입력받을 수 있는 방법은 Scanner 혹은 BufferedReader를 사용하는 것이다. Scanner는 1KB의 버퍼 사이즈를 갖고 있으며 데이터를 입력받는 즉시 전달한다. BufferedReader는 8KB의 버퍼 사이즈를 갖고 있으며 버퍼가 가득차거나 개행 문자가 나타나면 버퍼의 내용을 한번에 전달한다. Scanner는 입력받을 때마다 전달하기 때문에 한번에 읽어서 전달하는 BufferedReader보다 속도가 느리다. 
 
@@ -257,7 +262,7 @@ HS BANK 프로젝트는 콘솔 프로그램이므로 사용자의 입력을 빠�
 
 적용 : View.java
 
-2. **추상 클래스 & 인터페이스**
+**2. 추상 클래스 & 인터페이스**
 
 공통되는 속성과 함수가 여러 곳에 퍼질수록 유지보수성이 저하되는 것은 당연하다. HS BANK 프로그램에는 유지보수성을 향상시키기 위해 추상클래스를 활용하여 공통되는 속성과 함수를 모두 공통화하였다. 또한 추상 메서드를 활용하여 클래스에 특정 함수를 구현하는 것을 강제하였다.
 
