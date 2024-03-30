@@ -2,7 +2,27 @@
 
 ## 1차 미니 프로젝트
 
-## 개요
+## 0. 목차
+
+- [Overview](#1-Overview)
+- [Intro](#2-Intro)
+- [Directory](#3-Directory)
+- [TechStack](#4-TechStack)
+- [Convention](#5-Convention)
+- [Requirements](#6-Requirements)
+- [UseCaseDiagram](#7-UseCaseDiagram)
+- [SequenceDiagram](#8-SequenceDiagram)
+- [FlowChart](9-FlowChart)
+- [ClassDiagram](#10-ClassDiagram)
+- [UnitTest](#11-UnitTest)
+- [Collaboration](#12-Collaboraion)
+- [TroubleShooting](#13-TroubleShooting)
+
+## 1. Overview
+
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/class_diagram/%ED%81%B4%EB%9E%98%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8.jpg">
+
+## 2. Intro
 
 - 프로젝트 이름: HS Bank
 - 프로젝트 목적:
@@ -12,67 +32,7 @@
 - 언어: Java (JDK v17.0.10 & Eclipse v4.31.0)
 - 멤버: 김상훈, 안수현, 이우성
 
-## 클래스 다이어그램
-
-<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/class_diagram/%ED%81%B4%EB%9E%98%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8.jpg">
-
-<details>
-<summary>View</summary>
-
-<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/class_diagram/View.png">
-
-</details>
-
-<details>
-<summary>Service</summary>
-
-<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/class_diagram/Service.png">
-
-</details>
-
-<details>
-<summary>Repository</summary>
-
-<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/class_diagram/Repository.png">
-
-</details>
-
-<details>
-<summary>Entity</summary>
-
-<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/class_diagram/Entity.png">
-
-</details>
-
-<details>
-<summary>Dto</summary>
-
-<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/class_diagram/Dto.png">
-
-</details>
-
-<details>
-<summary>Exception</summary>
-
-<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/class_diagram/Exception.png">
-
-</details>
-
-<details>
-<summary>Enum</summary>
-
-<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/class_diagram/Enum.png">
-
-</details>
-
-<details>
-<summary>Utils</summary>
-
-<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/class_diagram/Utils.png">
-
-</details>
-
-## 산출물
+## 3. Directory
 
 <details>
 <summary>디렉토리 구조</summary>
@@ -281,48 +241,8 @@
 
 </details>
 
-<details>
-<summary>코드 정의</summary>
 
-<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/code_convention/%EC%BD%94%EB%93%9C%20%EC%A0%95%EC%9D%98%EC%84%9C%201.png">
-
-
-<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/code_convention/%EC%BD%94%EB%93%9C%20%EC%A0%95%EC%9D%98%EC%84%9C%202.png">
-
-</details>
-
-
-<details>
-<summary>요구사항 정의</summary>
-
-<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/requirements/%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD%20%EC%A0%95%EC%9D%98%EC%84%9C.png">
-
-<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/requirements/%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD%20%EB%AA%85%EC%84%B8%EC%84%9C.png">
-
-</details>
-
-<details>
-<summary>유스케이스 다이어그램</summary>
-
-<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/usecase_diagram/%EC%9C%A0%EC%8A%A4%EC%BC%80%EC%9D%B4%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8%20%EA%B3%A0%EA%B0%9D.jpg">
-
-<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/usecase_diagram/%EC%9C%A0%EC%8A%A4%EC%BC%80%EC%9D%B4%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8%20%EA%B4%80%EB%A6%AC%EC%9E%90.jpg">
-
-</details>
-
-<details>
-<summary>시퀀스 다이어그램</summary>
-
-<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/sequence_diagram/%EC%8B%9C%ED%80%80%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8.png">
-
-</details>
-
-<details>
-<summary>플로우 차트</summary>
-
-<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/sequence_diagram/%EC%8B%9C%ED%80%80%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8.png">
-
-</details>
+## 4. TechStack
 
 <details>
 <summary>기술 요서</summary>
@@ -431,6 +351,120 @@ HS BANK의 금융 상식 퀴즈 게임을 구현하기 위해 멀티 스레드�
 
 </details>
 
+## 5. Convention
+
+<details>
+<summary>코드 정의</summary>
+
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/code_convention/%EC%BD%94%EB%93%9C%20%EC%A0%95%EC%9D%98%EC%84%9C%201.png">
+
+
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/code_convention/%EC%BD%94%EB%93%9C%20%EC%A0%95%EC%9D%98%EC%84%9C%202.png">
+
+</details>
+
+## 6. Requirements
+
+<details>
+<summary>요구사항 정의</summary>
+
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/requirements/%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD%20%EC%A0%95%EC%9D%98%EC%84%9C.png">
+
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/requirements/%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD%20%EB%AA%85%EC%84%B8%EC%84%9C.png">
+
+</details>
+
+## 7. UseCaseDiagram
+
+<details>
+<summary>유스케이스 다이어그램</summary>
+
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/usecase_diagram/%EC%9C%A0%EC%8A%A4%EC%BC%80%EC%9D%B4%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8%20%EA%B3%A0%EA%B0%9D.jpg">
+
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/usecase_diagram/%EC%9C%A0%EC%8A%A4%EC%BC%80%EC%9D%B4%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8%20%EA%B4%80%EB%A6%AC%EC%9E%90.jpg">
+
+</details>
+
+## 8. SequenceDiagram
+
+<details>
+<summary>시퀀스 다이어그램</summary>
+
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/sequence_diagram/%EC%8B%9C%ED%80%80%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8.png">
+
+</details>
+
+## 9. FlowChart
+
+<details>
+<summary>플로우 차트</summary>
+
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/sequence_diagram/%EC%8B%9C%ED%80%80%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8.png">
+
+</details>
+
+## 10. ClassDiagram
+
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/class_diagram/%ED%81%B4%EB%9E%98%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8.jpg">
+
+<details>
+<summary>View</summary>
+
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/class_diagram/View.png">
+
+</details>
+
+<details>
+<summary>Service</summary>
+
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/class_diagram/Service.png">
+
+</details>
+
+<details>
+<summary>Repository</summary>
+
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/class_diagram/Repository.png">
+
+</details>
+
+<details>
+<summary>Entity</summary>
+
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/class_diagram/Entity.png">
+
+</details>
+
+<details>
+<summary>Dto</summary>
+
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/class_diagram/Dto.png">
+
+</details>
+
+<details>
+<summary>Exception</summary>
+
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/class_diagram/Exception.png">
+
+</details>
+
+<details>
+<summary>Enum</summary>
+
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/class_diagram/Enum.png">
+
+</details>
+
+<details>
+<summary>Utils</summary>
+
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/class_diagram/Utils.png">
+
+</details>
+
+## 11. UnitTest
+
 <details>
 <summary>단위 테스트 시나리오</summary>
 
@@ -438,7 +472,7 @@ HS BANK의 금융 상식 퀴즈 게임을 구현하기 위해 멀티 스레드�
 
 </details>
 
-## 협업
+## 12. Collaboration
 
 <details>
 <summary>회의</summary>
@@ -454,7 +488,7 @@ HS BANK의 금융 상식 퀴즈 게임을 구현하기 위해 멀티 스레드�
 
 </details>
 
-## 트러블 슈팅
+## 13. TroubleShooting
 
 <details>
 <summary>이체 시 잔액 반영 오류 </summary>
