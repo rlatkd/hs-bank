@@ -241,7 +241,6 @@
 
 </details>
 
-
 ## 4. TechStack
 
 <details>
@@ -362,9 +361,6 @@ HS BANK의 금융 상식 퀴즈 게임을 구현하기 위해 멀티 스레드�
 <summary>컨벤션 요약</summary>
 
 <img src="https://github.com/rlatkd/hs-bank/blob/main/assets/code_convention/%EC%BD%94%EB%93%9C%20%EC%A0%95%EC%9D%98%EC%84%9C%201.png">
-
-
-<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/code_convention/%EC%BD%94%EB%93%9C%20%EC%A0%95%EC%9D%98%EC%84%9C%202.png">
 
 </details>
 
