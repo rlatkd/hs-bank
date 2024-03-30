@@ -15,7 +15,7 @@
 - [FlowChart](#9-FlowChart)
 - [ClassDiagram](#10-ClassDiagram)
 - [UnitTest](#11-UnitTest)
-- [Collaboration](#12-Collaboraion)
+- [Collaboration](#12-Collaboration)
 - [TroubleShooting](#13-TroubleShooting)
 
 ## 1. Overview
