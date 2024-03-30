@@ -9,10 +9,10 @@
 - [Directory](#3-Directory)
 - [TechStack](#4-TechStack)
 - [Convention](#5-Convention)
-- [Requirements](#6-Requirements)
-- [UseCaseDiagram](#7-UseCaseDiagram)
-- [SequenceDiagram](#8-SequenceDiagram)
-- [FlowChart](#9-FlowChart)
+- [UseCaseDiagram](#6-UseCaseDiagram)
+- [Requirements](#7-Requirements)
+- [FlowChart](#8-FlowChart)
+- [SequenceDiagram](#9-SequenceDiagram)
 - [ClassDiagram](#10-ClassDiagram)
 - [UnitTest](#11-UnitTest)
 - [Collaboration](#12-Collaboration)
@@ -496,9 +496,25 @@ HS BANK의 금융 상식 퀴즈 게임을 구현하기 위해 멀티 스레드�
 
 </details>
 
-## 6. Requirements
+## 6. UseCaseDiagram
 
-### 6.1. 요구사항
+<details>
+<summary>고객</summary>
+
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/usecase_diagram/%EC%9C%A0%EC%8A%A4%EC%BC%80%EC%9D%B4%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8%20%EA%B3%A0%EA%B0%9D.jpg">
+
+</details>
+
+<details>
+<summary>관리자</summary>
+
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/usecase_diagram/%EC%9C%A0%EC%8A%A4%EC%BC%80%EC%9D%B4%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8%20%EA%B4%80%EB%A6%AC%EC%9E%90.jpg">
+
+</details>
+
+## 7. Requirements
+
+### 7.1. 요구사항
 
 <details>
 <summary>요구사항 정의</summary>
@@ -507,7 +523,7 @@ HS BANK의 금융 상식 퀴즈 게임을 구현하기 위해 멀티 스레드�
 
 </details>
 
-### 6.2. 고객
+### 7.2. 고객
 
 <details>
 <summary>서비스시작, 로그인, 회원가입</summary>
@@ -537,7 +553,7 @@ HS BANK의 금융 상식 퀴즈 게임을 구현하기 위해 멀티 스레드�
 
 </details>
 
-### 6.3. 관리자
+### 7.3. 관리자
 
 <details>
 <summary>로그아웃, 고객계정관리, 고객계좌관리</summary>
@@ -567,34 +583,9 @@ HS BANK의 금융 상식 퀴즈 게임을 구현하기 위해 멀티 스레드�
 
 </details>
 
-## 7. UseCaseDiagram
+## 8. FlowChart
 
-<details>
-<summary>고객</summary>
-
-<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/usecase_diagram/%EC%9C%A0%EC%8A%A4%EC%BC%80%EC%9D%B4%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8%20%EA%B3%A0%EA%B0%9D.jpg">
-
-</details>
-
-<details>
-<summary>관리자</summary>
-
-<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/usecase_diagram/%EC%9C%A0%EC%8A%A4%EC%BC%80%EC%9D%B4%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8%20%EA%B4%80%EB%A6%AC%EC%9E%90.jpg">
-
-</details>
-
-## 8. SequenceDiagram
-
-<details>
-<summary>계좌이체</summary>
-
-<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/sequence_diagram/%EC%8B%9C%ED%80%80%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8.png">
-
-</details>
-
-## 9. FlowChart
-
-### 9.1. 고객
+### 8.1. 고객
 
 <details>
 <summary>로그인, 회원가입</summary>
@@ -645,7 +636,7 @@ HS BANK의 금융 상식 퀴즈 게임을 구현하기 위해 멀티 스레드�
 
 </details>
 
-### 9.2. 관리자
+### 8.2. 관리자
 
 <details>
 <summary>로그인, 서브관리자등록</summary>
@@ -679,6 +670,15 @@ HS BANK의 금융 상식 퀴즈 게임을 구현하기 위해 멀티 스레드�
 <summary>고객이체내역관리</summary>
 
 <img src="https://github.com/rlatkd/hs-bank/blob/main/assets/flow_chart/%EA%B3%A0%EA%B0%9D%EC%9D%B4%EC%B2%B4%EB%82%B4%EC%97%AD%EA%B4%80%EB%A6%AC.png">
+
+</details>
+
+## 9. SequenceDiagram
+
+<details>
+<summary>계좌이체</summary>
+
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/sequence_diagram/%EC%8B%9C%ED%80%80%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8.png">
 
 </details>
 
