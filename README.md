@@ -189,6 +189,7 @@
  │      │      ├──── 📁 regex
  │      │      │      └──── 📄 RegexNotValidException.java
  │      │      ├──── 📁 transaction
+ │      │      │      ├──── 📄 NotCompeleteTransactionException.java
  │      │      │      ├──── 📄 NotTransferException.java
  │      │      │      ├──── 📄 TransactionListEmptyException.java
  │      │      │      └──── 📄 TransactionNotFoundException.java
@@ -197,10 +198,10 @@
  │      │      │      │      ├──── 📄 AdminDeactivateException.java
  │      │      │      │      ├──── 📄 AdminExistException.java
  │      │      │      │      └──── 📄 AdminNotFoundException.java 
- │      │      │      ├──── 📁 client
- │      │      │      │      ├──── 📄 ClientDeactivateException.java
- │      │      │      │      ├──── 📄 ClientExistException.java
- │      │      │      │      └──── 📄 ClientNotFoundException.java 
+ │      │      │      └──── 📁 client
+ │      │      │             ├──── 📄 ClientDeactivateException.java
+ │      │      │             ├──── 📄 ClientExistException.java
+ │      │      │             └──── 📄 ClientNotFoundException.java 
  │      │      ├──── 📄 BaseException.java
  │      │      ├──── 📄 DataAccessException.java
  │      │      └──── 📄 LogException.java
@@ -209,7 +210,7 @@
  │      │      ├──── 📄 AdminRepository.java
  │      │      ├──── 📄 ClientRepository.java
  │      │      ├──── 📄 InquiryRepository.java
- │      │      ├──── 📄 Repository.java 
+ │      │      ├──── 📄 Repository.java
  │      │      └──── 📄 TransactionRepository.java
  │      ├──── 📁 service
  │      │      ├──── 📄 AccountService.java
@@ -222,6 +223,7 @@
  │      │      ├──── 📄 CaptchaAuthentication.java
  │      │      ├──── 📄 DateTimeGenerator.java
  │      │      ├──── 📄 FilePathConstants.java
+ │      │      ├──── 📄 QuizGenerator.java
  │      │      └──── 📄 RegexValidator.java
  │      ├──── 📁 view
  │      │      ├──── 📄 AdminView.java
@@ -233,9 +235,7 @@
  │      └──── 📄 Application.java
  │──── 📁 Referenced Libraries
  │      └──── 📄 lombok.jar
- │──── 📄 .classpath
  │──── 📄 .gitignore
- │──── 📄 .project
  └──── 📄 README.md
 ```
 
@@ -497,7 +497,7 @@ HS BANK의 금융 상식 퀴즈 게임을 구현하기 위해 멀티 스레드�
 
 ## 6. Requirements
 
-### 요구사항
+### 6.1. 요구사항
 
 <details>
 <summary>요구사항 정의</summary>
@@ -506,7 +506,7 @@ HS BANK의 금융 상식 퀴즈 게임을 구현하기 위해 멀티 스레드�
 
 </details>
 
-### 고객
+### 6.2. 고객
 
 <details>
 <summary>서비스시작, 로그인, 회원가입</summary>
@@ -536,7 +536,7 @@ HS BANK의 금융 상식 퀴즈 게임을 구현하기 위해 멀티 스레드�
 
 </details>
 
-### 관리자
+### 6.3. 관리자
 
 <details>
 <summary>로그아웃, 고객계정관리, 고객계좌관리</summary>
@@ -593,7 +593,7 @@ HS BANK의 금융 상식 퀴즈 게임을 구현하기 위해 멀티 스레드�
 
 ## 9. FlowChart
 
-### 고객
+### 9.1. 고객
 
 <details>
 <summary>로그인, 회원가입</summary>
@@ -644,7 +644,7 @@ HS BANK의 금융 상식 퀴즈 게임을 구현하기 위해 멀티 스레드�
 
 </details>
 
-### 관리자
+### 9.2. 관리자
 
 <details>
 <summary>로그인, 서브관리자등록</summary>
