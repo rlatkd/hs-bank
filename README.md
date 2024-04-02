@@ -21,6 +21,8 @@
 
 ## 1. Overview
 
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/overview/overview.gif">
+
 <img src="https://github.com/rlatkd/hs-bank/blob/main/assets/class_diagram/%ED%81%B4%EB%9E%98%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8.jpg">
 
 ## 2. Intro
