@@ -25,6 +25,10 @@
 
 <img src="https://github.com/rlatkd/hs-bank/blob/main/assets/class_diagram/%ED%81%B4%EB%9E%98%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8.jpg">
 
+- 예상 ERD (현 프로젝트는 Java I/O를 이용하여 txt로 데이터를 저장하기 때문에 별도의 DB가 없음)
+
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/er_diagram/erd.png]">
+
 ## 2. Intro
 
 - 프로젝트 이름: HS Bank
