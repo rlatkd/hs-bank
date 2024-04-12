@@ -27,7 +27,7 @@
 
 - 예상 ERD (현 프로젝트는 Java I/O를 이용하여 txt로 데이터를 저장하기 때문에 별도의 DB가 없음)
 
-<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/er_diagram/erd.png]">
+<img src="https://github.com/rlatkd/hs-bank/blob/main/assets/er_diagram/erd.png">
 
 ## 2. Intro
 
